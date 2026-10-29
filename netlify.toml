@@ -1,0 +1,13 @@
+[build]
+  command = "bun run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  BUN_VERSION = "1.4.2"
+
+# Serve the SPA entry point when opening or refreshing a client-side route.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
