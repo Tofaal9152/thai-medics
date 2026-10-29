@@ -1,0 +1,856 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thai Medical Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#B92F6E;--pink-d:#9A2459;--pink-soft:#FBEAF2;--blue:#3566AC;--blue-soft:#E9F0FA;--gold:#E3A23B;--gold-soft:#FDF4E3;--ink:#1E2433;--muted:#667085;--line:#E4E7EC;--bg:#F5F6FA;--card:#fff;--red:#C2410C;--red-soft:#FDEDE5;--green:#15803D;--green-soft:#E7F5EC;--r:12px;--sh:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.07)}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:'Poppins','Noto Sans Bengali',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+.proto{background:var(--gold-soft);color:#7A4A00;font-size:12px;padding:6px 16px;text-align:center;border-bottom:1px solid #F0D8A6}
+.top{display:flex;align-items:center;gap:12px;padding:10px 16px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.logo{display:inline-flex;flex-direction:column;line-height:1;position:relative;font-family:Poppins,sans-serif;padding-right:12px}
+.logo .t{background:var(--pink);color:#fff;padding:2px 6px 3px;font-size:12px;width:max-content}
+.logo .m{color:var(--blue);font-weight:700;font-size:16px;letter-spacing:-.3px}
+.logo svg{position:absolute;right:0;top:-4px;width:12px;height:12px}
+.logo.big{padding-right:26px}.logo.big .t{font-size:28px;padding:4px 12px 6px}.logo.big .m{font-size:40px}.logo.big svg{width:24px;height:24px;top:-8px}
+.brand-title{font-weight:600;font-size:15px;white-space:nowrap}
+.brand-title small{display:block;font-weight:400;color:var(--muted);font-size:11px}
+.spacer{flex:1}
+.chip{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px 10px 3px 3px}
+.avatar{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:600;flex-shrink:0}
+.who{font-size:12px;line-height:1.25}.who small{color:var(--muted);display:block}
+.shell{display:flex;align-items:flex-start}
+.side{width:220px;flex-shrink:0;padding:14px 10px;position:sticky;top:58px;display:flex;flex-direction:column;gap:2px}
+.side button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;padding:9px 12px;border-radius:9px;cursor:pointer;color:var(--muted);font-weight:500}
+.side button:hover{background:#fff;color:var(--ink)}
+.side button.on{background:#fff;color:var(--pink);box-shadow:var(--sh)}
+.side svg{width:18px;height:18px;flex-shrink:0}
+main{flex:1;min-width:0;padding:20px 24px 60px;max-width:1240px}
+h1.page{font-size:22px;margin:0 0 2px}.sub-h{color:var(--muted);margin:0 0 18px}
+.head-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--sh);margin-bottom:16px}
+.card h3{margin:0 0 10px;font-size:15px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh);border-top:3px solid var(--blue)}
+.stat .n{font-size:28px;font-weight:700;line-height:1.2}.stat .l{color:var(--muted);font-size:12.5px}
+.stat.pink{border-top-color:var(--pink)}.stat.gold{border-top-color:var(--gold)}.stat.red{border-top-color:var(--red)}.stat.red .n{color:var(--red)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid2>.card{margin-bottom:16px}
+.pipe{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.pipe button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 6px;cursor:pointer;text-align:center}
+.pipe button:hover{border-color:var(--pink)}
+.pipe b{display:block;font-size:20px}.pipe span{font-size:11px;color:var(--muted);line-height:1.2;display:block}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid #D0D5DD;background:#fff;padding:8px 14px;border-radius:9px;cursor:pointer;font-weight:500;font-size:13px;white-space:nowrap}
+.btn:hover{background:#F9FAFB}
+.btn.primary{background:var(--pink);border-color:var(--pink);color:#fff}.btn.primary:hover{background:var(--pink-d)}
+.btn.blue{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.sm{padding:5px 10px;font-size:12px}.btn.block{width:100%}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btns{display:flex;gap:6px;flex-wrap:wrap}
+.badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.b-red{background:var(--red-soft);color:var(--red)}.b-gold{background:var(--gold-soft);color:#9A6200}.b-blue{background:var(--blue-soft);color:var(--blue)}.b-green{background:var(--green-soft);color:var(--green)}.b-gray{background:#F2F4F7;color:#475467}.b-pink{background:var(--pink-soft);color:var(--pink)}
+.row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}
+.grow{flex:1;min-width:0}
+.muted{color:var(--muted)}.small{font-size:12px}.strike{text-decoration:line-through;color:var(--muted)}
+.filters{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:8px;margin-bottom:12px}
+input,select,textarea{width:100%;border:1px solid #D0D5DD;border-radius:9px;padding:8px 10px;background:#fff;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+input[type=checkbox]{width:auto}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.ccard{text-align:left;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px;cursor:pointer;box-shadow:var(--sh);display:flex;flex-direction:column;gap:3px}
+.ccard:hover{border-color:var(--pink)}
+.ccard-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
+.cid{font-size:11.5px;color:var(--muted);font-weight:600}.cname{font-weight:600;font-size:15px}.cmeta{font-size:12.5px;color:var(--muted)}
+.cmeta b{color:var(--ink);font-weight:500}
+.stepper{display:flex;gap:4px;overflow-x:auto;padding-bottom:4px;margin:12px 0}
+.step{flex:1;min-width:92px;text-align:center;font-size:11px;padding:7px 4px 0;border-top:4px solid #E4E7EC;color:var(--muted)}
+.step.done{border-color:var(--blue);color:var(--blue)}.step.cur{border-color:var(--pink);color:var(--pink);font-weight:600}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);overflow-x:auto;margin-bottom:16px}
+.tabs button{background:none;border:0;padding:10px 12px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;font-weight:500}
+.tabs button.on{color:var(--pink);border-color:var(--pink)}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px 18px}
+.kv span{display:block;font-size:11.5px;color:var(--muted)}.kv b{font-weight:500;word-break:break-word}
+.kv .full{grid-column:1/-1}
+.note-item{border-left:3px solid var(--blue);padding:9px 12px;margin-bottom:10px;background:#FAFBFC;border-radius:0 8px 8px 0}
+.note-item.ho{border-left-color:var(--gold)}
+.note-meta{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:12px;color:var(--muted);margin-bottom:4px}
+.note-item p{margin:3px 0}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:4px}.field>span{font-size:12px;color:var(--muted);font-weight:500}
+.full{grid-column:1/-1}
+.subhead{grid-column:1/-1;font-weight:600;font-size:13px;color:var(--blue);border-top:1px solid var(--line);padding-top:10px;margin-top:2px}
+.modal-back{position:fixed;inset:0;background:rgba(16,24,40,.45);display:flex;align-items:flex-start;justify-content:center;padding:40px 12px;overflow-y:auto;z-index:100}
+.modal{background:#fff;border-radius:14px;width:100%;max-width:640px;box-shadow:0 20px 50px rgba(0,0,0,.2)}
+.modal-h{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}.modal-h h3{margin:0;font-size:16px}
+.x{border:0;background:none;font-size:24px;cursor:pointer;color:var(--muted);line-height:1}
+.modal-b{padding:18px}.modal-f{padding:12px 18px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;z-index:200;max-width:90vw;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11.5px;color:var(--muted);font-weight:600;background:#FAFBFC;white-space:nowrap}
+.cal-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.cal-head h3{margin:0 8px;font-size:16px;min-width:150px;text-align:center}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.dow{font-size:11px;color:var(--muted);text-align:center;padding:4px 0;font-weight:600}
+.day{min-height:96px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:4px 5px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.day.blank{background:transparent;border:0;cursor:default}
+.day.today{border-color:var(--pink);box-shadow:inset 0 0 0 1px var(--pink)}
+.day.sel{background:var(--blue-soft)}
+.dn{font-size:12px;font-weight:600}
+.ev{font-size:10.5px;padding:1px 4px;border-radius:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev.task{background:var(--pink-soft);color:var(--pink)}.ev.appt{background:var(--blue-soft);color:var(--blue)}.ev.trav{background:var(--gold-soft);color:#8A5A00}.ev.late{background:var(--red-soft);color:var(--red)}.ev.done{background:#F2F4F7;color:#98A2B3;text-decoration:line-through}
+.dots{display:none;gap:2px;flex-wrap:wrap}.dot{width:6px;height:6px;border-radius:50%}
+.dot.task{background:var(--pink)}.dot.appt{background:var(--blue)}.dot.trav{background:var(--gold)}.dot.late{background:var(--red)}.dot.done{background:#D0D5DD}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.warn{background:var(--gold-soft);border:1px solid #F0D8A6;color:#7A4A00;border-radius:10px;padding:10px 12px;font-size:12.5px;margin:10px 0}
+.infobox{background:var(--blue-soft);border:1px solid #CBDAF0;color:#24467A;border-radius:10px;padding:10px 12px;font-size:12.5px;margin:0 0 12px}
+.login{min-height:calc(100vh - 32px);display:grid;place-items:center;padding:24px 16px;background:linear-gradient(160deg,#fff 0%,var(--pink-soft) 55%,var(--blue-soft) 100%)}
+.login-card{background:#fff;border-radius:18px;padding:28px;max-width:430px;width:100%;box-shadow:0 12px 40px rgba(16,24,40,.12)}
+.login-card h1{margin:18px 0 0;font-size:22px}
+.login-card form{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.demo-ids{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.err{color:var(--red);font-size:12.5px;min-height:18px}
+.empty{text-align:center;color:var(--muted);padding:22px 10px;font-size:13px}
+.chk{width:20px!important;height:20px;accent-color:var(--pink);flex-shrink:0;cursor:pointer}
+.doc-ico{width:36px;height:36px;border-radius:8px;display:grid;place-items:center;font-size:10px;font-weight:700;flex-shrink:0}
+.doc-ico.pdf{background:var(--red-soft);color:var(--red)}.doc-ico.img{background:var(--blue-soft);color:var(--blue)}
+.date-h{font-size:12px;font-weight:600;color:var(--muted);margin:14px 0 2px;text-transform:uppercase;letter-spacing:.3px}
+ul.clean{margin:6px 0 0;padding-left:18px}ul.clean li{margin:4px 0}
+.ok-ic{color:var(--green);font-weight:700}.sim-ic{color:#9A6200;font-weight:700}.be-ic{color:var(--red);font-weight:700}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pgroup{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#FAFBFC}
+.pg-h{font-size:12px;font-weight:600;color:var(--blue);margin-bottom:4px}
+.pchk{display:flex;align-items:flex-start;gap:8px;padding:5px 0;cursor:pointer;font-size:13px}
+.matrix th{vertical-align:bottom}.matrix .vh{writing-mode:vertical-rl;transform:rotate(180deg);white-space:normal;height:150px;line-height:1.25;font-weight:600;margin:0 auto;text-align:left}
+@media(max-width:760px){.pgrid{grid-template-columns:1fr}}
+.linked{background:var(--blue-soft);color:#24467A;border-radius:9px;padding:8px 12px;font-size:13px;margin-bottom:12px}
+.apv{background:#F9FAFB;border:1px dashed #D0D5DD;border-radius:9px;padding:9px 12px;font-size:13px;color:var(--red);min-height:38px}.apv.ok{color:var(--ink)}
+.srow{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13.5px}.srow b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.srow.tot{border-bottom:0;border-top:2px solid var(--ink);margin-top:2px;padding-top:8px;font-weight:600}.srow.due b{color:var(--red)}.srow.credit b{color:var(--green)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}.due-t{color:var(--red);font-weight:600}.credit-t{color:var(--green);font-weight:600}
+tr.dim td{color:#98A2B3}
+.lookup{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.lookup input{max-width:240px}
+.doc-back{position:fixed;inset:0;background:rgba(16,24,40,.6);overflow-y:auto;z-index:150;padding:16px}
+.doc-toolbar{position:sticky;top:0;display:flex;gap:8px;justify-content:center;margin-bottom:12px;z-index:2}
+.paper{background:#fff;max-width:820px;margin:0 auto 40px;padding:36px 40px;border-radius:4px;box-shadow:0 10px 40px rgba(0,0,0,.25);font-size:13px;color:#111}
+.ph{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid var(--pink);padding-bottom:14px;margin-bottom:16px;flex-wrap:wrap}
+.pt{text-align:right}.pt h2{margin:0 0 6px;color:var(--blue);font-size:22px;text-transform:uppercase;letter-spacing:.5px}
+.pbill{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:#F5F6FA;border-radius:6px;padding:10px 12px;margin-bottom:16px}.pbill span{display:block;font-size:11px;color:#667085}
+.ptbl,.psum{width:100%;border-collapse:collapse;margin-bottom:14px}.ptbl th{background:var(--blue);color:#fff;font-size:11.5px}.ptbl td,.ptbl th{padding:7px 8px;border-bottom:1px solid #E4E7EC;font-size:12.5px}
+.psum{max-width:380px;margin-left:auto;clear:both}.paper h4{clear:both}.psum td{padding:5px 8px;border-bottom:1px solid #EEE}.psum .b td{font-weight:700;border-top:2px solid #111}
+.paper h4{margin:16px 0 6px;color:var(--blue)}.pfoot{margin-top:24px;padding-top:10px;border-top:1px solid #E4E7EC;font-size:11px;color:#667085;text-align:center}
+@media print{body{background:#fff}body>*:not(#docview){display:none!important}.doc-back{position:static;background:none;padding:0;overflow:visible}.doc-toolbar{display:none}.paper{box-shadow:none;margin:0;max-width:none;padding:0}}
+@media(max-width:760px){.pbill{grid-template-columns:1fr 1fr}.paper{padding:18px}}
+@media(max-width:960px){.stats{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.filters .q{grid-column:1/-1}.pipe{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:760px){
+ .shell{flex-direction:column;align-items:stretch}
+ .side{position:sticky;top:53px;z-index:25;width:auto;flex-direction:row;overflow-x:auto;background:#fff;border-bottom:1px solid var(--line);padding:6px 8px}
+ .side button{width:auto;white-space:nowrap;padding:7px 10px}.side button.on{box-shadow:none;background:var(--pink-soft)}
+ main{padding:14px 12px 60px}.fgrid{grid-template-columns:1fr}
+ .who,.brand-title small{display:none}.chip{padding:3px}
+ .day{min-height:52px}.day .ev{display:none}.dots{display:flex}
+ .top{padding:8px 12px;gap:8px}
+ .card{padding:14px}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="modal"></div>
+<div id="toast"></div>
+<div id="docview"></div>
+<script>
+/* ================== Thai Medical Desk — PROTOTYPE ==================
+   Single-file prototype. Login, permissions, storage and file uploads are
+   SIMULATED in the browser. See the "System status" page in the app.     */
+
+const STORE='tmd_demo_v1';
+let DB, meId=null, lang='bn';
+try{lang=localStorage.getItem('tmd_lang')||'bn'}catch(e){}
+const ui={view:'dash',caseId:null,tab:'overview',cal:{y:new Date().getFullYear(),m:new Date().getMonth()},calMode:'month',calDay:null,myOnly:false,f:{q:'',stage:'',coord:'',office:''}};
+const blobs={}; // in-memory files for this browser session only
+
+/* ---------- helpers ---------- */
+const L=(bn,en)=>lang==='bn'?bn:en;
+const tr=a=>a?L(a[0],a[1]):'—';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+const ymd=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const addDays=n=>{const d=new Date();d.setDate(d.getDate()+n);return ymd(d)};
+const TODAY=ymd(new Date());
+const nowISO=()=>new Date().toISOString();
+const loc=()=>lang==='bn'?'bn-BD':'en-GB';
+const num=n=>Number(n).toLocaleString(lang==='bn'?'bn-BD':'en-US');
+const fmtDT=iso=>iso?new Date(iso).toLocaleString(loc(),{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—';
+const fmtD=s=>s?new Date(s+'T00:00').toLocaleDateString(loc(),{day:'numeric',month:'short',year:'numeric'}):'—';
+const localDT=()=>{const d=new Date();return `${ymd(d)}T${pad(d.getHours())}:${pad(d.getMinutes())}`};
+const fmtSize=b=>b>1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB';
+const initials=n=>String(n||'?').replace(/\(.*?\)|\[.*?\]/g,'').trim().split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase();
+
+const STAGES=[['নতুন অনুসন্ধান','New Inquiry'],['রিপোর্ট সংগ্রহ','Reports Collection'],['হাসপাতাল পর্যালোচনা','Hospital Review'],['অ্যাপয়েন্টমেন্ট নিশ্চিত','Appointment Confirmed'],['ভ্রমণ ব্যবস্থা','Travel Arrangements'],['চিকিৎসা','Treatment'],['ফলো-আপ','Follow-up'],['সম্পন্ন','Completed']];
+const STAGE_COLORS=['#667085','#7C3AED','#3566AC','#0E7490','#B7791F','#B92F6E','#C2410C','#15803D'];
+const OFFICES={BD:['বাংলাদেশ','Bangladesh'],TH:['থাইল্যান্ড','Thailand'],MG:['ম্যানেজমেন্ট','Management']};
+const ROLES={admin:['অ্যাডমিন','Admin'],manager:['ম্যানেজার','Manager'],accounts:['হিসাব বিভাগ','Accounts'],coordinator:['কোঅর্ডিনেটর','Coordinator'],viewer:['শুধু দেখা','View only'],custom:['কাস্টম','Custom']};
+/* [key, Bengali, English, group] */
+const PERMS=[
+ ['caseCreate','নতুন রোগী কেস তৈরি','Create patient cases','case'],
+ ['caseEdit','রোগীর তথ্য ও কোঅর্ডিনেটর সম্পাদনা','Edit patient details & coordinator','case'],
+ ['stage','কেসের ধাপ পরিবর্তন','Change case stage','case'],
+ ['docsView','নথি দেখা ও ডাউনলোড','View & download records','docs'],
+ ['docsUpload','নথি আপলোড','Upload records','docs'],
+ ['notes','যোগাযোগ ও হ্যান্ডওভার নোট যোগ','Add communication & handover notes','work'],
+ ['tasks','ফলো-আপ কাজ তৈরি ও সম্পন্ন','Create & complete follow-up tasks','work'],
+ ['hospital','হাসপাতাল ও অ্যাপয়েন্টমেন্ট সম্পাদনা','Edit hospital & appointment','work'],
+ ['thai','থাইল্যান্ড ব্যবস্থা সম্পাদনা','Edit Thailand arrangements','work'],
+ ['acctView','হিসাব, বিল ও ব্যালেন্স দেখা','View accounts, bills & balances','acct'],
+ ['acctEdit','আর্থিক এন্ট্রি যোগ/সম্পাদনা ও ইনভয়েস ইস্যু','Add/edit financial entries & issue invoices','acct'],
+ ['staff','স্টাফ যোগ, সম্পাদনা ও অনুমতি নির্ধারণ','Add/edit staff & set permissions','admin'],
+ ['audit','অডিট ইতিহাস দেখা','View audit history','admin']];
+const PERM_GROUPS={case:['রোগী কেস','Patient cases'],docs:['মেডিকেল নথি','Medical records'],work:['সমন্বয়','Coordination'],acct:['হিসাব ও বিলিং','Accounts & billing'],admin:['প্রশাসন','Administration']};
+const ALLP=PERMS.map(p=>p[0]);
+const ROLE_PERMS={admin:ALLP,manager:ALLP.filter(k=>k!=='staff'&&k!=='acctEdit'),accounts:['docsView','acctView','acctEdit'],coordinator:['caseCreate','caseEdit','stage','docsView','docsUpload','notes','tasks','hospital','thai'],viewer:['docsView'],custom:[]};
+const presetPerms=r=>Object.fromEntries(ALLP.map(k=>[k,(ROLE_PERMS[r]||[]).includes(k)]));
+const matchRole=perms=>Object.keys(ROLE_PERMS).find(r=>r!=='custom'&&ALLP.every(k=>!!perms[k]===ROLE_PERMS[r].includes(k)))||'custom';
+const POSITIONS=['Managing Director','Operations Manager','Medical Tourism Manager','Senior Patient Coordinator','Patient Coordinator','Thailand Coordinator','Hospital Liaison Officer','Interpreter','Customer Service Executive','Accounts Officer','Accounts Manager'];
+const STATUS={active:['সক্রিয়','Active','b-green'],invited:['আমন্ত্রিত','Invited','b-gold'],inactive:['নিষ্ক্রিয়','Deactivated','b-gray']};
+const CHANNELS={phone:['ফোন','Phone'],whatsapp:['হোয়াটসঅ্যাপ','WhatsApp'],email:['ইমেইল','Email'],meeting:['সরাসরি সাক্ষাৎ','In person']};
+const DOC_CATS={report:['মেডিকেল রিপোর্ট','Medical report'],prescription:['প্রেসক্রিপশন','Prescription'],quotation:['হাসপাতাল কোটেশন','Hospital quotation'],plan:['চিকিৎসা পরিকল্পনা','Treatment plan'],travel:['ভ্রমণ নথি','Travel document'],other:['অন্যান্য','Other']};
+const PROPOSAL={na:['এখনও পাঠানো হয়নি','Not yet sent','b-gray'],pending:['রোগীর সিদ্ধান্তের অপেক্ষায়','Awaiting patient decision','b-gold'],accepted:['রোগী গ্রহণ করেছেন','Accepted by patient','b-green'],declined:['রোগী প্রত্যাখ্যান করেছেন','Declined by patient','b-red']};
+const ARR={needed:['প্রয়োজন — বাকি','Needed — pending'],arranged:['ব্যবস্থা সম্পন্ন','Arranged'],no:['প্রয়োজন নেই','Not needed']};
+const GENDER={M:['পুরুষ','Male'],F:['নারী','Female'],O:['অন্যান্য','Other']};
+const opts=obj=>Object.entries(obj).map(([k,v])=>[k,tr(v)]);
+
+/* ---------- storage (DEMO: browser only) ---------- */
+function load(){try{const r=localStorage.getItem(STORE);if(r){DB=JSON.parse(r);migrate();return}}catch(e){}DB=seed();save()}
+function migrate(){let ch=false;if(!DB.settings){DB.settings={company:'Thai Medics',address:'',phone:'',email:'',defCur:'BDT',footer:'PROTOTYPE — not a tax invoice.'};ch=true}DB.staff.forEach(s=>{if(s.perms&&s.perms.acctView===undefined){const full=s.role==='admin';s.perms.acctView=full||s.role==='manager';s.perms.acctEdit=full;s.role=matchRole(s.perms);ch=true}});DB.staff.forEach(s=>{if(!s.perms){s.perms=presetPerms(s.role||'viewer');if(s.office==='MG'&&s.role!=='viewer')s.perms.audit=true;s.role=matchRole(s.perms);ch=true}if(s.position==null){s.position='';ch=true}if(s.phone==null){s.phone='';ch=true}});if(ch)save()}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(DB))}catch(e){toast(L('ব্রাউজারে সংরক্ষণ করা যায়নি','Could not save to browser storage'))}}
+function nid(kind,prefix,w){DB.seq[kind]=(DB.seq[kind]||0)+1;return prefix+String(DB.seq[kind]).padStart(w,'0')}
+function log(action,target){DB.audit.unshift({at:nowISO(),by:meId||'system',action,target:target||''});if(DB.audit.length>1500)DB.audit.length=1500}
+function commit(action,target){log(action,target);save();render()}
+
+/* ---------- permissions (SIMULATED client-side) ---------- */
+const ME=()=>DB.staff.find(s=>s.id===meId);
+const can=p=>{const m=ME();return !!(m&&m.status==='active'&&m.perms&&m.perms[p])};
+const guard=p=>{if(can(p))return true;toast(L('এই কাজের অনুমতি আপনার নেই: ','You do not have permission for: ')+tr(PERMS.find(x=>x[0]===p).slice(1,3)));return false};
+const permCount=s=>PERMS.filter(p=>s.perms?.[p[0]]).length;
+const sName=id=>{if(id==='system')return L('সিস্টেম','System');const s=DB.staff.find(x=>x.id===id);return s?s.name:(id||'—')};
+const getCase=id=>DB.cases.find(c=>c.id===id);
+const staffOpts=(fn,blank)=>{const o=DB.staff.filter(fn).map(s=>[s.id,`${s.name} — ${tr(OFFICES[s.office])}`]);return blank?[['',blank],...o]:o};
+const workers=s=>s.status==='active'&&!!(s.perms?.caseEdit||s.perms?.caseCreate||s.perms?.tasks);
+
+/* ---------- demo seed (FICTIONAL) ---------- */
+function seed(){
+ const at=(n,h=10)=>{const x=new Date();x.setDate(x.getDate()+n);x.setHours(h,15,0,0);return x.toISOString()};
+ const d=addDays,yr=new Date().getFullYear();
+ const db={seq:{case:0,staff:0,doc:0,task:0,note:0},staff:[],cases:[],tasks:[],audit:[]};
+ DB=db;
+ const st=(name,email,office,role,position,status='active')=>db.staff.push({id:nid('staff','STF-',3),name,email,phone:'',office,position,role,perms:presetPerms(role),status,createdAt:at(-60)});
+ st('Demo Admin','admin@example.test','MG','admin','Operations Manager');
+ st('Rahim (Demo)','rahim.bd@example.test','BD','coordinator','Senior Patient Coordinator');
+ st('Nusrat (Demo)','nusrat.bd@example.test','BD','coordinator','Patient Coordinator');
+ st('Somchai (Demo)','somchai.th@example.test','TH','coordinator','Thailand Coordinator');
+ st('Ploy (Demo)','ploy.th@example.test','TH','coordinator','Hospital Liaison Officer');
+ st('Karim (Demo)','karim.bd@example.test','BD','viewer','Customer Service Executive');
+ st('Former Staff (Demo)','former@example.test','BD','coordinator','Patient Coordinator','inactive');
+ st('Mitu (Demo)','mitu.mg@example.test','MG','manager','Medical Tourism Manager');
+ st('Shathi (Demo)','shathi.acc@example.test','BD','accounts','Accounts Officer');
+ const H={name:'',dept:'',doctor:'',apptDate:'',apptTime:'',reportsSubmitted:'',responseReceived:'',proposal:'na',notes:''};
+ const T={arrDate:'',arrFlight:'',depDate:'',depFlight:'',hotel:'',airport:'',hospTransport:'',interpreter:'',notes:'',updatedBy:'',updatedAt:''};
+ const mk=o=>{const c=Object.assign({id:nid('case',`TMD-${yr}-`,4),email:'',city:'',age:'',gender:'',companion:{name:'',relation:'',phone:''},office:'BD',thCoordinator:'',createdAt:at(-20),createdBy:'STF-001',handover:[],docs:[],comms:[]},o);c.hospital=Object.assign({},H,o.hospital||{});c.travel=Object.assign({},T,o.travel||{});db.cases.push(c);return c};
+ const doc=(c,name,cat,date,by,size)=>c.docs.push({id:nid('doc','DOC-',4),name,cat,date,by,at:at(-5),size,demo:true});
+ const note=(c,ch,by,n,summary,outcome,next)=>c.comms.push({id:nid('note','N-',4),ch,by,at:at(n,11),summary,outcome,next});
+ const task=(caseId,title,due,assignee,done=false)=>db.tasks.push({id:nid('task','T-',4),caseId,title,due,assignee,done,doneAt:done?at(-1):'',doneBy:done?assignee:'',createdBy:'STF-001',createdAt:at(-7)});
+
+ const c1=mk({name:'[DEMO] Abdul Karim',phone:'+880 1700-000101',whatsapp:'+880 1700-000101',city:'Dhaka',age:'52',gender:'M',needs:'Patient asks for an orthopaedic consultation regarding knee pain (as stated by patient).',companion:{name:'[DEMO] Salma Karim',relation:'Wife',phone:'+880 1700-000102'},coordinator:'STF-002',stage:0,createdAt:at(-1)});
+ note(c1,'phone','STF-002',-1,'First inquiry call. Patient wanted to understand the overall process.','Explained process; requested existing reports.','Collect reports via WhatsApp');
+ task(c1.id,'Call back to collect existing reports',d(0),'STF-002');
+
+ const c2=mk({name:'[DEMO] Fatema Begum',phone:'+880 1800-000201',whatsapp:'+880 1800-000201',city:'Chattogram',age:'61',gender:'F',needs:'Family requests a second opinion on existing reports (as stated by family).',companion:{name:'[DEMO] Tanvir Hasan',relation:'Son',phone:'+880 1800-000202'},coordinator:'STF-003',stage:1,createdAt:at(-9)});
+ doc(c2,'Blood_test_DEMO.pdf','report',d(-12),'STF-003',412000);doc(c2,'Prescription_DEMO.jpg','prescription',d(-10),'STF-003',890000);
+ note(c2,'whatsapp','STF-003',-6,'Son sent two reports by WhatsApp.','Reports uploaded to case.','Ask for remaining imaging reports');
+ task(c2.id,'Follow up for remaining imaging reports',d(-2),'STF-003');
+
+ const c3=mk({name:'[DEMO] Mizanur Rahman',phone:'+880 1900-000301',whatsapp:'+880 1900-000301',city:'Sylhet',age:'47',gender:'M',needs:'Requests a cardiology consultation (as stated by patient).',coordinator:'STF-002',thCoordinator:'STF-004',stage:2,createdAt:at(-15),hospital:{name:'Sample Hospital A, Bangkok (fictional)',dept:'Cardiology',doctor:'Dr. Demo A',reportsSubmitted:d(-3)}});
+ doc(c3,'Reports_bundle_DEMO.pdf','report',d(-4),'STF-002',2300000);
+ note(c3,'email','STF-004',-3,'Reports emailed to hospital international desk.','Hospital acknowledged receipt.','Await hospital response');
+ task(c3.id,'Chase hospital for review response',d(1),'STF-004');
+
+ const c4=mk({name:'[DEMO] Shirin Akter',phone:'+880 1600-000401',whatsapp:'+880 1600-000401',city:'Dhaka',age:'38',gender:'F',needs:'Requests a gynaecology consultation (as stated by patient).',companion:{name:'[DEMO] Rafiq Ahmed',relation:'Husband',phone:'+880 1600-000402'},coordinator:'STF-003',thCoordinator:'STF-005',stage:3,createdAt:at(-25),hospital:{name:'Sample Medical Center B, Bangkok (fictional)',dept:'Gynaecology',doctor:'Dr. Demo B',apptDate:d(5),apptTime:'09:30',reportsSubmitted:d(-14),responseReceived:d(-8),proposal:'accepted',notes:'Quotation valid 30 days (demo).'}});
+ doc(c4,'Hospital_quotation_DEMO.pdf','quotation',d(-8),'STF-005',300000);doc(c4,'Treatment_plan_DEMO.pdf','plan',d(-8),'STF-005',260000);
+ note(c4,'phone','STF-003',-6,'Discussed hospital quotation with patient and husband.','Patient accepted the proposal.','Start visa and travel planning');
+ task(c4.id,'Confirm visa documents with patient',d(0),'STF-003');task(c4.id,'Shortlist hotels near hospital',d(2),'STF-005');
+
+ const c5=mk({name:'[DEMO] Habibur Rahman',phone:'+880 1500-000501',whatsapp:'+880 1500-000501',city:'Khulna',age:'66',gender:'M',needs:'Requests an orthopaedic consultation (as stated by patient).',companion:{name:'[DEMO] Sabbir Rahman',relation:'Son',phone:'+880 1500-000502'},coordinator:'STF-002',thCoordinator:'STF-004',stage:4,createdAt:at(-35),hospital:{name:'Sample Hospital A, Bangkok (fictional)',dept:'Orthopaedics',doctor:'Dr. Demo C',apptDate:d(10),apptTime:'11:00',reportsSubmitted:d(-25),responseReceived:d(-18),proposal:'accepted'},travel:{arrDate:d(9),arrFlight:'XX 101 (demo)',depDate:d(20),depFlight:'XX 102 (demo)',hotel:'Sample Serviced Apartment, Bangkok (fictional)',airport:'arranged',hospTransport:'needed',interpreter:'Bengali – Thai',notes:'Wheelchair assistance requested at airport.',updatedBy:'STF-004',updatedAt:at(-1)},handover:[{by:'STF-002',at:at(-2),text:'Patient travels with son. Prefers halal meals.'},{by:'STF-004',at:at(-1),text:'Airport pickup booked. Waiting for hotel confirmation.'}]});
+ doc(c5,'Flight_itinerary_DEMO.pdf','travel',d(-2),'STF-002',150000);
+ task(c5.id,'Send hotel confirmation to family',d(-1),'STF-004');task(c5.id,'Share arrival briefing with patient',d(7),'STF-002');
+
+ const c6=mk({name:'[DEMO] Rokeya Khatun',phone:'+880 1300-000601',whatsapp:'+880 1300-000601',city:'Rajshahi',age:'55',gender:'F',needs:'Post-treatment follow-up coordination (as stated by patient).',coordinator:'STF-003',thCoordinator:'STF-005',stage:6,createdAt:at(-70),hospital:{name:'Sample Medical Center B, Bangkok (fictional)',dept:'General Medicine',doctor:'Dr. Demo D',apptDate:d(-30),apptTime:'10:00',reportsSubmitted:d(-50),responseReceived:d(-45),proposal:'accepted'}});
+ task(c6.id,'Collect discharge summary from hospital',d(-4),'STF-005',true);task(c6.id,'Post-return check-in call',d(3),'STF-003');
+
+ mk({name:'[DEMO] Jamal Uddin',phone:'+880 1400-000701',whatsapp:'',city:'Dhaka',age:'44',gender:'M',needs:'Health check-up package (as stated by patient).',coordinator:'STF-002',thCoordinator:'STF-004',stage:7,createdAt:at(-120)});
+
+ seedAcct();
+ db.audit.push({at:nowISO(),by:'system',action:['ডেমো ডেটা তৈরি','Demo data generated'],target:''});
+ return db;
+}
+
+/* ---------- UI primitives ---------- */
+const ICON={dash:'<rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/>',cases:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',acct:'<path d="M5 2h14v20l-3-2-2 2-2-2-2 2-2-2-3 2z"/><path d="M9 7h6M9 11h6M9 15h4"/>',calendar:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',staff:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',audit:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/>',info:'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>'};
+const svg=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[k]}</svg>`;
+const logo=big=>`<span class="logo ${big?'big':''}"><span class="t">Thai</span><span class="m">Medics</span><svg viewBox="0 0 24 24"><path d="M9 2h6v7h7v6h-7v7H9v-7H2V9h7z" fill="#B92F6E"/></svg></span>`;
+const fld=(name,label,val='',type='text',attrs='')=>`<label class="field"><span>${label}</span><input name="${name}" type="${type}" value="${esc(val)}" ${attrs}></label>`;
+const sel=(name,label,o,val,attrs='')=>`<label class="field"><span>${label}</span><select name="${name}" ${attrs}>${o.map(([v,t])=>`<option value="${esc(v)}" ${String(v)===String(val??'')?'selected':''}>${esc(t)}</option>`).join('')}</select></label>`;
+const ta=(name,label,val='',attrs='')=>`<label class="field full"><span>${label}</span><textarea name="${name}" rows="3" ${attrs}>${esc(val)}</textarea></label>`;
+const stageBadge=i=>`<span class="badge" style="background:${STAGE_COLORS[i]}1c;color:${STAGE_COLORS[i]}">${tr(STAGES[i])}</span>`;
+const stBadge=s=>{const x=STATUS[s];return `<span class="badge ${x[2]}">${L(x[0],x[1])}</span>`};
+const kv=(label,val,full)=>`<div class="${full?'full':''}"><span>${label}</span><b>${val===''||val==null?'—':val}</b></div>`;
+const empty=t=>`<div class="empty">${t}</div>`;
+
+function toast(msg){const t=document.getElementById('toast');t.innerHTML=`<div class="toast">${esc(msg)}</div>`;clearTimeout(toast.h);toast.h=setTimeout(()=>t.innerHTML='',3800)}
+let modalSave=null;
+function openModal(title,body,onSave,saveLabel){
+ document.getElementById('modal').innerHTML=`<div class="modal-back" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="modal-h"><h3>${esc(title)}</h3><button class="x" onclick="closeModal()" aria-label="Close">×</button></div><form id="mform" onsubmit="event.preventDefault();submitModal()"><div class="modal-b">${body}</div><div class="modal-f"><button type="button" class="btn" onclick="closeModal()">${L('বাতিল','Cancel')}</button><button class="btn primary">${saveLabel||L('সংরক্ষণ','Save')}</button></div></form></div></div>`;
+ modalSave=onSave;const first=document.querySelector('#mform input:not([type=hidden]),#mform select,#mform textarea');if(first&&window.innerWidth>760)first.focus();
+}
+function closeModal(){document.getElementById('modal').innerHTML='';modalSave=null}
+function submitModal(){const f=document.getElementById('mform');const d=Object.fromEntries(new FormData(f));for(const k in d)if(typeof d[k]==='string')d[k]=d[k].trim();const fn=modalSave;if(fn&&fn(d,f)!==false)closeModal()}
+
+/* ---------- app shell ---------- */
+const banner=()=>`<div class="proto">${L('প্রোটোটাইপ — শুধুমাত্র কাল্পনিক ডেমো ডেটা। আসল রোগীর তথ্য এখানে প্রবেশ করাবেন না।','PROTOTYPE — fictional demo data only. Do not enter real patient information here.')} <a href="#" onclick="event.preventDefault();go('info')">${L('বিস্তারিত','Details')}</a></div>`;
+function render(){
+ document.documentElement.lang=lang;
+ const app=document.getElementById('app');
+ const me=ME();
+ if(meId&&(!me||me.status!=='active')){meId=null;try{sessionStorage.removeItem('tmd_me')}catch(e){}}
+ if(!meId){app.innerHTML=loginHTML();return}
+ const nav=[['dash',L('ড্যাশবোর্ড','Dashboard')],['cases',L('রোগী কেস','Patient cases')],['calendar',L('ফলো-আপ ক্যালেন্ডার','Follow-up calendar')]];
+ if(can('acctView'))nav.push(['acct',L('হিসাব ও বিলিং','Accounts & billing')]);
+ if(can('staff'))nav.push(['staff',L('স্টাফ ব্যবস্থাপনা','Staff')]);
+ if(can('audit'))nav.push(['audit',L('অডিট ইতিহাস','Audit history')]);
+ nav.push(['info',L('সিস্টেম স্ট্যাটাস','System status')]);
+ const cur=ui.view==='case'?'cases':ui.view;
+ app.innerHTML=banner()+`<header class="top"><div class="brand">${logo()}<div class="brand-title">Thai Medical Desk<small>${L('অভ্যন্তরীণ মেডিকেল ট্যুরিজম সিস্টেম','Internal medical tourism system')}</small></div></div><div class="spacer"></div>
+ <button class="btn sm" onclick="toggleLang()">${L('English','বাংলা')}</button>
+ <div class="chip"><div class="avatar">${esc(initials(me.name))}</div><div class="who">${esc(me.name)}<small>${me.id} · ${esc(me.position||tr(ROLES[me.role]))} · ${tr(OFFICES[me.office])}</small></div></div>
+ <button class="btn sm" onclick="logout()" title="${L('লগআউট','Sign out')}">${L('লগআউট','Sign out')}</button></header>
+ <div class="shell"><nav class="side">${nav.map(([k,t])=>`<button class="${cur===k?'on':''}" onclick="go('${k}')">${svg(k)}<span>${t}</span></button>`).join('')}</nav><main>${view()}</main></div>`;
+}
+function view(){switch(ui.view){case 'cases':return casesHTML();case 'case':return caseHTML();case 'calendar':return calendarHTML();case 'acct':return can('acctView')?acctHTML():denied();case 'staff':return can('staff')?staffHTML():denied();case 'audit':return can('audit')?auditHTML():denied();case 'info':return infoHTML();default:return dashHTML()}}
+const denied=()=>`<div class="card">${empty(L('এই অংশে প্রবেশের অনুমতি আপনার নেই।','You do not have permission to access this section.'))}</div>`;
+function go(v){ui.view=v;if(v!=='case')ui.caseId=null;render();window.scrollTo(0,0)}
+function toggleLang(){lang=lang==='bn'?'en':'bn';try{localStorage.setItem('tmd_lang',lang)}catch(e){}render()}
+function openCase(id){ui.view='case';ui.caseId=id;ui.tab='overview';render();window.scrollTo(0,0)}
+function setTab(t){ui.tab=t;render()}
+
+/* ---------- login (SIMULATED) ---------- */
+function loginHTML(){
+ const demo=DB.staff.filter(s=>s.status==='active');
+ return banner()+`<div class="login"><div class="login-card">${logo(true)}<h1>Thai Medical Desk</h1><p class="muted" style="margin:2px 0 0">${L('বাংলাদেশ ও থাইল্যান্ড অফিস টিমের জন্য অভ্যন্তরীণ সিস্টেম','Internal system for the Bangladesh and Thailand office teams')}</p>
+ <div class="warn"><b>${L('সিমুলেটেড লগইন','Simulated login')}:</b> ${L('এই প্রোটোটাইপে পাসওয়ার্ড যাচাই হয় না এবং কোনো সার্ভার নেই। প্রোডাকশনে সার্ভার-সাইড অথেনটিকেশন প্রয়োজন।','this prototype has no server and does not verify passwords. Production requires server-side authentication.')}</div>
+ <form onsubmit="event.preventDefault();doLogin()"><label class="field"><span>${L('আপনার স্টাফ আইডি','Your staff ID')}</span><input id="loginId" placeholder="STF-001" autocomplete="off" autocapitalize="characters"></label><div id="loginErr" class="err"></div><button class="btn primary block">${L('প্রবেশ করুন','Sign in')}</button></form>
+ <p class="small muted" style="margin:16px 0 0">${L('কাল্পনিক ডেমো স্টাফ — ট্যাপ করে আইডি বসান:','Fictional demo staff — tap to fill the ID:')}</p>
+ <div class="demo-ids">${demo.map(s=>`<button class="btn sm" onclick="document.getElementById('loginId').value='${s.id}'">${s.id} · ${esc(s.name)} <span class="muted">(${tr(ROLES[s.role])})</span></button>`).join('')}</div>
+ <p class="small muted" style="margin:14px 0 0">${L('নিষ্ক্রিয় স্টাফ (STF-007) লগইন করতে পারবেন না — অনুমোদন যাচাই দেখতে চেষ্টা করুন।','Deactivated staff (STF-007) cannot sign in — try it to see the approval check.')}</p>
+ <div style="margin-top:14px;text-align:right"><button class="btn sm" onclick="toggleLang()">${L('English','বাংলা')}</button></div></div></div>`;
+}
+function doLogin(){const id=document.getElementById('loginId').value.trim().toUpperCase();const s=DB.staff.find(x=>x.id===id);const e=document.getElementById('loginErr');
+ if(!s){e.textContent=L('এই আইডির কোনো স্টাফ নেই।','No staff member with this ID.');return}
+ if(s.status!=='active'){e.textContent=s.status==='invited'?L('আমন্ত্রণ এখনও অনুমোদিত হয়নি। অ্যাডমিনের সাথে যোগাযোগ করুন।','Invitation not yet approved. Contact an admin.'):L('এই অ্যাকাউন্ট নিষ্ক্রিয়। অ্যাডমিনের সাথে যোগাযোগ করুন।','This account is deactivated. Contact an admin.');return}
+ meId=s.id;try{sessionStorage.setItem('tmd_me',s.id)}catch(x){}ui.view='dash';log(['লগইন','Signed in'],s.id);save();render()}
+function logout(){log(['লগআউট','Signed out'],meId);save();meId=null;try{sessionStorage.removeItem('tmd_me')}catch(e){}render()}
+
+/* ---------- tasks ---------- */
+function taskRow(t,showCase=true){
+ const c=getCase(t.caseId);const late=!t.done&&t.due<TODAY,tod=!t.done&&t.due===TODAY;
+ const b=t.done?`<span class="badge b-green">${L('সম্পন্ন','Done')}</span>`:late?`<span class="badge b-red">${L('বিলম্বিত','Overdue')} · ${fmtD(t.due)}</span>`:tod?`<span class="badge b-gold">${L('আজ','Today')}</span>`:`<span class="badge b-blue">${fmtD(t.due)}</span>`;
+ return `<div class="row">${can('tasks')?`<input type="checkbox" class="chk" ${t.done?'checked':''} onchange="toggleTask('${t.id}')" title="${L('সম্পন্ন চিহ্নিত করুন','Mark complete')}">`:''}<div class="grow"><div class="${t.done?'strike':''}">${esc(t.title)}</div><div class="small muted">${showCase&&c?`<a href="#" onclick="event.preventDefault();openCase('${c.id}')">${c.id} · ${esc(c.name)}</a> · `:''}${esc(sName(t.assignee))}${t.done&&t.doneBy?` · ${L('সম্পন্ন করেছেন','completed by')} ${esc(sName(t.doneBy))}`:''}</div></div>${b}</div>`;
+}
+function toggleTask(id){if(!guard('tasks')){render();return}const t=DB.tasks.find(x=>x.id===id);t.done=!t.done;t.doneAt=t.done?nowISO():'';t.doneBy=t.done?meId:'';commit(t.done?['কাজ সম্পন্ন','Task completed']:['কাজ পুনরায় খোলা','Task reopened'],`${t.caseId} — ${t.title}`)}
+function addTask(cid){if(!guard('tasks'))return;const c=cid?getCase(cid):null;
+ openModal(L('ফলো-আপ কাজ যোগ করুন','Add follow-up task'),`<div class="fgrid">${cid?'':sel('caseId',L('রোগী কেস *','Patient case *'),DB.cases.filter(x=>x.stage<7).map(x=>[x.id,`${x.id} · ${x.name}`]),'','required')}${fld('title',L('কাজ *','Task *'),'','text','required')}${fld('due',L('নির্ধারিত তারিখ *','Due date *'),addDays(1),'date','required')}${sel('assignee',L('দায়িত্বপ্রাপ্ত *','Responsible *'),staffOpts(workers),c?c.coordinator:meId)}</div>`,
+ d=>{const caseId=cid||d.caseId;if(!caseId||!d.title||!d.due)return false;DB.tasks.push({id:nid('task','T-',4),caseId,title:d.title,due:d.due,assignee:d.assignee,done:false,doneAt:'',doneBy:'',createdBy:meId,createdAt:nowISO()});commit(['কাজ তৈরি','Task created'],`${caseId} — ${d.title}`)})}
+
+/* ---------- dashboard ---------- */
+function dashHTML(){
+ const active=DB.cases.filter(c=>c.stage<7),open=DB.tasks.filter(t=>!t.done);
+ const today=open.filter(t=>t.due===TODAY),overdue=open.filter(t=>t.due<TODAY).sort((a,b)=>a.due.localeCompare(b.due));
+ const lim=addDays(30);const appts=DB.cases.filter(c=>c.hospital.apptDate&&c.hospital.apptDate>=TODAY&&c.hospital.apptDate<=lim).sort((a,b)=>(a.hospital.apptDate+a.hospital.apptTime).localeCompare(b.hospital.apptDate+b.hospital.apptTime));
+ const me=ME();
+ return `<div class="head-row"><div><h1 class="page">${L('স্বাগতম','Welcome')}, ${esc(me.name)}</h1><p class="sub-h">${new Date().toLocaleDateString(loc(),{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</p></div>${can('caseCreate')?`<button class="btn primary" onclick="newCase()">+ ${L('নতুন রোগী কেস','New patient case')}</button>`:''}</div>
+ <div class="stats"><div class="stat pink"><div class="n">${num(active.length)}</div><div class="l">${L('সক্রিয় কেস','Active cases')}</div></div><div class="stat gold"><div class="n">${num(today.length)}</div><div class="l">${L('আজকের ফলো-আপ','Today\u2019s follow-ups')}</div></div><div class="stat red"><div class="n">${num(overdue.length)}</div><div class="l">${L('বিলম্বিত কাজ','Overdue tasks')}</div></div><div class="stat"><div class="n">${num(appts.length)}</div><div class="l">${L('আসন্ন অ্যাপয়েন্টমেন্ট (৩০ দিন)','Upcoming appointments (30 days)')}</div></div></div>
+ <div class="card"><h3>${L('কেসের ধাপ অনুযায়ী','Cases by stage')}</h3><div class="pipe">${STAGES.map((s,i)=>`<button onclick="ui.f.stage='${i}';go('cases')"><b style="color:${STAGE_COLORS[i]}">${num(DB.cases.filter(c=>c.stage===i).length)}</b><span>${tr(s)}</span></button>`).join('')}</div></div>
+ <div class="grid2"><div class="card"><h3>${L('বিলম্বিত ও আজকের কাজ','Overdue & today')}<button class="btn sm" onclick="go('calendar')">${L('ক্যালেন্ডার','Calendar')} →</button></h3>${[...overdue,...today].map(t=>taskRow(t)).join('')||empty(L('আজ কোনো বাকি কাজ নেই','Nothing due today'))}</div>
+ <div class="card"><h3>${L('আসন্ন অ্যাপয়েন্টমেন্ট','Upcoming appointments')}</h3>${appts.map(c=>`<div class="row"><div class="grow"><a href="#" onclick="event.preventDefault();openCase('${c.id}')"><b>${esc(c.name)}</b></a><div class="small muted">${esc(c.hospital.name)} · ${esc(c.hospital.dept)}${c.hospital.doctor?' · '+esc(c.hospital.doctor):''}</div></div><span class="badge b-blue">${fmtD(c.hospital.apptDate)}${c.hospital.apptTime?' · '+esc(c.hospital.apptTime):''}</span></div>`).join('')||empty(L('আগামী ৩০ দিনে কোনো অ্যাপয়েন্টমেন্ট নেই','No appointments in the next 30 days'))}</div></div>
+ ${can('acctView')?acctDashCard():''}
+ <div class="card"><h3>${L('কেস খুঁজুন','Find cases')}</h3>${filterBar()}<div id="caseResults">${caseCards()}</div></div>`;
+}
+
+/* ---------- case list ---------- */
+function filterBar(){const f=ui.f;
+ return `<div class="filters"><input class="q" placeholder="${L('নাম, কেস আইডি, ফোন বা হাসপাতাল দিয়ে খুঁজুন','Search name, case ID, phone or hospital')}" value="${esc(f.q)}" oninput="setF('q',this.value)">
+ <select onchange="setF('stage',this.value)"><option value="">${L('সব ধাপ','All stages')}</option>${STAGES.map((s,i)=>`<option value="${i}" ${f.stage===String(i)?'selected':''}>${tr(s)}</option>`).join('')}</select>
+ <select onchange="setF('coord',this.value)"><option value="">${L('সব কোঅর্ডিনেটর','All coordinators')}</option>${DB.staff.filter(s=>s.perms?.caseEdit||s.perms?.tasks).map(s=>`<option value="${s.id}" ${f.coord===s.id?'selected':''}>${esc(s.name)}</option>`).join('')}</select>
+ <select onchange="setF('office',this.value)"><option value="">${L('সব অফিস','All offices')}</option>${Object.entries(OFFICES).map(([k,v])=>`<option value="${k}" ${f.office===k?'selected':''}>${tr(v)}</option>`).join('')}</select>
+ <button class="btn" onclick="ui.f={q:'',stage:'',coord:'',office:''};render()">${L('রিসেট','Reset')}</button></div>`;
+}
+function setF(k,v){ui.f[k]=v;if(k==='q'){const el=document.getElementById('caseResults');if(el)el.innerHTML=caseCards()}else render()}
+function filtered(){const f=ui.f,q=f.q.trim().toLowerCase(),qd=q.replace(/[\s\-+]/g,'');
+ return DB.cases.filter(c=>{
+  if(f.stage!==''&&c.stage!==+f.stage)return false;
+  if(f.coord&&c.coordinator!==f.coord&&c.thCoordinator!==f.coord)return false;
+  if(f.office){const offs=[c.coordinator,c.thCoordinator].map(id=>DB.staff.find(s=>s.id===id)?.office);if(!offs.includes(f.office))return false}
+  if(q){const hay=[c.name,c.id,c.phone,c.whatsapp,c.hospital.name].join(' ').toLowerCase();if(!hay.includes(q)&&!(qd&&hay.replace(/[\s\-+]/g,'').includes(qd)))return false}
+  return true}).sort((a,b)=>a.stage===7?1:b.stage===7?-1:b.createdAt.localeCompare(a.createdAt))}
+function caseCards(){const list=filtered();if(!list.length)return empty(L('কোনো কেস পাওয়া যায়নি','No matching cases'));
+ return `<p class="small muted" style="margin:0 0 8px">${num(list.length)} ${L('টি কেস','cases')}</p><div class="cards">${list.map(c=>`<button class="ccard" onclick="openCase('${c.id}')"><div class="ccard-top"><span class="cid">${c.id}</span>${stageBadge(c.stage)}</div><div class="cname">${esc(c.name)}</div><div class="cmeta">${L('ফোন','Phone')}: <b>${esc(c.phone)}</b></div><div class="cmeta">${L('হাসপাতাল','Hospital')}: <b>${esc(c.hospital.name||'—')}</b></div><div class="cmeta">BD: <b>${esc(sName(c.coordinator))}</b>${c.thCoordinator?` · TH: <b>${esc(sName(c.thCoordinator))}</b>`:''}</div></button>`).join('')}</div>`}
+function casesHTML(){return `<div class="head-row"><div><h1 class="page">${L('রোগী কেস','Patient cases')}</h1><p class="sub-h">${L('সব কেস — খুঁজুন ও ফিল্টার করুন','All cases — search and filter')}</p></div>${can('caseCreate')?`<button class="btn primary" onclick="newCase()">+ ${L('নতুন রোগী কেস','New patient case')}</button>`:''}</div><div class="card">${filterBar()}<div id="caseResults">${caseCards()}</div></div>`}
+
+/* ---------- case create / edit ---------- */
+function caseForm(c){c=c||{companion:{}};
+ return `<div class="fgrid">${fld('name',L('রোগীর নাম *','Patient name *'),c.name,'text','required')}${fld('phone',L('ফোন *','Phone *'),c.phone,'tel','required')}${fld('whatsapp','WhatsApp',c.whatsapp,'tel')}${fld('email',L('ইমেইল','Email'),c.email,'email')}${fld('age',L('বয়স','Age'),c.age,'number','min="0" max="120"')}${sel('gender',L('লিঙ্গ','Gender'),[['','—'],...opts(GENDER)],c.gender)}${fld('city',L('শহর / জেলা','City / district'),c.city)}${sel('office',L('দায়িত্বপ্রাপ্ত অফিস','Handling office'),opts(OFFICES),c.office||'BD')}
+ ${ta('needs',L('চিকিৎসা সংক্রান্ত প্রয়োজন (রোগী/পরিবারের বক্তব্য অনুযায়ী) *','Medical needs (as stated by patient/family) *'),c.needs,'required')}
+ <div class="subhead">${L('সঙ্গী ব্যক্তি','Accompanying person')}</div>${fld('cName',L('নাম','Name'),c.companion.name)}${fld('cRel',L('সম্পর্ক','Relationship'),c.companion.relation)}${fld('cPhone',L('ফোন','Phone'),c.companion.phone,'tel')}
+ <div class="subhead">${L('দায়িত্ব','Responsibility')}</div>${sel('coordinator',L('দায়িত্বপ্রাপ্ত কোঅর্ডিনেটর *','Responsible coordinator *'),staffOpts(workers),c.coordinator||meId)}</div>
+ <p class="small muted" style="margin:12px 0 0">${L('এই সিস্টেম কোনো রোগনির্ণয় বা চিকিৎসা পরামর্শ দেয় না।','This system does not provide diagnoses or treatment recommendations.')}</p>`}
+function newCase(){if(!guard('caseCreate'))return;openModal(L('নতুন রোগী কেস','New patient case'),caseForm(),d=>{if(!d.name||!d.phone||!d.needs)return false;
+ const c={id:nid('case',`TMD-${new Date().getFullYear()}-`,4),name:d.name,phone:d.phone,whatsapp:d.whatsapp,email:d.email,age:d.age,gender:d.gender,city:d.city,office:d.office,needs:d.needs,companion:{name:d.cName,relation:d.cRel,phone:d.cPhone},coordinator:d.coordinator,thCoordinator:'',stage:0,createdAt:nowISO(),createdBy:meId,hospital:{name:'',dept:'',doctor:'',apptDate:'',apptTime:'',reportsSubmitted:'',responseReceived:'',proposal:'na',notes:''},travel:{arrDate:'',arrFlight:'',depDate:'',depFlight:'',hotel:'',airport:'',hospTransport:'',interpreter:'',notes:'',updatedBy:'',updatedAt:''},handover:[],docs:[],comms:[]};
+ DB.cases.push(c);ui.view='case';ui.caseId=c.id;ui.tab='overview';commit(['রোগী কেস তৈরি','Case created'],`${c.id} — ${c.name}`);toast(L('কেস তৈরি হয়েছে: ','Case created: ')+c.id)},L('কেস তৈরি করুন','Create case'))}
+function editCase(id){if(!guard('caseEdit'))return;const c=getCase(id);openModal(L('রোগীর তথ্য সম্পাদনা','Edit patient details'),caseForm(c),d=>{if(!d.name||!d.phone||!d.needs)return false;
+ const prevCo=c.coordinator;Object.assign(c,{name:d.name,phone:d.phone,whatsapp:d.whatsapp,email:d.email,age:d.age,gender:d.gender,city:d.city,office:d.office,needs:d.needs,coordinator:d.coordinator});c.companion={name:d.cName,relation:d.cRel,phone:d.cPhone};
+ commit(prevCo!==d.coordinator?['কোঅর্ডিনেটর পরিবর্তন ও তথ্য হালনাগাদ','Details updated; coordinator reassigned']:['রোগীর তথ্য হালনাগাদ','Patient details updated'],c.id)})}
+function moveStage(dir){if(!guard('stage'))return;const c=getCase(ui.caseId);const n=c.stage+dir;if(n<0||n>7)return;const from=c.stage;c.stage=n;commit(['ধাপ পরিবর্তন','Stage changed'],`${c.id}: ${STAGES[from][1]} → ${STAGES[n][1]}`)}
+
+/* ---------- case detail ---------- */
+function caseHTML(){const c=getCase(ui.caseId);if(!c)return denied();
+ const tabs=[['overview',L('সংক্ষিপ্ত বিবরণ','Overview')],['docs',L('মেডিকেল নথি','Medical records')+` (${num(c.docs.length)})`],['comms',L('যোগাযোগ ইতিহাস','Communication')+` (${num(c.comms.length)})`],['hospital',L('হাসপাতাল ও অ্যাপয়েন্টমেন্ট','Hospital & appointment')],['thai',L('থাইল্যান্ড সহায়তা','Thailand assistance')],['tasks',L('ফলো-আপ কাজ','Follow-up tasks')+` (${num(DB.tasks.filter(t=>t.caseId===c.id&&!t.done).length)})`]];
+ if(can('acctView'))tabs.push(['acct',L('হিসাব ও বিলিং','Accounts & billing')]);
+ if(ui.tab==='acct'&&!can('acctView'))ui.tab='overview';
+ const body={overview:tabOverview,docs:tabDocs,comms:tabComms,hospital:tabHospital,thai:tabThai,tasks:tabTasks,acct:tabAcct}[ui.tab](c);
+ return `<button class="btn sm" onclick="go('cases')" style="margin-bottom:12px">← ${L('সব কেস','All cases')}</button>
+ <div class="card"><div class="head-row"><div><div class="cid">${c.id} · ${tr(OFFICES[c.office])}</div><h1 class="page">${esc(c.name)}</h1><div class="small muted">${L('তৈরি','Created')} ${fmtDT(c.createdAt)} · ${esc(sName(c.createdBy))}</div></div><div>${stageBadge(c.stage)}</div></div>
+ <div class="stepper">${STAGES.map((s,i)=>`<div class="step ${i<c.stage?'done':i===c.stage?'cur':''}">${tr(s)}</div>`).join('')}</div>
+ ${can('stage')?`<div class="btns"><button class="btn sm" ${c.stage===0?'disabled':''} onclick="moveStage(-1)">← ${L('আগের ধাপ','Previous stage')}</button><button class="btn sm primary" ${c.stage===7?'disabled':''} onclick="moveStage(1)">${c.stage<7?L('পরের ধাপ: ','Next: ')+tr(STAGES[Math.min(7,c.stage+1)]):L('সম্পন্ন','Completed')} →</button></div>`:''}</div>
+ <div class="tabs">${tabs.map(([k,t])=>`<button class="${ui.tab===k?'on':''}" onclick="setTab('${k}')">${t}</button>`).join('')}</div>${body}`}
+
+function tabOverview(c){const cp=c.companion||{};
+ return `<div class="card"><h3>${L('রোগীর তথ্য','Patient details')}${can('caseEdit')?`<button class="btn sm" onclick="editCase('${c.id}')">${L('সম্পাদনা','Edit')}</button>`:''}</h3><div class="kv">${kv(L('ফোন','Phone'),esc(c.phone))}${kv('WhatsApp',esc(c.whatsapp))}${kv(L('ইমেইল','Email'),esc(c.email))}${kv(L('বয়স','Age'),esc(c.age))}${kv(L('লিঙ্গ','Gender'),c.gender?tr(GENDER[c.gender]):'')}${kv(L('শহর / জেলা','City / district'),esc(c.city))}${kv(L('চিকিৎসা সংক্রান্ত প্রয়োজন (রোগীর বক্তব্য)','Medical needs (as stated)'),esc(c.needs),true)}</div></div>
+ <div class="grid2"><div class="card"><h3>${L('সঙ্গী ব্যক্তি','Accompanying person')}</h3><div class="kv">${kv(L('নাম','Name'),esc(cp.name))}${kv(L('সম্পর্ক','Relationship'),esc(cp.relation))}${kv(L('ফোন','Phone'),esc(cp.phone))}</div></div>
+ <div class="card"><h3>${L('দায়িত্বপ্রাপ্ত টিম','Assigned team')}</h3><div class="kv">${kv(L('বাংলাদেশ কোঅর্ডিনেটর','Responsible coordinator'),esc(sName(c.coordinator)))}${kv(L('থাইল্যান্ড কোঅর্ডিনেটর','Thailand coordinator'),c.thCoordinator?esc(sName(c.thCoordinator)):`<span class="muted">${L('নির্ধারিত হয়নি','Not assigned')}</span>`)}${kv(L('হাসপাতাল','Hospital'),esc(c.hospital.name))}${kv(L('অ্যাপয়েন্টমেন্ট','Appointment'),c.hospital.apptDate?fmtD(c.hospital.apptDate)+(c.hospital.apptTime?' · '+esc(c.hospital.apptTime):''):'')}</div></div></div>`}
+
+function tabDocs(c){const groups={};c.docs.forEach(d=>(groups[d.date||'']=groups[d.date||'']||[]).push(d));const keys=Object.keys(groups).sort().reverse();
+ return `<div class="card"><h3>${L('মেডিকেল নথি (তারিখ অনুযায়ী)','Medical records (by date)')}${can('docsUpload')?`<button class="btn sm primary" onclick="uploadDoc('${c.id}')">+ ${L('আপলোড','Upload')}</button>`:''}</h3>
+ <div class="infobox">${L('প্রোটোটাইপ: আপলোড করা ফাইল শুধু এই ব্রাউজার সেশনের মেমরিতে থাকে; শুধু তথ্য (মেটাডেটা) সংরক্ষিত হয়। প্রোডাকশনে সুরক্ষিত প্রাইভেট স্টোরেজ ও সাইনড লিংক প্রয়োজন।','Prototype: uploaded files are held in this browser session\u2019s memory only; only the metadata is saved. Production needs protected private storage with signed links.')}</div>
+ ${keys.length?keys.map(k=>`<div class="date-h">${k?fmtD(k):L('তারিখ নেই','No date')}</div>${groups[k].map(d=>docRow(c,d)).join('')}`).join(''):empty(L('এখনও কোনো নথি নেই','No documents yet'))}</div>`}
+function docRow(c,d){const pdf=/\.pdf$/i.test(d.name);
+ return `<div class="row"><div class="doc-ico ${pdf?'pdf':'img'}">${pdf?'PDF':'IMG'}</div><div class="grow"><div style="word-break:break-all">${esc(d.name)}${d.demo?' <span class="badge b-gray">DEMO</span>':''}</div><div class="small muted">${tr(DOC_CATS[d.cat])} · ${fmtSize(d.size||0)} · ${L('আপলোড','uploaded by')} ${esc(sName(d.by))}, ${fmtDT(d.at)}</div></div>${can('docsView')?`<div class="btns"><button class="btn sm" onclick="docAction('${c.id}','${d.id}','view')">${L('দেখুন','View')}</button><button class="btn sm" onclick="docAction('${c.id}','${d.id}','download')">${L('ডাউনলোড','Download')}</button></div>`:`<span class="small muted">${L('দেখার অনুমতি নেই','No access')}</span>`}</div>`}
+function uploadDoc(cid,cat){if(!guard('docsUpload'))return;
+ openModal(L('নথি আপলোড','Upload document'),`<div class="fgrid"><label class="field full"><span>${L('ফাইল — PDF, JPG বা PNG (সর্বোচ্চ ১০ MB) *','File — PDF, JPG or PNG (max 10 MB) *')}</span><input type="file" name="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" multiple required></label>${sel('cat',L('ধরন','Category'),opts(DOC_CATS),cat||'report')}${fld('date',L('নথির তারিখ','Document date'),TODAY,'date','required')}</div>`,
+ (d,f)=>{const files=[...f.querySelector('input[type=file]').files];if(!files.length)return false;const bad=files.filter(x=>!/\.(pdf|jpe?g|png)$/i.test(x.name)||x.size>10485760);if(bad.length){toast(L('শুধু ১০ MB পর্যন্ত PDF/JPG/PNG অনুমোদিত: ','Only PDF/JPG/PNG up to 10 MB allowed: ')+bad.map(x=>x.name).join(', '));return false}
+ const c=getCase(cid);files.forEach(file=>{const id=nid('doc','DOC-',4);blobs[id]=URL.createObjectURL(file);c.docs.push({id,name:file.name,cat:d.cat,date:d.date||TODAY,by:meId,at:nowISO(),size:file.size})});
+ commit(['নথি আপলোড','Document uploaded'],`${cid} — ${files.map(x=>x.name).join(', ')}`)},L('আপলোড','Upload'))}
+function docAction(cid,did,mode){if(!guard('docsView'))return;const c=getCase(cid),d=c.docs.find(x=>x.id===did);const url=blobs[did];
+ log(mode==='view'?['নথি দেখা হয়েছে','Document viewed']:['নথি ডাউনলোড','Document downloaded'],`${cid} — ${d.name}`);save();
+ if(!url){toast(d.demo?L('ডেমো নথি — কোনো আসল ফাইল সংযুক্ত নেই (সিমুলেটেড)।','Demo record — no real file attached (simulated).'):L('ফাইলটি শুধু আপলোডের সেশনে ব্রাউজার মেমরিতে ছিল। প্রোডাকশনে সুরক্ষিত স্টোরেজ প্রয়োজন।','The file was only held in browser memory during the upload session. Production needs protected storage.'));return}
+ if(mode==='view')window.open(url,'_blank');else{const a=document.createElement('a');a.href=url;a.download=d.name;document.body.appendChild(a);a.click();a.remove()}}
+
+function tabComms(c){const list=[...c.comms].sort((a,b)=>b.at.localeCompare(a.at));
+ return `<div class="card"><h3>${L('যোগাযোগ ইতিহাস','Communication history')}${can('notes')?`<button class="btn sm primary" onclick="addNote('${c.id}')">+ ${L('নোট যোগ করুন','Add note')}</button>`:''}</h3>
+ <div class="infobox">${L('এগুলো স্টাফের হাতে লেখা নোট। কোনো WhatsApp/ইমেইল ইন্টিগ্রেশন সংযুক্ত নেই। নোট সম্পাদনা বা মুছে ফেলা যায় না — পুরনো নোট সংরক্ষিত থাকে।','These are manual staff notes. No WhatsApp/email integration is connected. Notes cannot be edited or deleted — history is preserved.')}</div>
+ ${list.map(n=>`<div class="note-item"><div class="note-meta"><span class="badge b-blue">${tr(CHANNELS[n.ch])}</span><span>${fmtDT(n.at)}</span><span>· ${esc(sName(n.by))}</span></div><p>${esc(n.summary)}</p>${n.outcome?`<p class="small"><b>${L('ফলাফল','Outcome')}:</b> ${esc(n.outcome)}</p>`:''}${n.next?`<p class="small"><b>${L('পরবর্তী পদক্ষেপ','Next action')}:</b> ${esc(n.next)}</p>`:''}</div>`).join('')||empty(L('এখনও কোনো নোট নেই','No notes yet'))}</div>`}
+function addNote(cid){if(!guard('notes'))return;
+ openModal(L('যোগাযোগ নোট যোগ করুন','Add communication note'),`<div class="fgrid">${sel('ch',L('মাধ্যম','Channel'),opts(CHANNELS),'phone')}${fld('at',L('তারিখ ও সময়','Date & time'),localDT(),'datetime-local','required')}${ta('summary',L('আলোচনার সারাংশ *','Discussion summary *'),'','required')}${fld('outcome',L('ফলাফল','Outcome'))}${fld('next',L('পরবর্তী পদক্ষেপ','Next action'))}${fld('nextDue',L('পরবর্তী পদক্ষেপের তারিখ (ঐচ্ছিক)','Next action due (optional)'),'','date')}</div><p class="small muted" style="margin:10px 0 0">${L('তারিখ দিলে আপনার নামে একটি ফলো-আপ কাজ তৈরি হবে।','Setting a due date also creates a follow-up task assigned to you.')}</p>`,
+ d=>{if(!d.summary)return false;const c=getCase(cid);c.comms.push({id:nid('note','N-',4),ch:d.ch,by:meId,at:d.at?new Date(d.at).toISOString():nowISO(),summary:d.summary,outcome:d.outcome,next:d.next});
+ if(d.nextDue)DB.tasks.push({id:nid('task','T-',4),caseId:cid,title:d.next||L('ফলো-আপ','Follow-up'),due:d.nextDue,assignee:meId,done:false,doneAt:'',doneBy:'',createdBy:meId,createdAt:nowISO()});
+ commit(['যোগাযোগ নোট যোগ','Communication note added'],`${cid} — ${CHANNELS[d.ch][1]}`)})}
+
+function tabHospital(c){const h=c.hospital,p=PROPOSAL[h.proposal||'na'];const hd=c.docs.filter(d=>d.cat==='quotation'||d.cat==='plan');
+ return `<div class="card"><h3>${L('হাসপাতাল ও অ্যাপয়েন্টমেন্ট','Hospital & appointment')}${can('hospital')?`<button class="btn sm" onclick="editHospital('${c.id}')">${L('সম্পাদনা','Edit')}</button>`:''}</h3>
+ <div class="kv">${kv(L('হাসপাতাল','Hospital'),esc(h.name))}${kv(L('বিভাগ','Department'),esc(h.dept))}${kv(L('ডাক্তার','Doctor'),esc(h.doctor))}${kv(L('অ্যাপয়েন্টমেন্ট','Appointment'),h.apptDate?fmtD(h.apptDate)+(h.apptTime?' · '+esc(h.apptTime):''):'')}${kv(L('রিপোর্ট পাঠানো হয়েছে','Reports submitted'),h.reportsSubmitted?fmtD(h.reportsSubmitted):'')}${kv(L('হাসপাতালের উত্তর পাওয়া গেছে','Hospital response received'),h.responseReceived?fmtD(h.responseReceived):'')}${kv(L('প্রস্তাবের অবস্থা','Proposal status'),`<span class="badge ${p[2]}">${L(p[0],p[1])}</span>`)}${kv(L('নোট','Notes'),esc(h.notes),true)}</div>
+ ${h.reportsSubmitted&&!h.responseReceived?`<div class="warn">${L('হাসপাতালের উত্তরের অপেক্ষায় — রিপোর্ট পাঠানোর পর ','Awaiting hospital response — ')}${num(Math.round((new Date(TODAY)-new Date(h.reportsSubmitted))/864e5))} ${L('দিন পেরিয়েছে।','days since reports were submitted.')}</div>`:''}</div>
+ <div class="card"><h3>${L('হাসপাতাল কোটেশন ও চিকিৎসা পরিকল্পনা','Hospital quotations & treatment plans')}${can('docsUpload')?`<button class="btn sm primary" onclick="uploadDoc('${c.id}','quotation')">+ ${L('সংযুক্ত করুন','Attach')}</button>`:''}</h3>${hd.map(d=>docRow(c,d)).join('')||empty(L('কোনো কোটেশন বা পরিকল্পনা সংযুক্ত নেই','No quotations or plans attached'))}</div>`}
+function editHospital(cid){if(!guard('hospital'))return;const h=getCase(cid).hospital;
+ openModal(L('হাসপাতাল ও অ্যাপয়েন্টমেন্ট','Hospital & appointment'),`<div class="fgrid">${fld('name',L('হাসপাতাল','Hospital'),h.name)}${fld('dept',L('বিভাগ','Department'),h.dept)}${fld('doctor',L('ডাক্তার','Doctor'),h.doctor)}${fld('apptDate',L('অ্যাপয়েন্টমেন্ট তারিখ','Appointment date'),h.apptDate,'date')}${fld('apptTime',L('সময়','Time'),h.apptTime,'time')}${fld('reportsSubmitted',L('রিপোর্ট পাঠানোর তারিখ','Reports submitted on'),h.reportsSubmitted,'date')}${fld('responseReceived',L('উত্তর পাওয়ার তারিখ','Response received on'),h.responseReceived,'date')}${sel('proposal',L('রোগী কি প্রস্তাব গ্রহণ করেছেন?','Has the patient accepted the proposal?'),opts(PROPOSAL),h.proposal||'na')}${ta('notes',L('নোট','Notes'),h.notes)}</div>`,
+ d=>{const c=getCase(cid);const prev=c.hospital.proposal;Object.assign(c.hospital,d);commit(prev!==d.proposal?['প্রস্তাবের অবস্থা হালনাগাদ','Proposal status updated']:['হাসপাতাল তথ্য হালনাগাদ','Hospital details updated'],`${cid}${prev!==d.proposal?': '+PROPOSAL[d.proposal][1]:''}`)})}
+
+function tabThai(c){const t=c.travel;const meOff=ME().office;
+ return `<div class="card"><h3>${L('থাইল্যান্ড ব্যবস্থাপনা','Thailand arrangements')}${can('thai')?`<button class="btn sm" onclick="editThai('${c.id}')">${L('সম্পাদনা','Edit')}</button>`:''}</h3>
+ <div class="kv">${kv(L('থাইল্যান্ড কোঅর্ডিনেটর','Thailand coordinator'),c.thCoordinator?esc(sName(c.thCoordinator)):`<span class="muted">${L('নির্ধারিত হয়নি','Not assigned')}</span>`)}${kv(L('আগমন','Arrival'),t.arrDate?fmtD(t.arrDate)+(t.arrFlight?' · '+esc(t.arrFlight):''):'')}${kv(L('প্রস্থান','Departure'),t.depDate?fmtD(t.depDate)+(t.depFlight?' · '+esc(t.depFlight):''):'')}${kv(L('আবাসন','Accommodation'),esc(t.hotel))}${kv(L('এয়ারপোর্ট ট্রান্সফার','Airport transfer'),t.airport?tr(ARR[t.airport]):'')}${kv(L('হাসপাতাল যাতায়াত','Hospital transport'),t.hospTransport?tr(ARR[t.hospTransport]):'')}${kv(L('দোভাষী','Interpreter'),esc(t.interpreter))}${kv(L('বিশেষ নোট','Special notes'),esc(t.notes),true)}</div>
+ ${t.updatedAt?`<p class="small muted" style="margin:12px 0 0">${L('সর্বশেষ হালনাগাদ','Last updated')}: ${esc(sName(t.updatedBy))}, ${fmtDT(t.updatedAt)}</p>`:''}</div>
+ <div class="card"><h3>${L('হ্যান্ডওভার নোট (দুই অফিসের জন্য)','Handover notes (shared by both offices)')}${can('notes')?`<button class="btn sm primary" onclick="addHandover('${c.id}')">+ ${L('নোট','Note')}</button>`:''}</h3>
+ ${[...c.handover].reverse().map(h=>{const s=DB.staff.find(x=>x.id===h.by);return `<div class="note-item ho"><div class="note-meta"><span class="badge ${s?.office==='TH'?'b-pink':'b-blue'}">${s?tr(OFFICES[s.office]):''}</span><span>${esc(sName(h.by))}</span><span>· ${fmtDT(h.at)}</span>${s&&s.office!==meOff?`<span class="badge b-gold">${L('অন্য অফিস থেকে','From other office')}</span>`:''}</div><p>${esc(h.text)}</p></div>`}).join('')||empty(L('কোনো হ্যান্ডওভার নোট নেই','No handover notes'))}</div>`}
+function editThai(cid){if(!guard('thai'))return;const c=getCase(cid),t=c.travel;const a=[['','—'],...opts(ARR)];
+ openModal(L('থাইল্যান্ড ব্যবস্থাপনা','Thailand arrangements'),`<div class="fgrid">${sel('thCoordinator',L('থাইল্যান্ড কোঅর্ডিনেটর','Thailand coordinator'),staffOpts(s=>workers(s)&&s.office!=='BD',L('— নির্বাচন করুন —','— Select —')),c.thCoordinator)}<div></div>${fld('arrDate',L('আগমনের তারিখ','Arrival date'),t.arrDate,'date')}${fld('arrFlight',L('আগমন ফ্লাইট','Arrival flight'),t.arrFlight)}${fld('depDate',L('প্রস্থানের তারিখ','Departure date'),t.depDate,'date')}${fld('depFlight',L('প্রস্থান ফ্লাইট','Departure flight'),t.depFlight)}<label class="field full"><span>${L('আবাসন','Accommodation')}</span><input name="hotel" value="${esc(t.hotel)}"></label>${sel('airport',L('এয়ারপোর্ট ট্রান্সফার','Airport transfer'),a,t.airport)}${sel('hospTransport',L('হাসপাতাল যাতায়াত','Hospital transport'),a,t.hospTransport)}${fld('interpreter',L('দোভাষী (ভাষা / প্রয়োজন নেই)','Interpreter (language / none)'),t.interpreter)}<div></div>${ta('notes',L('বিশেষ নোট','Special notes'),t.notes)}</div>`,
+ d=>{const prevTh=c.thCoordinator;c.thCoordinator=d.thCoordinator;delete d.thCoordinator;Object.assign(c.travel,d,{updatedBy:meId,updatedAt:nowISO()});commit(prevTh!==c.thCoordinator?['থাইল্যান্ড কোঅর্ডিনেটর নির্ধারণ ও ব্যবস্থা হালনাগাদ','Thailand coordinator assigned; arrangements updated']:['থাইল্যান্ড ব্যবস্থা হালনাগাদ','Thailand arrangements updated'],cid)})}
+function addHandover(cid){if(!guard('notes'))return;openModal(L('হ্যান্ডওভার নোট','Handover note'),`<div class="fgrid">${ta('text',L('নোট *','Note *'),'','required rows="4"')}</div>`,d=>{if(!d.text)return false;getCase(cid).handover.push({by:meId,at:nowISO(),text:d.text});commit(['হ্যান্ডওভার নোট যোগ','Handover note added'],cid)})}
+
+function tabTasks(c){const list=DB.tasks.filter(t=>t.caseId===c.id).sort((a,b)=>(a.done-b.done)||a.due.localeCompare(b.due));
+ return `<div class="card"><h3>${L('ফলো-আপ কাজ','Follow-up tasks')}${can('tasks')?`<button class="btn sm primary" onclick="addTask('${c.id}')">+ ${L('কাজ','Task')}</button>`:''}</h3>${list.map(t=>taskRow(t,false)).join('')||empty(L('কোনো কাজ নেই','No tasks'))}</div>`}
+
+/* ---------- calendar ---------- */
+function calItems(date){const my=ui.myOnly,items=[];
+ DB.tasks.forEach(t=>{if(t.due===date&&(!my||t.assignee===meId)){const c=getCase(t.caseId);items.push({k:t.done?'done':(t.due<TODAY?'late':'task'),label:t.title,task:t})}});
+ DB.cases.forEach(c=>{if(my&&c.coordinator!==meId&&c.thCoordinator!==meId)return;
+  if(c.hospital.apptDate===date)items.push({k:'appt',label:L('অ্যাপয়েন্টমেন্ট: ','Appointment: ')+c.name,sub:[c.hospital.apptTime,c.hospital.name,c.hospital.doctor].filter(Boolean).join(' · '),cid:c.id});
+  if(c.travel.arrDate===date)items.push({k:'trav',label:L('আগমন: ','Arrival: ')+c.name,sub:c.travel.arrFlight,cid:c.id});
+  if(c.travel.depDate===date)items.push({k:'trav',label:L('প্রস্থান: ','Departure: ')+c.name,sub:c.travel.depFlight,cid:c.id})});
+ return items}
+const itemRow=it=>it.task?taskRow(it.task):`<div class="row"><div class="grow"><a href="#" onclick="event.preventDefault();openCase('${it.cid}')">${esc(it.label)}</a><div class="small muted">${esc(it.sub||'')}</div></div><span class="badge ${it.k==='appt'?'b-blue':'b-gold'}">${it.k==='appt'?L('অ্যাপয়েন্টমেন্ট','Appointment'):L('ভ্রমণ','Travel')}</span></div>`;
+function calNav(n){let{y,m}=ui.cal;m+=n;if(m<0){m=11;y--}if(m>11){m=0;y++}ui.cal={y,m};ui.calDay=null;render()}
+function calendarHTML(){
+ const head=`<div class="head-row"><div><h1 class="page">${L('ফলো-আপ ক্যালেন্ডার','Follow-up calendar')}</h1><p class="sub-h">${L('কাজ, অ্যাপয়েন্টমেন্ট ও ভ্রমণের তারিখ','Tasks, appointments and travel dates')}</p></div>${can('tasks')?`<button class="btn primary" onclick="addTask()">+ ${L('কাজ যোগ করুন','Add task')}</button>`:''}</div>
+ <div class="cal-head"><div class="btns"><button class="btn sm ${ui.calMode==='month'?'blue':''}" onclick="ui.calMode='month';render()">${L('মাসিক','Month')}</button><button class="btn sm ${ui.calMode==='list'?'blue':''}" onclick="ui.calMode='list';render()">${L('কাজের তালিকা','Task list')}</button></div>
+ <label class="small" style="display:flex;align-items:center;gap:6px;margin-left:auto"><input type="checkbox" ${ui.myOnly?'checked':''} onchange="ui.myOnly=this.checked;render()"> ${L('শুধু আমার','Mine only')}</label></div>`;
+ if(ui.calMode==='list')return head+calList();
+ const{y,m}=ui.cal;const first=new Date(y,m,1),start=(first.getDay()+6)%7,days=new Date(y,m+1,0).getDate();
+ const dows=lang==='bn'?['সোম','মঙ্গল','বুধ','বৃহঃ','শুক্র','শনি','রবি']:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+ let cells='';for(let i=0;i<start;i++)cells+='<div class="day blank"></div>';
+ for(let dd=1;dd<=days;dd++){const date=`${y}-${pad(m+1)}-${pad(dd)}`;const its=calItems(date);
+  cells+=`<button class="day ${date===TODAY?'today':''} ${ui.calDay===date?'sel':''}" onclick="ui.calDay='${date}';render()"><span class="dn">${num(dd)}</span>${its.slice(0,3).map(i=>`<span class="ev ${i.k}">${esc(i.label)}</span>`).join('')}${its.length>3?`<span class="small muted">+${num(its.length-3)}</span>`:''}<span class="dots">${its.map(i=>`<i class="dot ${i.k}"></i>`).join('')}</span></button>`}
+ const selD=ui.calDay;
+ return head+`<div class="card"><div class="cal-head" style="justify-content:center"><button class="btn sm" onclick="calNav(-1)">‹</button><h3>${first.toLocaleDateString(loc(),{month:'long',year:'numeric'})}</h3><button class="btn sm" onclick="calNav(1)">›</button><button class="btn sm" onclick="ui.cal={y:new Date().getFullYear(),m:new Date().getMonth()};ui.calDay='${TODAY}';render()">${L('আজ','Today')}</button></div>
+ <div class="cal">${dows.map(d=>`<div class="dow">${d}</div>`).join('')}${cells}</div>
+ <div class="legend"><span><i style="background:var(--pink)"></i>${L('কাজ','Task')}</span><span><i style="background:var(--red)"></i>${L('বিলম্বিত','Overdue')}</span><span><i style="background:var(--blue)"></i>${L('অ্যাপয়েন্টমেন্ট','Appointment')}</span><span><i style="background:var(--gold)"></i>${L('আগমন/প্রস্থান','Arrival/departure')}</span></div></div>
+ ${selD?`<div class="card"><h3>${fmtD(selD)}</h3>${calItems(selD).map(itemRow).join('')||empty(L('এই দিনে কিছু নেই','Nothing on this day'))}</div>`:''}`}
+function calList(){const my=ui.myOnly;const open=DB.tasks.filter(t=>!t.done&&(!my||t.assignee===meId));
+ const overdue=open.filter(t=>t.due<TODAY).sort((a,b)=>a.due.localeCompare(b.due));
+ let upcoming='';for(let i=1;i<=14;i++){const d=addDays(i);const its=calItems(d).filter(x=>x.k!=='done');if(its.length)upcoming+=`<div class="date-h">${fmtD(d)}</div>${its.map(itemRow).join('')}`}
+ const done=DB.tasks.filter(t=>t.done&&(!my||t.assignee===meId)).sort((a,b)=>(b.doneAt||'').localeCompare(a.doneAt||'')).slice(0,8);
+ return `<div class="grid2"><div class="card"><h3>${L('বিলম্বিত','Overdue')} <span class="badge b-red">${num(overdue.length)}</span></h3>${overdue.map(t=>taskRow(t)).join('')||empty(L('কোনো বিলম্বিত কাজ নেই','No overdue tasks'))}</div>
+ <div class="card"><h3>${L('আজ','Today')}</h3>${calItems(TODAY).filter(x=>x.k!=='done').map(itemRow).join('')||empty(L('আজ কিছু নেই','Nothing today'))}</div></div>
+ <div class="card"><h3>${L('আগামী ১৪ দিন','Next 14 days')}</h3>${upcoming||empty(L('কিছু নির্ধারিত নেই','Nothing scheduled'))}</div>
+ <div class="card"><h3>${L('সম্প্রতি সম্পন্ন','Recently completed')}</h3>${done.map(t=>taskRow(t)).join('')||empty('—')}</div>`}
+
+/* ACCOUNTING MODULE */
+/* =================== 9. ACCOUNTING & PATIENT BILLING ===================
+   Money is stored as integer minor units (paisa/satang/cents). Every entry
+   keeps its ORIGINAL amount + currency and the MANUALLY entered exchange rate
+   (rate = invoice-currency units per 1 entry-currency unit, stored ×1,000,000).
+   Conversion uses BigInt with half-up rounding. Unlike currencies are never
+   added: all case totals are in that case's single invoice currency.        */
+const CUR=['BDT','THB','USD'];
+const RATE1=1000000;
+function parseMoney(s){s=String(s??'').replace(/[,\s]/g,'');if(s==='')return null;if(!/^\d+(\.\d{0,2})?$/.test(s))return NaN;const[a,b='']=s.split('.');const v=Number(a)*100+Number((b+'00').slice(0,2));return v>9e14?NaN:v}
+function parseRate(s){s=String(s??'').replace(/[,\s]/g,'');if(!/^\d+(\.\d{0,6})?$/.test(s))return NaN;const[a,b='']=s.split('.');const v=Number(a)*RATE1+Number((b+'000000').slice(0,6));return v>0?v:NaN}
+const parseInt0=s=>/^\d+$/.test(String(s??'').trim())&&+s>0&&+s<100000?+s:NaN;
+function conv(minor,rate){if(!minor)return 0;if(rate===RATE1)return minor;const p=BigInt(minor)*BigInt(rate),neg=p<0n,a=neg?-p:p,q=(a+BigInt(RATE1/2))/BigInt(RATE1);return Number(neg?-q:q)}
+function money(minor,cur){const neg=minor<0,a=Math.abs(minor),i=Math.floor(a/100),f=String(a%100).padStart(2,'0');return `${neg?'−':''}${cur?cur+' ':''}${i.toLocaleString('en-US')}.${f}`}
+const minorStr=m=>m==null?'':`${Math.floor(Math.abs(m)/100)}.${String(Math.abs(m)%100).padStart(2,'0')}`;
+function rateStr(r){const i=Math.floor(r/RATE1),f=String(r%RATE1).padStart(6,'0').replace(/0+$/,'');return f?`${i}.${f}`:String(i)}
+
+const KINDS={
+ visa:{l:['ভিসা ফি','Visa fees'],f:[['category','text',['ভিসার ধরন','Visa category'],1],['qty','int',['যাত্রীর সংখ্যা','Number of travellers'],1],['unit','money',['প্রতি জনের ফি','Unit fee'],1],['svc','money',['আলাদা সার্ভিস চার্জ (ঐচ্ছিক)','Separate service charge (optional)'],0]]},
+ air:{l:['এয়ার টিকেট ফি','Air ticket fees'],f:[['passenger','text',['যাত্রীর নাম','Passenger'],1],['airline','text',['এয়ারলাইন','Airline'],1],['route','text',['রুট (যেমন DAC–BKK–DAC)','Route (e.g. DAC–BKK–DAC)'],1],['dep','date',['যাত্রার তারিখ','Departure date'],1],['ret','date',['ফেরার তারিখ (ঐচ্ছিক)','Return date (optional)'],0],['ticketRef','text',['টিকেট রেফারেন্স','Ticket reference'],0],['charge','money',['টিকেট চার্জ','Ticket charge'],1],['svc','money',['আলাদা সার্ভিস ফি (ঐচ্ছিক)','Separate service fee (optional)'],0]]},
+ hotel:{l:['হোটেল চার্জ','Hotel charges'],f:[['hotel','text',['হোটেল','Hotel'],1],['cin','date',['চেক-ইন','Check-in'],1],['cout','date',['চেক-আউট','Check-out'],1],['rooms','int',['রুম সংখ্যা','Rooms'],1],['roomRate','money',['প্রতি রাতের রুম রেট','Nightly room rate'],1]]},
+ land:{l:['ল্যান্ড প্যাকেজ চার্জ','Land package charges'],f:[['service','select',['সেবা','Service'],1],['desc','text',['বিবরণ','Description'],0],['qty','int',['পরিমাণ','Quantity'],1],['unit','money',['ইউনিট রেট','Unit rate'],1],['pkgHotel','check',['এটি হোটেলসহ সম্মিলিত প্যাকেজ (আলাদা হোটেল চার্জ দেবেন না)','This is a combined package that INCLUDES hotel (do not add separate hotel charges)'],0]]},
+ service:{l:['আলাদা সার্ভিস চার্জ','Separately agreed service charges'],f:[['desc','text',['বিবরণ','Description'],1],['amount','money',['পরিমাণ','Amount'],1]]},
+ discount:{l:['ডিসকাউন্ট','Discounts'],f:[['desc','text',['বিবরণ','Description'],1],['amount','money',['পরিমাণ','Amount'],1]]}};
+const LAND_SVC={airport:['এয়ারপোর্ট ট্রান্সফার','Airport transfer'],hospital:['হাসপাতাল ট্রান্সফার','Hospital transfer'],interpreter:['দোভাষী সেবা','Interpreter service'],other:['অন্যান্য সেবা','Other service']};
+const PAY_METHODS={cash:['নগদ','Cash'],bank:['ব্যাংক ট্রান্সফার','Bank transfer'],mfs:['মোবাইল ব্যাংকিং (bKash/Nagad)','Mobile banking (bKash/Nagad)'],card:['কার্ড','Card'],cheque:['চেক','Cheque'],other:['অন্যান্য','Other']};
+const SUP_CATS={hotel:['হোটেল','Hotel'],airline:['এয়ারলাইন/টিকেটিং','Airline/ticketing'],visa:['ভিসা','Visa'],transport:['যাতায়াত','Transport'],interpreter:['দোভাষী','Interpreter'],other:['অন্যান্য','Other']};
+const PAYF=[['kind','select',['ধরন','Type'],1],['date','date',['তারিখ','Date'],1],['amount','money',['পরিমাণ','Amount'],1],['method','select',['পদ্ধতি','Payment method'],1],['ref','text',['রসিদ/ব্যাংক রেফারেন্স','Receipt / bank reference'],0]];
+const SCF=[['supplier','supplier',['সাপ্লায়ার','Supplier'],1],['cat','select',['ধরন','Category'],1],['desc','text',['বিবরণ','Description'],0],['date','date',['তারিখ','Date'],1],['amount','money',['খরচ','Cost'],1]];
+const SPF=[['supplier','supplier',['সাপ্লায়ার','Supplier'],1],['date','date',['তারিখ','Date'],1],['amount','money',['পরিশোধ','Amount paid'],1],['method','select',['পদ্ধতি','Method'],1],['ref','text',['রেফারেন্স','Reference'],0]];
+const SPECS={...Object.fromEntries(Object.entries(KINDS).map(([k,v])=>[k,v.f])),pay:PAYF,supCost:SCF,supPay:SPF};
+const LIST_OF=k=>KINDS[k]?'charges':k==='pay'?'payments':k==='supCost'?'supCosts':'supPays';
+const SELECT_OPTS={service:LAND_SVC,method:PAY_METHODS,cat:SUP_CATS,kind:{payment:['পেমেন্ট গ্রহণ','Payment received'],refund:['ফেরত (রিফান্ড)','Refund to patient']}};
+
+function getAcct(c){if(!c.acct)c.acct={cur:DB.settings?.defCur||'BDT',charges:[],payments:[],supCosts:[],supPays:[],invoices:[],quotes:[]};return c.acct}
+const hasEntries=a=>a.charges.length+a.payments.length+a.supCosts.length+a.supPays.length>0;
+const cv=(e,a,x)=>e.cur===a.cur?x:conv(x,e.rate);
+
+/* compute amounts from form values (also used by live preview) */
+function calc(kind,d){
+ const M=k=>{const v=parseMoney(d[k]);return v===null?0:v},need=(k,lab)=>{const v=parseMoney(d[k]);if(v===null||Number.isNaN(v))throw lab;return v},I=(k,lab)=>{const v=parseInt0(d[k]);if(Number.isNaN(v))throw lab;return v};
+ const svcChk=()=>{const v=parseMoney(d.svc);if(Number.isNaN(v))throw L('সার্ভিস চার্জ সঠিক নয়','Service charge is not a valid amount');return v||0};
+ switch(kind){
+ case 'visa':{const q=I('qty',L('যাত্রীর সংখ্যা সঠিক নয়','Travellers must be a whole number')),u=need('unit',L('ইউনিট ফি দিন','Enter the unit fee'));return{amt:q*u,svc:svcChk(),calc:`${q} × ${minorStr(u)}`}}
+ case 'air':return{amt:need('charge',L('টিকেট চার্জ দিন','Enter the ticket charge')),svc:svcChk()};
+ case 'hotel':{const r=I('rooms',L('রুম সংখ্যা সঠিক নয়','Rooms must be a whole number'));if(!d.cin||!d.cout)throw L('চেক-ইন ও চেক-আউট দিন','Enter check-in and check-out');const n=Math.round((new Date(d.cout+'T00:00')-new Date(d.cin+'T00:00'))/864e5);if(!(n>=1))throw L('চেক-আউট অবশ্যই চেক-ইনের পরে','Check-out must be after check-in');const rr=need('roomRate',L('রুম রেট দিন','Enter the room rate'));return{amt:r*n*rr,svc:0,nights:n,calc:`${r} ${L('রুম','room(s)')} × ${n} ${L('রাত','night(s)')} × ${minorStr(rr)}`}}
+ case 'land':{const q=I('qty',L('পরিমাণ সঠিক নয়','Quantity must be a whole number')),u=need('unit',L('ইউনিট রেট দিন','Enter the unit rate'));return{amt:q*u,svc:0,calc:`${q} × ${minorStr(u)}`}}
+ default:return{amt:need('amount',L('পরিমাণ দিন','Enter the amount')),svc:0}}}
+function rateOf(d,a){if(d.cur===a.cur)return RATE1;const r=parseRate(d.rate);if(Number.isNaN(r))throw L(`বিনিময় হার দিন: 1 ${d.cur} = ? ${a.cur}`,`Enter the exchange rate: 1 ${d.cur} = ? ${a.cur}`);return r}
+
+/* ---------- forms ---------- */
+function acctField([k,type,lab,req],v,c){const label=tr(lab)+(req?' *':'');v=v??'';
+ if(type==='select'){const o=SELECT_OPTS[k];return sel(k,label,Object.entries(o).map(([a,b])=>[a,tr(b)]),v||Object.keys(o)[0])}
+ if(type==='check')return `<label class="pchk full"><input type="checkbox" class="chk" name="${k}" ${v?'checked':''}> <span>${esc(label)}</span></label>`;
+ if(type==='supplier'){const sups=[...new Set(DB.cases.flatMap(x=>(x.acct?.supCosts||[]).map(s=>s.f.supplier)))];return `<label class="field"><span>${esc(label)}</span><input name="${k}" list="supList" value="${esc(v)}" ${req?'required':''}><datalist id="supList">${sups.map(s=>`<option value="${esc(s)}">`).join('')}</datalist></label>`}
+ if(type==='money')return fld(k,label,v,'text',`inputmode="decimal" placeholder="0.00" autocomplete="off" ${req?'required':''}`);
+ if(type==='int')return fld(k,label,v,'number',`min="1" step="1" ${req?'required':''}`);
+ return fld(k,label,v,type,req?'required':'')}
+function acctForm(kind,c,e){const a=getAcct(c),f=e?e.f:{};
+ const defaults={passenger:c.name,date:TODAY,qty:'1',rooms:'1'};
+ return `<input type="hidden" name="_kind" value="${kind}"><div class="linked">${L('রোগী','Patient')}: <b>${esc(c.name)}</b> · ${L('রোগী আইডি','Patient ID')}: <b>${c.id}</b> · ${L('ইনভয়েস মুদ্রা','Invoice currency')}: <b>${a.cur}</b></div>
+ <div class="fgrid">${SPECS[kind].map(s=>acctField(s,e?f[s[0]]:defaults[s[0]],c)).join('')}
+ <div class="subhead">${L('মুদ্রা ও বিনিময় হার','Currency & exchange rate')}</div>
+ ${sel('cur',L('এন্ট্রির মুদ্রা','Entry currency'),CUR.map(x=>[x,x]),e?e.cur:a.cur)}
+ <label class="field"><span id="rateLab"></span><input name="rate" inputmode="decimal" autocomplete="off" value="${e&&e.cur!==a.cur?rateStr(e.rate):''}" placeholder="0.000000"></label>
+ <div class="full apv" id="apv"></div></div>`}
+function acctPreview(){const f=document.getElementById('mform');if(!f)return;const d=Object.fromEntries(new FormData(f));const c=getCase(f.dataset.cid);if(!c)return;const a=getAcct(c);
+ const same=d.cur===a.cur,ri=f.querySelector('[name=rate]'),lab=document.getElementById('rateLab');ri.disabled=same;ri.required=!same;lab.textContent=same?L('বিনিময় হার — একই মুদ্রা, প্রয়োজন নেই','Exchange rate — same currency, not needed'):L(`বিনিময় হার: 1 ${d.cur} = ? ${a.cur} *`,`Exchange rate: 1 ${d.cur} = ? ${a.cur} *`);
+ const out=document.getElementById('apv');try{const r=calc(d._kind,d),rate=same?RATE1:rateOf(d,a);const tot=r.amt+r.svc;
+  out.innerHTML=`${r.calc?esc(r.calc)+' = ':''}<b>${money(r.amt,d.cur)}</b>${r.svc?` + ${L('সার্ভিস','service')} ${money(r.svc,d.cur)}`:''}${same?'':` → <b>${money(conv(r.amt,rate)+conv(r.svc,rate),a.cur)}</b> <span class="muted">@ ${rateStr(rate)}</span>`}`;out.className='full apv ok'}catch(err){out.textContent=typeof err==='string'?err:'';out.className='full apv'}}
+function openAcctModal(title,kind,c,e,onSave){openModal(title,acctForm(kind,c,e),onSave,L('সংরক্ষণ','Save'));const f=document.getElementById('mform');f.dataset.cid=c.id;f.addEventListener('input',acctPreview);f.addEventListener('change',acctPreview);acctPreview()}
+
+const ENTRY_PREFIX={charges:'CH-',payments:'RCT-',supCosts:'SC-',supPays:'SP-'};
+function addEntry(cid,kind){if(!guard('acctEdit'))return;const c=getCase(cid),a=getAcct(c);
+ const title=KINDS[kind]?tr(KINDS[kind].l):{pay:L('পেমেন্ট / রিফান্ড রেকর্ড','Record payment / refund'),supCost:L('সাপ্লায়ার খরচ','Supplier cost'),supPay:L('সাপ্লায়ার পেমেন্ট','Supplier payment')}[kind];
+ openAcctModal(title,kind,c,null,d=>{let r,rate;try{r=calc(kind,d);rate=rateOf(d,a)}catch(err){toast(err);return false}
+  const list=LIST_OF(kind),yr=new Date().getFullYear();const f=pickFields(kind,d);
+  const e={id:nid(list,ENTRY_PREFIX[list]+(list==='payments'?yr+'-':''),list==='payments'?4:5),kind:KINDS[kind]?kind:(kind==='pay'?f.kind:kind),f,cur:d.cur,rate,amt:r.amt,svc:r.svc,nights:r.nights||0,by:meId,at:nowISO(),issued:'',reversalOf:'',reversedBy:''};
+  a[list].push(e);commit(['আর্থিক এন্ট্রি যোগ','Financial entry added'],`${cid} — ${e.id} ${e.kind} ${money(e.amt+e.svc,e.cur)}${e.cur!==a.cur?' @'+rateStr(rate):''}`);toast(L('সংরক্ষিত: ','Saved: ')+e.id)})}
+function pickFields(kind,d){const o={};SPECS[kind].forEach(([k,t])=>o[k]=t==='check'?!!d[k]:(d[k]??''));return o}
+function findEntry(a,id){for(const l of ['charges','payments','supCosts','supPays']){const e=a[l].find(x=>x.id===id);if(e)return[l,e]}return[]}
+const formKind=(l,e)=>l==='charges'?e.kind:l==='payments'?'pay':l==='supCosts'?'supCost':'supPay';
+function editEntry(cid,id){if(!guard('acctEdit'))return;const c=getCase(cid),a=getAcct(c),[l,e]=findEntry(a,id);
+ if(!e||e.issued||e.reversalOf||e.reversedBy||l==='payments'||l==='supPays'){toast(L('এই এন্ট্রি লক করা — সংশোধনের জন্য রিভার্সাল ব্যবহার করুন','This entry is locked — use a reversal to correct it'));return}
+ const kind=formKind(l,e);
+ openAcctModal(L('সম্পাদনা: ','Edit: ')+id,kind,c,e,d=>{let r,rate;try{r=calc(kind,d);rate=rateOf(d,a)}catch(err){toast(err);return false}
+  const nf=pickFields(kind,d),diffs=[];Object.keys(nf).forEach(k=>{if(String(nf[k])!==String(e.f[k]??''))diffs.push(`${k}: "${e.f[k]??''}" → "${nf[k]}"`)});
+  if(d.cur!==e.cur)diffs.push(`currency: ${e.cur} → ${d.cur}`);if(rate!==e.rate)diffs.push(`rate: ${rateStr(e.rate)} → ${rateStr(rate)}`);
+  if(r.amt+r.svc!==e.amt+e.svc)diffs.push(`amount: ${money(e.amt+e.svc,e.cur)} → ${money(r.amt+r.svc,d.cur)}`);
+  if(!diffs.length){toast(L('কোনো পরিবর্তন নেই','No changes'));return}
+  Object.assign(e,{f:nf,cur:d.cur,rate,amt:r.amt,svc:r.svc,nights:r.nights||0,editedBy:meId,editedAt:nowISO()});
+  commit(['আর্থিক এন্ট্রি সম্পাদনা','Financial entry edited'],`${cid} — ${id}: ${diffs.join('; ')}`)})}
+function deleteDraft(cid,id){if(!guard('acctEdit'))return;const c=getCase(cid),a=getAcct(c),[l,e]=findEntry(a,id);if(l!=='charges'||e.issued||e.reversalOf||e.reversedBy)return;
+ if(!confirm(L(`খসড়া চার্জ ${id} মুছে ফেলবেন? (এখনও ইনভয়েস হয়নি — অডিটে রেকর্ড থাকবে)`,`Delete draft charge ${id}? (Not yet invoiced — this is recorded in the audit history)`)))return;
+ a.charges=a.charges.filter(x=>x.id!==id);commit(['খসড়া চার্জ মুছে ফেলা','Draft charge deleted'],`${cid} — ${id} ${e.kind} ${money(e.amt+e.svc,e.cur)} ${JSON.stringify(e.f)}`)}
+function reverseEntry(cid,id){if(!guard('acctEdit'))return;const c=getCase(cid),a=getAcct(c),[l,e]=findEntry(a,id);if(!e||e.reversalOf||e.reversedBy)return;
+ openModal(L('রিভার্সাল: ','Reverse: ')+id,`<div class="linked">${L('রোগী','Patient')}: <b>${esc(c.name)}</b> · ${c.id}</div><p>${L('এটি একটি সমান ও বিপরীত এন্ট্রি তৈরি করবে। মূল এন্ট্রি মুছে যাবে না। প্রয়োজনে পরে সঠিক নতুন এন্ট্রি যোগ করুন।','This creates an equal and opposite entry. The original is kept, not deleted. Add a corrected entry afterwards if needed.')}</p><p><b>${esc(id)}</b> — ${money(e.amt+e.svc,e.cur)}</p><div class="fgrid">${ta('reason',L('কারণ *','Reason *'),'','required')}</div>`,
+ d=>{if(!d.reason)return false;const list=l,yr=new Date().getFullYear();const r={...JSON.parse(JSON.stringify(e)),id:nid(list,ENTRY_PREFIX[list]+(list==='payments'?yr+'-':''),list==='payments'?4:5),amt:-e.amt,svc:-e.svc,by:meId,at:nowISO(),issued:'',reversalOf:e.id,reversedBy:'',reason:d.reason};
+  if(r.f.date!==undefined)r.f.date=TODAY;e.reversedBy=r.id;a[list].push(r);commit(['আর্থিক এন্ট্রি রিভার্স','Financial entry reversed'],`${cid} — ${e.id} reversed by ${r.id}: ${d.reason}`)},L('রিভার্স করুন','Reverse'))}
+function setInvCur(cid,cur){if(!guard('acctEdit'))return;const c=getCase(cid),a=getAcct(c);if(hasEntries(a)){toast(L('এন্ট্রি থাকার পর ইনভয়েস মুদ্রা বদলানো যায় না','Invoice currency cannot change once entries exist'));render();return}const o=a.cur;a.cur=cur;commit(['ইনভয়েস মুদ্রা নির্ধারণ','Invoice currency set'],`${cid}: ${o} → ${cur}`)}
+
+/* ---------- totals ---------- */
+function totals(c){const a=getAcct(c),t={cur:a.cur,visa:0,air:0,hotel:0,land:0,service:0,discount:0,paid:0,sc:0,sp:0};
+ a.charges.forEach(e=>{const x=cv(e,a,e.amt),s=cv(e,a,e.svc);t[e.kind]+=x;t.service+=s});
+ a.payments.forEach(e=>{t.paid+=(e.kind==='refund'?-1:1)*cv(e,a,e.amt)});
+ a.supCosts.forEach(e=>t.sc+=cv(e,a,e.amt));a.supPays.forEach(e=>t.sp+=cv(e,a,e.amt));
+ t.total=t.visa+t.air+t.hotel+t.land+t.service-t.discount;t.bal=t.total-t.paid;t.so=t.sc-t.sp;t.profit=t.total-t.sc;return t}
+function doubleBill(a){const live=e=>!e.reversedBy&&!e.reversalOf;return a.charges.some(e=>e.kind==='land'&&e.f.pkgHotel&&live(e))&&a.charges.some(e=>e.kind==='hotel'&&live(e))}
+function supplierRows(c){const a=getAcct(c),m={};a.supCosts.forEach(e=>{const k=e.f.supplier;(m[k]=m[k]||{cost:0,paid:0}).cost+=cv(e,a,e.amt)});a.supPays.forEach(e=>{const k=e.f.supplier;(m[k]=m[k]||{cost:0,paid:0}).paid+=cv(e,a,e.amt)});return m}
+
+/* ---------- line descriptions ---------- */
+function lines(e,a){const f=e.f,rev=e.reversalOf?L(`রিভার্সাল (${e.reversalOf}): `,`Reversal of ${e.reversalOf}: `):'';const sign=e.kind==='discount'?-1:1;const out=[];
+ const orig=x=>e.cur===a.cur?'':`${money(x,e.cur)} @ ${rateStr(e.rate)}`;
+ const push=(desc,qty,x)=>out.push({desc:rev+desc,qty,orig:orig(x),amt:sign*cv(e,a,x)});
+ const D=s=>s?fmtD(s):'';
+ switch(e.kind){
+ case 'visa':push(`${L('ভিসা ফি','Visa fee')} — ${f.category}`,`${f.qty} × ${minorStr(parseMoney(f.unit))} ${e.cur}`,e.amt);if(e.svc)push(L('ভিসা সার্ভিস চার্জ','Visa service charge'),'',e.svc);break;
+ case 'air':push(`${L('এয়ার টিকেট','Air ticket')} — ${f.passenger}, ${f.airline}, ${f.route}, ${D(f.dep)}${f.ret?' – '+D(f.ret):''}${f.ticketRef?', '+L('রেফ','ref')+' '+f.ticketRef:''}`,'',e.amt);if(e.svc)push(L('টিকেট সার্ভিস ফি','Ticket service fee'),'',e.svc);break;
+ case 'hotel':push(`${L('হোটেল','Hotel')} — ${f.hotel}, ${D(f.cin)} – ${D(f.cout)}`,`${f.rooms} × ${e.nights} × ${minorStr(parseMoney(f.roomRate))} ${e.cur}`,e.amt);break;
+ case 'land':push(`${L('ল্যান্ড','Land')} — ${tr(LAND_SVC[f.service])}${f.desc?': '+f.desc:''}${f.pkgHotel?' ['+L('হোটেলসহ সম্মিলিত প্যাকেজ','combined package incl. hotel')+']':''}`,`${f.qty} × ${minorStr(parseMoney(f.unit))} ${e.cur}`,e.amt);break;
+ case 'service':push(`${L('সার্ভিস চার্জ','Service charge')} — ${f.desc}`,'',e.amt);break;
+ case 'discount':push(`${L('ডিসকাউন্ট','Discount')} — ${f.desc}`,'',e.amt);break}
+ return out}
+const KIND_ORDER=['visa','air','hotel','land','service','discount'];
+const sortCharges=list=>[...list].sort((x,y)=>KIND_ORDER.indexOf(x.kind)-KIND_ORDER.indexOf(y.kind)||x.at.localeCompare(y.at));
+
+/* ---------- case tab ---------- */
+function statusBadge(e){if(e.reversalOf)return `<span class="badge b-gray">${L('রিভার্সাল','Reversal')} · ${e.reversalOf}</span>`;if(e.reversedBy)return `<span class="badge b-red">${L('রিভার্সড','Reversed')} · ${e.reversedBy}</span>`;if(e.issued)return `<span class="badge b-green">${e.issued}</span>`;return `<span class="badge b-gold">${L('খসড়া','Draft')}</span>`}
+function tabAcct(c){const a=getAcct(c),t=totals(c),E=can('acctEdit'),C=a.cur,live=e=>!e.reversalOf&&!e.reversedBy;
+ const sumRow=(lab,v,cls='')=>`<div class="srow ${cls}"><span>${lab}</span><b>${money(v,C)}</b></div>`;
+ const chargeRows=sortCharges(a.charges).map(e=>{const ls=lines(e,a);return ls.map((x,i)=>`<tr class="${e.reversedBy||e.reversalOf?'dim':''}"><td>${i?'':`<b>${e.id}</b>`}</td><td>${esc(x.desc)}${i?'':`<div class="small muted">${esc(sName(e.by))} · ${fmtDT(e.at)}${e.editedAt?` · ${L('সম্পাদিত','edited')} ${esc(sName(e.editedBy))}`:''}${e.reason?` · ${L('কারণ','reason')}: ${esc(e.reason)}`:''}</div>`}</td><td class="small">${esc(x.qty)}</td><td class="small">${esc(x.orig)}</td><td class="num">${money(x.amt,C)}</td><td>${i?'':statusBadge(e)}</td><td>${i||!E?'':actions(c,e,'charges')}</td></tr>`).join('')}).join('');
+ const payRows=a.payments.map(e=>`<tr class="${e.reversedBy||e.reversalOf?'dim':''}"><td><b>${e.id}</b></td><td>${fmtD(e.f.date)}</td><td>${e.kind==='refund'?`<span class="badge b-red">${L('রিফান্ড','Refund')}</span>`:L('পেমেন্ট','Payment')}${e.reason?`<div class="small muted">${esc(e.reason)}</div>`:''}</td><td>${tr(PAY_METHODS[e.f.method])}${e.f.ref?`<div class="small muted">${esc(e.f.ref)}</div>`:''}</td><td class="small">${e.cur===C?'':money(e.amt,e.cur)+' @ '+rateStr(e.rate)}</td><td class="num">${money((e.kind==='refund'?-1:1)*cv(e,a,e.amt),C)}</td><td class="small">${esc(sName(e.by))}</td><td><div class="btns">${e.reversalOf||e.reversedBy?statusBadge(e):''}<button class="btn sm" onclick="showDoc('receipt','${c.id}','${e.id}')">${L('রসিদ','Receipt')}</button>${E&&live(e)?`<button class="btn sm" onclick="reverseEntry('${c.id}','${e.id}')">${L('রিভার্স','Reverse')}</button>`:''}</div></td></tr>`).join('');
+ const sup=supplierRows(c);
+ const scRows=a.supCosts.map(e=>`<tr class="${e.reversedBy||e.reversalOf?'dim':''}"><td><b>${e.id}</b></td><td>${esc(e.f.supplier)}<div class="small muted">${tr(SUP_CATS[e.f.cat])}${e.f.desc?' · '+esc(e.f.desc):''}${e.reason?' · '+esc(e.reason):''}</div></td><td>${fmtD(e.f.date)}</td><td class="small">${e.cur===C?'':money(e.amt,e.cur)+' @ '+rateStr(e.rate)}</td><td class="num">${money(cv(e,a,e.amt),C)}</td><td>${E?actions(c,e,'supCosts'):''}${e.reversalOf||e.reversedBy?statusBadge(e):''}</td></tr>`).join('');
+ const spRows=a.supPays.map(e=>`<tr class="${e.reversedBy||e.reversalOf?'dim':''}"><td><b>${e.id}</b></td><td>${esc(e.f.supplier)}<div class="small muted">${tr(PAY_METHODS[e.f.method])}${e.f.ref?' · '+esc(e.f.ref):''}${e.reason?' · '+esc(e.reason):''}</div></td><td>${fmtD(e.f.date)}</td><td class="small">${e.cur===C?'':money(e.amt,e.cur)+' @ '+rateStr(e.rate)}</td><td class="num">${money(cv(e,a,e.amt),C)}</td><td>${E&&live(e)?`<button class="btn sm" onclick="reverseEntry('${c.id}','${e.id}')">${L('রিভার্স','Reverse')}</button>`:statusBadge(e)}</td></tr>`).join('');
+ const unInv=a.charges.filter(e=>!e.issued).length;
+ return `<div class="card"><div class="head-row" style="margin:0"><div><h3 style="margin:0 0 4px">${L('রোগীর হিসাব','Patient account')} — ${esc(c.name)} <span class="muted small">(${c.id})</span></h3><div class="small muted">${L('সব কোটেশন, ইনভয়েস, পেমেন্ট ও খরচ এই রোগী আইডির সাথে যুক্ত।','All quotations, invoices, payments and expenses are linked to this Patient ID.')}</div></div>
+ <div class="btns" style="align-items:center"><label class="small muted">${L('ইনভয়েস মুদ্রা','Invoice currency')}</label><select style="width:auto" ${E&&!hasEntries(a)?'':'disabled'} onchange="setInvCur('${c.id}',this.value)">${CUR.map(x=>`<option ${x===C?'selected':''}>${x}</option>`).join('')}</select></div></div>
+ <div class="btns" style="margin-top:12px"><button class="btn sm" onclick="showDoc('quote','${c.id}')">${L('কোটেশন','Quotation')}</button>${E?`<button class="btn sm primary" onclick="issueInvoice('${c.id}')">${L('ইনভয়েস ইস্যু','Issue invoice')}${unInv?` (${num(unInv)})`:''}</button>`:''}<button class="btn sm" onclick="showDoc('statement','${c.id}')">${L('রোগীর স্টেটমেন্ট','Patient statement')}</button></div>
+ ${doubleBill(a)?`<div class="warn">${L('সতর্কতা — সম্ভাব্য দ্বৈত বিলিং: একটি ল্যান্ড প্যাকেজ "হোটেলসহ সম্মিলিত" চিহ্নিত, আবার আলাদা হোটেল চার্জও আছে। একটি রিভার্স করুন।','Warning — possible double billing: a land package is marked as a combined package that includes hotel, and separate hotel charges also exist. Reverse one of them.')}</div>`:''}</div>
+ <div class="grid2"><div class="card"><h3>${L('রোগীর হিসাবের সারাংশ','Patient account summary')} <span class="badge b-blue">${C}</span></h3>
+ ${sumRow(L('ভিসা ফি','Visa fees'),t.visa)}${sumRow('+ '+L('এয়ার টিকেট ফি','Air ticket fees'),t.air)}${sumRow('+ '+L('হোটেল চার্জ','Hotel charges'),t.hotel)}${sumRow('+ '+L('ল্যান্ড প্যাকেজ চার্জ','Land package charges'),t.land)}${sumRow('+ '+L('আলাদা সার্ভিস চার্জ','Separately agreed service charges'),t.service)}${sumRow('− '+L('ডিসকাউন্ট','Discounts'),t.discount)}
+ ${sumRow(L('মোট রোগীর বিল','Total patient bill'),t.total,'tot')}${sumRow('− '+L('নিট পেমেন্ট গ্রহণ','Net payments received'),t.paid)}
+ ${t.bal>=0?sumRow(L('বকেয়া ব্যালেন্স','Outstanding balance'),t.bal,'tot '+(t.bal>0?'due':'')):sumRow(L('রোগীর ক্রেডিট (অতিরিক্ত পেমেন্ট)','Patient credit (overpayment)'),-t.bal,'tot credit')}</div>
+ <div class="card"><h3>${L('সাপ্লায়ার ও লাভ','Suppliers & profit')} <span class="badge b-gray">${L('অভ্যন্তরীণ','Internal')}</span></h3>
+ ${sumRow(L('সাপ্লায়ার খরচ','Supplier costs'),t.sc)}${sumRow('− '+L('সাপ্লায়ারকে পরিশোধ','Paid to suppliers'),t.sp)}${sumRow(L('সাপ্লায়ার বকেয়া','Supplier outstanding'),t.so,'tot')}
+ ${sumRow(L('আনুমানিক লাভ (নিট চার্জ − সাপ্লায়ার খরচ)','Estimated profit (net charges − supplier costs)'),t.profit,'tot '+(t.profit<0?'due':'credit'))}
+ ${Object.keys(sup).length?`<div class="small" style="margin-top:10px">${Object.entries(sup).map(([k,v])=>`<div class="srow"><span>${esc(k)}</span><span>${money(v.cost-v.paid,C)} ${L('বকেয়া','due')}</span></div>`).join('')}</div>`:''}</div></div>
+ <div class="card"><h3>${L('রোগীর চার্জ','Patient charges')}${E?`<div class="btns">${Object.entries(KINDS).map(([k,v])=>`<button class="btn sm" onclick="addEntry('${c.id}','${k}')">+ ${tr(v.l)}</button>`).join('')}</div>`:''}</h3>
+ <div class="tbl-wrap"><table><thead><tr><th>${L('আইডি','ID')}</th><th>${L('বিবরণ','Description')}</th><th>${L('হিসাব','Calc')}</th><th>${L('মূল পরিমাণ @ হার','Original @ rate')}</th><th class="num">${C}</th><th>${L('অবস্থা','Status')}</th><th></th></tr></thead><tbody>${chargeRows||`<tr><td colspan="7">${empty(L('কোনো চার্জ নেই','No charges yet'))}</td></tr>`}</tbody></table></div>
+ <p class="small muted" style="margin:8px 0 0">${L('খসড়া চার্জ সম্পাদনা/মুছে ফেলা যায়। ইনভয়েসভুক্ত চার্জ লক থাকে — সংশোধনে রিভার্সাল ব্যবহার করুন।','Draft charges can be edited or deleted. Invoiced charges are locked — use a reversal to correct them.')}</p></div>
+ <div class="card"><h3>${L('পেমেন্ট ও রিফান্ড','Payments & refunds')}${E?`<button class="btn sm primary" onclick="addEntry('${c.id}','pay')">+ ${L('পেমেন্ট রেকর্ড','Record payment')}</button>`:''}</h3>
+ <div class="tbl-wrap"><table><thead><tr><th>${L('রসিদ নং','Receipt no.')}</th><th>${L('তারিখ','Date')}</th><th>${L('ধরন','Type')}</th><th>${L('পদ্ধতি / রেফ','Method / ref')}</th><th>${L('মূল @ হার','Original @ rate')}</th><th class="num">${C}</th><th>${L('রেকর্ড করেছেন','Recorded by')}</th><th></th></tr></thead><tbody>${payRows||`<tr><td colspan="8">${empty(L('কোনো পেমেন্ট নেই','No payments yet'))}</td></tr>`}</tbody></table></div></div>
+ <div class="card"><h3>${L('সাপ্লায়ার খরচ','Supplier costs')}${E?`<button class="btn sm" onclick="addEntry('${c.id}','supCost')">+ ${L('খরচ','Cost')}</button>`:''}</h3>
+ <div class="tbl-wrap"><table><thead><tr><th>${L('আইডি','ID')}</th><th>${L('সাপ্লায়ার','Supplier')}</th><th>${L('তারিখ','Date')}</th><th>${L('মূল @ হার','Original @ rate')}</th><th class="num">${C}</th><th></th></tr></thead><tbody>${scRows||`<tr><td colspan="6">${empty('—')}</td></tr>`}</tbody></table></div></div>
+ <div class="card"><h3>${L('সাপ্লায়ার পেমেন্ট','Supplier payments')}${E?`<button class="btn sm" onclick="addEntry('${c.id}','supPay')">+ ${L('পেমেন্ট','Payment')}</button>`:''}</h3>
+ <div class="tbl-wrap"><table><thead><tr><th>${L('আইডি','ID')}</th><th>${L('সাপ্লায়ার','Supplier')}</th><th>${L('তারিখ','Date')}</th><th>${L('মূল @ হার','Original @ rate')}</th><th class="num">${C}</th><th></th></tr></thead><tbody>${spRows||`<tr><td colspan="6">${empty('—')}</td></tr>`}</tbody></table></div></div>
+ <div class="card"><h3>${L('ইস্যু করা নথি','Issued documents')}</h3>${[...a.invoices.map(i=>({...i,t:'invoice'})),...a.quotes.map(q=>({...q,t:'quote'}))].sort((x,y)=>y.at.localeCompare(x.at)).map(i=>`<div class="row"><div class="grow"><b>${i.no}</b> · ${i.t==='invoice'?L('ইনভয়েস','Invoice'):L('কোটেশন','Quotation')}<div class="small muted">${fmtDT(i.at)} · ${esc(sName(i.by))}</div></div><b>${money(i.total,i.cur)}</b>${i.t==='invoice'?`<button class="btn sm" onclick="showDoc('invoice','${c.id}','${i.no}')">${L('দেখুন','View')}</button>`:''}</div>`).join('')||empty(L('এখনও কিছু ইস্যু হয়নি','Nothing issued yet'))}</div>`}
+function actions(c,e,list){if(e.reversalOf||e.reversedBy)return '';const b=[];
+ if(list==='charges'&&!e.issued){b.push(`<button class="btn sm" onclick="editEntry('${c.id}','${e.id}')">${L('সম্পাদনা','Edit')}</button>`,`<button class="btn sm" onclick="deleteDraft('${c.id}','${e.id}')">${L('মুছুন','Delete')}</button>`)}
+ else{if(list==='supCosts')b.push(`<button class="btn sm" onclick="editEntry('${c.id}','${e.id}')">${L('সম্পাদনা','Edit')}</button>`);b.push(`<button class="btn sm" onclick="reverseEntry('${c.id}','${e.id}')">${L('রিভার্স','Reverse')}</button>`)}
+ return `<div class="btns">${b.join('')}</div>`}
+
+/* ---------- invoice issue ---------- */
+function issueInvoice(cid){if(!guard('acctEdit'))return;const c=getCase(cid),a=getAcct(c);const items=a.charges.filter(e=>!e.issued);
+ if(!items.length){toast(L('ইনভয়েস করার মতো নতুন চার্জ নেই','No new charges to invoice'));return}
+ if(doubleBill(a)&&!confirm(L('সম্ভাব্য দ্বৈত বিলিং সতর্কতা আছে। তবুও ইস্যু করবেন?','There is a possible double-billing warning. Issue anyway?')))return;
+ const total=items.reduce((s,e)=>s+cv(e,a,e.amt)*(e.kind==='discount'?-1:1)+cv(e,a,e.svc),0);
+ if(!confirm(L(`${num(items.length)}টি চার্জ নিয়ে ইনভয়েস ইস্যু করবেন? মোট ${money(total,a.cur)}। ইস্যুর পর এগুলো লক হবে।`,`Issue an invoice for ${items.length} charge(s), total ${money(total,a.cur)}? They will be locked after issue.`)))return;
+ const no=nid('inv',`INV-${new Date().getFullYear()}-`,4);items.forEach(e=>e.issued=no);
+ a.invoices.push({no,at:nowISO(),date:TODAY,by:meId,cur:a.cur,ids:items.map(e=>e.id),total});commit(['ইনভয়েস ইস্যু','Invoice issued'],`${cid} — ${no} ${money(total,a.cur)}`);showDoc('invoice',cid,no)}
+
+/* ---------- printable documents ---------- */
+function paper(title,no,date,c,inner){const S=DB.settings,a=getAcct(c);
+ return `<div class="paper"><div class="ph"><div>${logo()}<div class="small" style="margin-top:6px"><b>${esc(S.company)}</b>${S.address?'<br>'+esc(S.address):''}${S.phone||S.email?'<br>'+esc([S.phone,S.email].filter(Boolean).join(' · ')):''}</div></div><div class="pt"><h2>${title}</h2><div>${L('নং','No.')}: <b>${esc(no)}</b></div><div>${L('তারিখ','Date')}: ${fmtD(date)}</div></div></div>
+ <div class="pbill"><div><span>${L('রোগী','Patient')}</span><b>${esc(c.name)}</b></div><div><span>${L('রোগী আইডি','Patient ID')}</span><b>${c.id}</b></div><div><span>${L('ফোন','Phone')}</span><b>${esc(c.phone)}</b></div><div><span>${L('মুদ্রা','Currency')}</span><b>${a.cur}</b></div></div>${inner}
+ <div class="pfoot">${esc(S.footer)}<br>${L('তৈরি','Generated')} ${fmtDT(nowISO())} · ${esc(sName(meId))}</div></div>`}
+const itemTable=(rows,cur)=>`<table class="ptbl"><thead><tr><th>${L('বিবরণ','Description')}</th><th>${L('পরিমাণ × রেট','Qty × rate')}</th><th>${L('মূল @ হার','Original @ rate')}</th><th class="num">${cur}</th></tr></thead><tbody>${rows.map(x=>`<tr><td>${esc(x.desc)}</td><td>${esc(x.qty)}</td><td>${esc(x.orig)}</td><td class="num">${money(x.amt,cur)}</td></tr>`).join('')}</tbody></table>`;
+function summaryBlock(t,withPay){const r=(l,v,b)=>`<tr${b?' class="b"':''}><td>${l}</td><td class="num">${money(v,t.cur)}</td></tr>`;
+ return `<table class="psum">${r(L('ভিসা ফি','Visa fees'),t.visa)}${r('+ '+L('এয়ার টিকেট ফি','Air ticket fees'),t.air)}${r('+ '+L('হোটেল চার্জ','Hotel charges'),t.hotel)}${r('+ '+L('ল্যান্ড প্যাকেজ চার্জ','Land package charges'),t.land)}${r('+ '+L('সার্ভিস চার্জ','Service charges'),t.service)}${r('− '+L('ডিসকাউন্ট','Discounts'),t.discount)}${r(L('মোট রোগীর বিল','Total patient bill'),t.total,1)}${withPay?r('− '+L('নিট পেমেন্ট গ্রহণ','Net payments received'),t.paid)+(t.bal>=0?r(L('বকেয়া ব্যালেন্স','Balance due'),t.bal,1):r(L('রোগীর ক্রেডিট','Patient credit'),-t.bal,1)):''}</table>`}
+function showDoc(type,cid,ref){if(!guard('acctView'))return;const c=getCase(cid),a=getAcct(c),t=totals(c);let html='';
+ if(type==='quote'){const items=sortCharges(a.charges.filter(e=>!e.reversalOf&&!e.reversedBy));if(!items.length){toast(L('কোটেশনের জন্য কোনো চার্জ নেই','No charges to quote'));return}
+  const rows=items.flatMap(e=>lines(e,a)),total=rows.reduce((s,x)=>s+x.amt,0);let no='QT-PREVIEW';
+  if(can('acctEdit')){no=nid('qt',`QT-${new Date().getFullYear()}-`,4);a.quotes.push({no,at:nowISO(),by:meId,cur:a.cur,total});log(['কোটেশন তৈরি','Quotation generated'],`${cid} — ${no} ${money(total,a.cur)}`);save()}
+  const qt={...t,visa:0,air:0,hotel:0,land:0,service:0,discount:0};items.forEach(e=>{qt[e.kind]+=cv(e,a,e.amt);qt.service+=cv(e,a,e.svc)});qt.total=total;
+  html=paper(L('কোটেশন','Quotation'),no,TODAY,c,itemTable(rows,a.cur)+summaryBlock(qt,false)+`<p class="small">${L('এটি একটি প্রাক্কলন; চূড়ান্ত চার্জ পরিবর্তিত হতে পারে। কোনো চিকিৎসা পরামর্শ নয়।','This is an estimate; final charges may change. Not medical advice.')}</p>`)}
+ else if(type==='invoice'){const inv=a.invoices.find(i=>i.no===ref);inv.rows=invRows(inv,a);const prev=a.invoices.filter(i=>i.at<inv.at).reduce((s,i)=>s+i.total,0);
+  html=paper(L('ইনভয়েস','Invoice'),inv.no,inv.date,c,itemTable(inv.rows,inv.cur)+`<table class="psum"><tr class="b"><td>${L('এই ইনভয়েসের মোট','This invoice total')}</td><td class="num">${money(inv.total,inv.cur)}</td></tr>${prev?`<tr><td>${L('আগের ইনভয়েস','Previous invoices')}</td><td class="num">${money(prev,inv.cur)}</td></tr>`:''}</table><h4>${L('বর্তমান হিসাব','Account position today')}</h4>`+summaryBlock(t,true))}
+ else if(type==='receipt'){const p=a.payments.find(x=>x.id===ref);const amt=(p.kind==='refund'?-1:1)*cv(p,a,p.amt);
+  html=paper(p.kind==='refund'?L('রিফান্ড ভাউচার','Refund voucher'):L('পেমেন্ট রসিদ','Payment receipt'),p.id,p.f.date,c,`<table class="psum">${[[L('তারিখ','Date'),fmtD(p.f.date)],[L('গৃহীত পরিমাণ','Amount'),money(p.amt,p.cur)],...(p.cur!==a.cur?[[L('বিনিময় হার','Exchange rate'),`1 ${p.cur} = ${rateStr(p.rate)} ${a.cur}`],[L('সমপরিমাণ','Equivalent'),money(amt,a.cur)]]:[]),[L('পদ্ধতি','Method'),tr(PAY_METHODS[p.f.method])],[L('রেফারেন্স','Reference'),p.f.ref||'—'],[L('রেকর্ড করেছেন','Recorded by'),sName(p.by)],...(p.reversalOf?[[L('রিভার্সাল','Reversal of'),p.reversalOf+' — '+(p.reason||'')]]:[])].map(([k,v])=>`<tr><td>${k}</td><td class="num">${esc(v)}</td></tr>`).join('')}</table><h4>${L('বর্তমান হিসাব','Account position today')}</h4>`+summaryBlock(t,true))}
+ else{const rows=sortCharges(a.charges).flatMap(e=>lines(e,a).map(x=>({...x,desc:`${e.id} · ${x.desc}`})));
+  html=paper(L('রোগীর স্টেটমেন্ট','Patient statement'),`ST-${cid}`,TODAY,c,`<h4>${L('চার্জ','Charges')}</h4>`+itemTable(rows,a.cur)+`<h4>${L('পেমেন্ট','Payments')}</h4><table class="ptbl"><thead><tr><th>${L('তারিখ','Date')}</th><th>${L('রসিদ','Receipt')}</th><th>${L('পদ্ধতি','Method')}</th><th>${L('মূল @ হার','Original @ rate')}</th><th class="num">${a.cur}</th></tr></thead><tbody>${a.payments.map(p=>`<tr><td>${fmtD(p.f.date)}</td><td>${p.id}${p.kind==='refund'?' ('+L('রিফান্ড','refund')+')':''}</td><td>${esc(tr(PAY_METHODS[p.f.method]))}${p.f.ref?' · '+esc(p.f.ref):''}</td><td>${p.cur===a.cur?'':money(p.amt,p.cur)+' @ '+rateStr(p.rate)}</td><td class="num">${money((p.kind==='refund'?-1:1)*cv(p,a,p.amt),a.cur)}</td></tr>`).join('')||`<tr><td colspan="5">—</td></tr>`}</tbody></table>`+summaryBlock(t,true))}
+ log(['আর্থিক নথি দেখা','Financial document viewed'],`${cid} — ${type} ${ref||''}`);save();
+ document.getElementById('docview').innerHTML=`<div class="doc-back"><div class="doc-toolbar"><button class="btn primary" onclick="window.print()">${L('প্রিন্ট / PDF সংরক্ষণ','Print / Save as PDF')}</button><button class="btn" onclick="closeDoc()">${L('বন্ধ করুন','Close')}</button></div>${html}</div>`;
+ if(ui.view==='case')render()}
+const invRows=(inv,a)=>inv.ids?sortCharges(inv.ids.map(id=>a.charges.find(e=>e.id===id)).filter(Boolean)).flatMap(e=>lines(e,a)):(inv.rows||[]);
+function closeDoc(){document.getElementById('docview').innerHTML=''}
+
+/* ---------- accounts overview page ---------- */
+function curTotals(){const m={};DB.cases.forEach(c=>{if(!c.acct||!hasEntries(c.acct))return;const t=totals(c),o=m[t.cur]=m[t.cur]||{bill:0,paid:0,due:0,credit:0,so:0,profit:0,n:0};o.bill+=t.total;o.paid+=t.paid;if(t.bal>0)o.due+=t.bal;else o.credit+=-t.bal;o.so+=t.so;o.profit+=t.profit;o.n++});return m}
+function acctDashCard(){const m=curTotals();const cs=Object.keys(m).sort();
+ return `<div class="card"><h3>${L('হিসাবের সারাংশ','Accounts summary')}<button class="btn sm" onclick="go('acct')">${L('হিসাব','Accounts')} →</button></h3>${cs.length?`<div class="tbl-wrap"><table><thead><tr><th>${L('মুদ্রা','Currency')}</th><th class="num">${L('মোট বিল','Total billing')}</th><th class="num">${L('পেমেন্ট গ্রহণ','Payments received')}</th><th class="num">${L('রোগীর বকেয়া','Patient balances')}</th><th class="num">${L('রোগীর ক্রেডিট','Patient credit')}</th><th class="num">${L('সাপ্লায়ার বকেয়া','Supplier balances')}</th></tr></thead><tbody>${cs.map(k=>`<tr><td><b>${k}</b> <span class="small muted">(${num(m[k].n)} ${L('কেস','cases')})</span></td><td class="num">${money(m[k].bill,k)}</td><td class="num">${money(m[k].paid,k)}</td><td class="num due-t">${money(m[k].due,k)}</td><td class="num">${money(m[k].credit,k)}</td><td class="num">${money(m[k].so,k)}</td></tr>`).join('')}</tbody></table></div><p class="small muted" style="margin:8px 0 0">${L('প্রতিটি মুদ্রা আলাদা দেখানো হয় — ভিন্ন মুদ্রা কখনো যোগ করা হয় না।','Each invoice currency is shown separately — different currencies are never added together.')}</p>`:empty(L('এখনও কোনো আর্থিক এন্ট্রি নেই','No financial entries yet'))}</div>`}
+function acctHTML(){const m=curTotals(),q=(ui.acctQ||'').trim().toUpperCase(),hit=q?DB.cases.find(c=>c.id.toUpperCase()===q):null;
+ const rows=DB.cases.filter(c=>c.acct&&hasEntries(c.acct)).map(c=>({c,t:totals(c)}));
+ const sup={};rows.forEach(({c})=>{const r=supplierRows(c),cur=c.acct.cur;Object.entries(r).forEach(([k,v])=>{const o=sup[k+'|'+cur]=sup[k+'|'+cur]||{name:k,cur,cost:0,paid:0};o.cost+=v.cost;o.paid+=v.paid})});
+ return `<h1 class="page">${L('হিসাব ও রোগীর বিলিং','Accounts & patient billing')}</h1><p class="sub-h">${L('শুধু অনুমোদিত হিসাব বিভাগের জন্য','For authorized accounting users only')}</p>
+ <div class="card"><h3>${L('রোগী আইডি দিয়ে খুঁজুন','Find by Patient ID')}</h3><div class="lookup"><input list="caseIds" placeholder="TMD-${new Date().getFullYear()}-0001" value="${esc(ui.acctQ||'')}" oninput="ui.acctQ=this.value;document.getElementById('lkRes').innerHTML=lookupRes()" autocapitalize="characters"><datalist id="caseIds">${DB.cases.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</datalist><div id="lkRes" class="grow">${lookupRes()}</div></div>
+ <p class="small muted" style="margin:8px 0 0">${L('রোগীর নাম স্বয়ংক্রিয়ভাবে দেখানো হয় — আলাদা রোগী রেকর্ড তৈরি হয় না।','The patient name is shown automatically — no separate patient record is created.')}</p></div>
+ ${acctDashCard()}
+ <div class="card"><h3>${L('রোগী অনুযায়ী হিসাব','Accounts by patient')}</h3><div class="tbl-wrap"><table><thead><tr><th>${L('রোগী আইডি','Patient ID')}</th><th>${L('রোগী','Patient')}</th><th>${L('মুদ্রা','Cur.')}</th><th class="num">${L('মোট বিল','Total bill')}</th><th class="num">${L('গৃহীত','Received')}</th><th class="num">${L('বকেয়া / ক্রেডিট','Balance / credit')}</th><th class="num">${L('সাপ্লায়ার বকেয়া','Supplier due')}</th><th class="num">${L('আনুমানিক লাভ','Est. profit')}</th><th></th></tr></thead><tbody>
+ ${rows.map(({c,t})=>`<tr><td><b>${c.id}</b></td><td>${esc(c.name)}</td><td>${t.cur}</td><td class="num">${money(t.total,'')}</td><td class="num">${money(t.paid,'')}</td><td class="num ${t.bal>0?'due-t':t.bal<0?'credit-t':''}">${t.bal<0?L('ক্রেডিট ','credit ')+money(-t.bal,''):money(t.bal,'')}</td><td class="num">${money(t.so,'')}</td><td class="num">${money(t.profit,'')}</td><td><button class="btn sm" onclick="openAcct('${c.id}')">${L('খুলুন','Open')}</button></td></tr>`).join('')||`<tr><td colspan="9">${empty('—')}</td></tr>`}</tbody></table></div></div>
+ <div class="card"><h3>${L('সাপ্লায়ার ব্যালেন্স','Supplier balances')}</h3><div class="tbl-wrap"><table><thead><tr><th>${L('সাপ্লায়ার','Supplier')}</th><th>${L('মুদ্রা','Cur.')}</th><th class="num">${L('খরচ','Costs')}</th><th class="num">${L('পরিশোধ','Paid')}</th><th class="num">${L('বকেয়া','Outstanding')}</th></tr></thead><tbody>${Object.values(sup).sort((x,y)=>x.name.localeCompare(y.name)).map(s=>`<tr><td>${esc(s.name)}</td><td>${s.cur}</td><td class="num">${money(s.cost,'')}</td><td class="num">${money(s.paid,'')}</td><td class="num ${s.cost-s.paid>0?'due-t':''}">${money(s.cost-s.paid,'')}</td></tr>`).join('')||`<tr><td colspan="5">${empty('—')}</td></tr>`}</tbody></table></div><p class="small muted" style="margin:8px 0 0">${L('প্রতিটি কেসের ইনভয়েস মুদ্রায় রূপান্তরিত; মুদ্রা অনুযায়ী আলাদা।','Converted into each case’s invoice currency; separated by currency.')}</p></div>
+ <div class="card"><h3>${L('বিলিং সেটিংস (নথির শিরোনাম)','Billing settings (document header)')}${can('acctEdit')?`<button class="btn sm" onclick="editBillingSettings()">${L('সম্পাদনা','Edit')}</button>`:''}</h3><div class="kv">${kv(L('প্রতিষ্ঠান','Company'),esc(DB.settings.company))}${kv(L('ঠিকানা','Address'),esc(DB.settings.address))}${kv(L('ফোন','Phone'),esc(DB.settings.phone))}${kv(L('ইমেইল','Email'),esc(DB.settings.email))}${kv(L('নতুন কেসের ডিফল্ট মুদ্রা','Default currency for new cases'),esc(DB.settings.defCur))}${kv(L('নথির ফুটার','Document footer'),esc(DB.settings.footer),true)}</div></div>`}
+function lookupRes(){const q=(ui.acctQ||'').trim().toUpperCase();if(!q)return `<span class="muted small">${L('রোগী আইডি লিখুন','Type a Patient ID')}</span>`;const c=DB.cases.find(x=>x.id.toUpperCase()===q);if(!c)return `<span class="small" style="color:var(--red)">${L('এই আইডির কোনো রোগী নেই','No patient with this ID')}</span>`;const t=totals(c);return `<div class="row" style="padding:0;border:0"><div class="grow"><b>${esc(c.name)}</b><div class="small muted">${c.id} · ${tr(STAGES[c.stage])} · ${L('বকেয়া','Balance')} ${t.bal<0?L('ক্রেডিট ','credit ')+money(-t.bal,t.cur):money(t.bal,t.cur)}</div></div><button class="btn sm primary" onclick="openAcct('${c.id}')">${L('হিসাব খুলুন','Open account')}</button></div>`}
+function openAcct(id){ui.view='case';ui.caseId=id;ui.tab='acct';render();window.scrollTo(0,0)}
+function editBillingSettings(){if(!guard('acctEdit'))return;const S=DB.settings;openModal(L('বিলিং সেটিংস','Billing settings'),`<div class="fgrid">${fld('company',L('প্রতিষ্ঠানের নাম *','Company name *'),S.company,'text','required')}${fld('phone',L('ফোন','Phone'),S.phone)}<label class="field full"><span>${L('ঠিকানা','Address')}</span><input name="address" value="${esc(S.address)}"></label>${fld('email',L('ইমেইল','Email'),S.email,'email')}${sel('defCur',L('নতুন কেসের ডিফল্ট মুদ্রা','Default currency for new cases'),CUR.map(x=>[x,x]),S.defCur)}${ta('footer',L('নথির ফুটার','Document footer'),S.footer)}</div>`,d=>{if(!d.company)return false;Object.assign(S,d);commit(['বিলিং সেটিংস হালনাগাদ','Billing settings updated'],'')})}
+
+/* ---------- demo accounting data (FICTIONAL) ---------- */
+function seedAcct(){const d=addDays,yr=new Date().getFullYear(),at=n=>{const x=new Date();x.setDate(x.getDate()+n);x.setHours(12,0,0,0);return x.toISOString()};
+ DB.settings={company:'Thai Medics (demo company details)',address:'Bangkok, Thailand — edit in Billing settings',phone:'',email:'',defCur:'BDT',footer:'PROTOTYPE — fictional demo document. Not a tax invoice.'};
+ const R=s=>s==='1'?RATE1:parseRate(s);
+ const add=(c,list,kind,f,cur,rate,o={})=>{const a=getAcct(c),k=list==='charges'?kind:(list==='payments'?'pay':list==='supCosts'?'supCost':'supPay');const r=calc(k,f);const e={id:nid(list,ENTRY_PREFIX[list]+(list==='payments'?yr+'-':''),list==='payments'?4:5),kind:list==='payments'?f.kind:kind,f:pickFields(k,f),cur,rate:R(rate),amt:r.amt,svc:r.svc,nights:r.nights||0,by:o.by||'STF-008',at:at(o.n||-6),issued:'',reversalOf:'',reversedBy:''};a[list].push(e);return e};
+ const c4=DB.cases[3],c5=DB.cases[4];getAcct(c4).cur='USD';getAcct(c5).cur='BDT';
+ const v=add(c4,'charges','visa',{category:'Medical treatment visa (demo)',qty:'2',unit:'50',svc:'20'},'USD','1');
+ const ai=add(c4,'charges','air',{passenger:c4.name,airline:'Demo Air (fictional)',route:'DAC–BKK–DAC',dep:d(4),ret:d(15),ticketRef:'DEMO-TKT-01',charge:'420',svc:'15'},'USD','1');
+ const sv=add(c4,'charges','service',{desc:'Medical coordination fee (demo)',amount:'150'},'USD','1');
+ add(c4,'charges','hotel',{hotel:'Sample Serviced Apartment (fictional)',cin:d(4),cout:d(15),rooms:'1',roomRate:'1800'},'THB','0.028',{n:-2});
+ add(c4,'charges','land',{service:'airport',desc:'Arrival + departure',qty:'2',unit:'1200'},'THB','0.028',{n:-2});
+ add(c4,'charges','land',{service:'interpreter',desc:'Bengali–Thai, half day',qty:'3',unit:'2500'},'THB','0.028',{n:-2});
+ add(c4,'charges','discount',{desc:'Returning-family discount (demo)',amount:'30'},'USD','1',{n:-2});
+ const a4=getAcct(c4),inv=nid('inv',`INV-${yr}-`,4);[v,ai,sv].forEach(e=>e.issued=inv);a4.invoices.push({no:inv,at:at(-5),date:d(-5),by:'STF-008',cur:'USD',ids:[v.id,ai.id,sv.id],total:[v,ai,sv].reduce((s,e)=>s+e.amt+e.svc,0)});
+ add(c4,'payments','',{kind:'payment',date:d(-5),amount:'30000',method:'bank',ref:'BANK-DEMO-01'},'BDT','0.0083',{n:-5});
+ add(c4,'payments','',{kind:'payment',date:d(-3),amount:'300',method:'cash',ref:'CASH-DEMO-02'},'USD','1',{n:-3});
+ add(c4,'supCosts','',{supplier:'Demo Air (fictional)',cat:'airline',desc:'Net fare',date:d(-5),amount:'395'},'USD','1');
+ add(c4,'supCosts','',{supplier:'Sample Serviced Apartment (fictional)',cat:'hotel',desc:'11 nights net',date:d(-2),amount:'17000'},'THB','0.028');
+ add(c4,'supCosts','',{supplier:'Demo Transport Co. (fictional)',cat:'transport',desc:'2 transfers',date:d(-2),amount:'1800'},'THB','0.028');
+ add(c4,'supPays','',{supplier:'Demo Air (fictional)',date:d(-4),amount:'395',method:'bank',ref:'SUP-DEMO-01'},'USD','1');
+ add(c5,'charges','visa',{category:'Medical treatment visa (demo)',qty:'2',unit:'5000',svc:'1500'},'BDT','1',{by:'STF-002'});
+ add(c5,'charges','hotel',{hotel:'Sample Serviced Apartment (fictional)',cin:d(9),cout:d(19),rooms:'1',roomRate:'1500'},'THB','3.45',{by:'STF-002'});
+ add(c5,'charges','land',{service:'hospital',desc:'Daily hospital transfers',qty:'6',unit:'900'},'THB','3.45',{by:'STF-002'});
+ add(c5,'payments','',{kind:'payment',date:d(-1),amount:'40000',method:'mfs',ref:'BKASH-DEMO-77'},'BDT','1',{by:'STF-002',n:-1});
+ add(c5,'supCosts','',{supplier:'Sample Serviced Apartment (fictional)',cat:'hotel',desc:'10 nights net',date:d(-1),amount:'14000'},'THB','3.45');}
+
+/* ---------- staff management (admin / staff permission) ---------- */
+const casesOf=id=>DB.cases.filter(c=>c.stage<7&&(c.coordinator===id||c.thCoordinator===id)).length;
+function staffHTML(){
+ const q=(ui.sq||'').toLowerCase();
+ const list=DB.staff.filter(s=>!q||[s.id,s.name,s.email,s.position,s.phone].join(' ').toLowerCase().includes(q));
+ const act=DB.staff.filter(s=>s.status==='active').length,inv=DB.staff.filter(s=>s.status==='invited').length;
+ return `<div class="head-row"><div><h1 class="page">${L('স্টাফ ব্যবস্থাপনা','Staff management')}</h1><p class="sub-h">${L('স্টাফ যোগ করুন, নাম, পদবি ও অনুমতি সম্পাদনা করুন। শুধু সক্রিয় স্টাফ রোগীর তথ্য দেখতে পারেন।','Add staff, edit names, positions and permissions. Only active staff can access patient records.')}</p></div><button class="btn primary" onclick="staffModal()">+ ${L('নতুন স্টাফ যোগ করুন','Add staff')}</button></div>
+ <div class="stats"><div class="stat"><div class="n">${num(DB.staff.length)}</div><div class="l">${L('মোট স্টাফ','Total staff')}</div></div><div class="stat pink"><div class="n">${num(act)}</div><div class="l">${L('সক্রিয়','Active')}</div></div><div class="stat gold"><div class="n">${num(inv)}</div><div class="l">${L('অনুমোদনের অপেক্ষায়','Awaiting approval')}</div></div><div class="stat red"><div class="n">${num(DB.staff.length-act-inv)}</div><div class="l">${L('নিষ্ক্রিয়','Deactivated')}</div></div></div>
+ <div class="card"><h3>${L('স্টাফ তালিকা','Staff list')}<input style="max-width:280px" placeholder="${L('নাম, আইডি, পদবি দিয়ে খুঁজুন','Search name, ID, position')}" value="${esc(ui.sq||'')}" oninput="ui.sq=this.value;clearTimeout(window._sq);window._sq=setTimeout(()=>{render();const i=document.querySelector('.card h3 input');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}},250)"></h3>
+ <div class="tbl-wrap"><table><thead><tr><th>${L('আইডি','ID')}</th><th>${L('নাম ও পদবি','Name & position')}</th><th>${L('যোগাযোগ','Contact')}</th><th>${L('অফিস','Office')}</th><th>${L('অনুমতি','Permissions')}</th><th>${L('অবস্থা','Status')}</th><th>${L('কেস','Cases')}</th><th></th></tr></thead><tbody>
+ ${list.map(s=>{const self=s.id===meId;
+ return `<tr><td><b>${s.id}</b></td><td><b>${esc(s.name)}</b>${self?` <span class="badge b-pink">${L('আপনি','You')}</span>`:''}<div class="small muted">${esc(s.position||'—')}</div></td><td class="small">${esc(s.email)}${s.phone?`<div class="muted">${esc(s.phone)}</div>`:''}</td><td>${tr(OFFICES[s.office])}</td><td><span class="badge ${s.role==='admin'?'b-pink':s.role==='custom'?'b-gold':'b-blue'}">${tr(ROLES[s.role])}</span><div class="small muted">${num(permCount(s))}/${num(PERMS.length)} ${L('অনুমতি','permissions')}</div></td><td>${stBadge(s.status)}</td><td>${num(casesOf(s.id))}</td>
+ <td><div class="btns"><button class="btn sm" onclick="staffModal('${s.id}')">${L('সম্পাদনা','Edit')}</button>${s.status==='invited'?`<button class="btn sm blue" onclick="setStaffStatus('${s.id}','active')">${L('অনুমোদন','Approve')}</button><button class="btn sm" onclick="removeStaff('${s.id}')">${L('মুছুন','Remove')}</button>`:''}${s.status==='active'&&!self?`<button class="btn sm" onclick="setStaffStatus('${s.id}','inactive')">${L('নিষ্ক্রিয়','Deactivate')}</button>`:''}${s.status==='inactive'?`<button class="btn sm" onclick="setStaffStatus('${s.id}','active')">${L('পুনরায় সক্রিয়','Reactivate')}</button>`:''}</div></td></tr>`}).join('')||`<tr><td colspan="8">${empty(L('কেউ পাওয়া যায়নি','No staff found'))}</td></tr>`}</tbody></table></div></div>
+ <div class="card"><h3>${L('অনুমতি ম্যাট্রিক্স — সরাসরি টিক দিয়ে পরিবর্তন করুন','Permission matrix — tick to change directly')}</h3>
+ <div class="tbl-wrap"><table class="matrix"><thead><tr><th>${L('স্টাফ','Staff')}</th>${PERMS.map(p=>`<th title="${esc(L(p[1],p[2]))}"><div class="vh">${esc(L(p[1],p[2]))}</div></th>`).join('')}</tr></thead><tbody>
+ ${DB.staff.filter(s=>s.status!=='inactive').map(s=>`<tr><td style="white-space:nowrap"><b>${esc(s.name)}</b><div class="small muted">${s.id} · ${tr(ROLES[s.role])}</div></td>${PERMS.map(p=>{const lock=s.id===meId&&p[0]==='staff';return `<td style="text-align:center"><input type="checkbox" class="chk" ${s.perms[p[0]]?'checked':''} ${lock?'disabled title="'+L('নিজের স্টাফ-ব্যবস্থাপনা অনুমতি সরানো যায় না','You cannot remove your own staff permission')+'"':''} onchange="togglePerm('${s.id}','${p[0]}',this.checked)"></td>`}).join('')}</tr>`).join('')}</tbody></table></div>
+ <p class="small muted" style="margin:10px 0 0">${L('ভূমিকা (Admin/Manager/Coordinator/View only) শুধু একটি দ্রুত টেমপ্লেট। যেকোনো টিক বদলালে ভূমিকা "কাস্টম" হয়ে যায়। সব সক্রিয় স্টাফ কেস তালিকা দেখতে পারেন।','Roles (Admin/Manager/Coordinator/View only) are quick templates. Changing any tick makes the role "Custom". All active staff can see the case list.')}</p></div>`}
+
+function staffModal(id){if(!guard('staff'))return;const s=id?DB.staff.find(x=>x.id===id):null,self=id===meId;const p=s?s.perms:presetPerms('coordinator');
+ const groups=Object.entries(PERM_GROUPS).map(([g,gl])=>`<div class="pgroup"><div class="pg-h">${tr(gl)}</div>${PERMS.filter(x=>x[3]===g).map(x=>{const lock=self&&x[0]==='staff';return `<label class="pchk"><input type="checkbox" class="chk" name="perm_${x[0]}" ${p[x[0]]?'checked':''} ${lock?'disabled':''} onchange="syncRole()"> <span>${esc(L(x[1],x[2]))}${lock?` <span class="small muted">(${L('নিজের জন্য স্থির','locked for yourself')})</span>`:''}</span></label>`}).join('')}</div>`).join('');
+ const body=`<div class="fgrid">${fld('name',L('পূর্ণ নাম *','Full name *'),s?.name,'text','required')}
+ <label class="field"><span>${L('পদবি *','Position *')}</span><input name="position" list="posList" value="${esc(s?.position||'')}" required placeholder="${L('তালিকা থেকে বাছুন বা লিখুন','Choose or type')}"><datalist id="posList">${[...new Set([...POSITIONS,...DB.staff.map(x=>x.position).filter(Boolean)])].map(x=>`<option value="${esc(x)}">`).join('')}</datalist></label>
+ ${fld('email',L('ইমেইল (লগইন) *','Email (login) *'),s?.email,'email','required')}${fld('phone',L('ফোন / WhatsApp','Phone / WhatsApp'),s?.phone,'tel')}
+ ${sel('office',L('অফিস *','Office *'),opts(OFFICES),s?.office||'BD')}
+ ${s?(self?`<label class="field"><span>${L('অবস্থা','Status')}</span><input value="${esc(L(STATUS[s.status][0],STATUS[s.status][1]))}" disabled></label>`:sel('status',L('অবস্থা','Status'),opts(STATUS).map(([k,v])=>[k,v]),s.status)):sel('status',L('সংরক্ষণের পর অবস্থা','Status after saving'),[['active',L('সক্রিয় — এখনই প্রবেশ করতে পারবেন','Active — can sign in now')],['invited',L('আমন্ত্রিত — পরে অনুমোদন','Invited — approve later')]],'active')}
+ <div class="subhead">${L('অনুমতি','Permissions')}</div>
+ <label class="field full"><span>${L('ভূমিকা টেমপ্লেট (বাছলে নিচের টিক বসে যাবে)','Role template (fills the ticks below)')}</span><select name="role" id="roleSel" onchange="applyRole(this.value)">${opts(ROLES).map(([k,v])=>`<option value="${k}" ${(s?.role||'coordinator')===k?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+ <div class="full pgrid">${groups}</div></div>
+ <p class="small muted" style="margin:10px 0 0">${s?`${L('স্টাফ আইডি','Staff ID')}: <b>${s.id}</b> · ${L('যোগ করা হয়েছে','Added')} ${fmtDT(s.createdAt)}`:L('স্টাফ আইডি স্বয়ংক্রিয়ভাবে তৈরি হবে।','The staff ID is generated automatically.')}</p>`;
+ openModal(s?L('স্টাফ সম্পাদনা','Edit staff')+' — '+s.id:L('নতুন স্টাফ যোগ করুন','Add staff'),body,(d,f)=>{
+  if(!d.name||!d.email||!d.position)return false;
+  if(DB.staff.some(x=>x.id!==id&&x.email.toLowerCase()===d.email.toLowerCase())){toast(L('এই ইমেইল অন্য স্টাফের আছে','Another staff member already uses this email'));return false}
+  const perms=Object.fromEntries(ALLP.map(k=>[k,!!f.querySelector(`[name=perm_${k}]`).checked]));if(self)perms.staff=true;
+  const role=matchRole(perms);
+  if(s){const before=JSON.stringify([s.name,s.position,s.office,s.perms,s.status,s.email,s.phone]);const changes=[];
+   if(s.name!==d.name)changes.push('name');if(s.position!==d.position)changes.push('position');if(s.office!==d.office)changes.push('office');if(JSON.stringify(s.perms)!==JSON.stringify(perms))changes.push('permissions');if(!self&&d.status&&d.status!==s.status)changes.push('status');
+   Object.assign(s,{name:d.name,position:d.position,email:d.email,phone:d.phone,office:d.office,perms,role});if(!self&&d.status)s.status=d.status;
+   if(JSON.stringify([s.name,s.position,s.office,s.perms,s.status,s.email,s.phone])===before){toast(L('কোনো পরিবর্তন নেই','No changes'));return}
+   commit(['স্টাফ হালনাগাদ','Staff updated'],`${id} — ${changes.join(', ')||'contact'}`);toast(L('সংরক্ষিত','Saved'))}
+  else{const nid2=nid('staff','STF-',3);DB.staff.push({id:nid2,name:d.name,email:d.email,phone:d.phone,office:d.office,position:d.position,role,perms,status:d.status||'active',createdAt:nowISO()});commit(['স্টাফ যোগ','Staff added'],`${nid2} — ${d.name} (${d.position})`);toast(L('যোগ হয়েছে — স্টাফ আইডি: ','Added — staff ID: ')+nid2)}
+ },s?L('সংরক্ষণ','Save'):L('স্টাফ যোগ করুন','Add staff'))}
+function applyRole(r){if(r==='custom')return;const pp=presetPerms(r);document.querySelectorAll('#mform [name^=perm_]').forEach(cb=>{if(!cb.disabled)cb.checked=pp[cb.name.slice(5)]})}
+function syncRole(){const f=document.getElementById('mform');const perms=Object.fromEntries(ALLP.map(k=>[k,f.querySelector(`[name=perm_${k}]`).checked]));document.getElementById('roleSel').value=matchRole(perms)}
+function togglePerm(id,k,v){if(!guard('staff')){render();return}const s=DB.staff.find(x=>x.id===id);if(id===meId&&k==='staff'){render();return}s.perms[k]=v;s.role=matchRole(s.perms);commit([v?'অনুমতি দেওয়া':'অনুমতি সরানো',v?'Permission granted':'Permission removed'],`${id} — ${PERMS.find(p=>p[0]===k)[2]}`)}
+function setStaffStatus(id,st){if(!guard('staff')||id===meId)return;const s=DB.staff.find(x=>x.id===id);const n=casesOf(id);
+ if(st==='inactive'&&!confirm(L(`${s.name} কে নিষ্ক্রিয় করবেন? তিনি আর লগইন করতে পারবেন না।`,`Deactivate ${s.name}? They will no longer be able to sign in.`)))return;
+ s.status=st;commit(st==='active'?['স্টাফ সক্রিয়/অনুমোদিত','Staff activated/approved']:['স্টাফ নিষ্ক্রিয়','Staff deactivated'],id);
+ if(st==='inactive'&&n)toast(L(`সতর্কতা: ${num(n)}টি সক্রিয় কেস নতুন কোঅর্ডিনেটরকে দিতে হবে।`,`Note: ${n} active case(s) need a new coordinator.`))}
+function removeStaff(id){if(!guard('staff'))return;const s=DB.staff.find(x=>x.id===id);if(s.status!=='invited')return;if(!confirm(L(`${s.name} এর আমন্ত্রণ মুছে ফেলবেন?`,`Remove the invitation for ${s.name}?`)))return;DB.staff=DB.staff.filter(x=>x.id!==id);commit(['আমন্ত্রণ মুছে ফেলা','Invitation removed'],`${id} — ${s.name}`)}
+
+/* ---------- audit ---------- */
+function auditHTML(){return `<h1 class="page">${L('অডিট ইতিহাস','Audit history')}</h1><p class="sub-h">${L('কে কখন কী করেছেন — সর্বশেষ ৩০০টি','Who did what and when — latest 300 entries')}</p>
+ <div class="warn">${L('প্রোটোটাইপ: এই লগ ব্রাউজারে থাকে, তাই এটি বিশ্বাসযোগ্য অডিট নয়। প্রোডাকশনে সার্ভার-সাইডে পরিবর্তন-অযোগ্য লগ প্রয়োজন।','Prototype: this log lives in the browser, so it is not a trustworthy audit trail. Production needs a server-side, append-only log.')}</div>
+ <div class="card"><div class="tbl-wrap"><table><thead><tr><th>${L('সময়','Time')}</th><th>${L('স্টাফ','Staff')}</th><th>${L('কাজ','Action')}</th><th>${L('বিষয়','Target')}</th></tr></thead><tbody>${DB.audit.slice(0,300).map(a=>`<tr><td style="white-space:nowrap">${fmtDT(a.at)}</td><td style="white-space:nowrap">${esc(sName(a.by))}</td><td>${esc(tr(a.action))}</td><td>${esc(a.target)}</td></tr>`).join('')}</tbody></table></div></div>`}
+
+/* ---------- system status & setup ---------- */
+function infoHTML(){
+ const ok=[['স্টাফ যোগ ও সম্পাদনা — নাম, পদবি, ইমেইল, ফোন, অফিস; স্বয়ংক্রিয় স্টাফ আইডি; অনুমোদন ও নিষ্ক্রিয় করা','Add and edit staff — name, position, email, phone, office; auto staff IDs; approve and deactivate'],['১১টি আলাদা অনুমতি, ভূমিকা টেমপ্লেট (Admin/Manager/Coordinator/View only/Custom) ও অনুমতি ম্যাট্রিক্স','11 individual permissions, role templates (Admin/Manager/Coordinator/View only/Custom) and a permission matrix'],['স্বয়ংক্রিয় কেস আইডি (TMD-বছর-নম্বর), রোগী ও সঙ্গীর তথ্য, কোঅর্ডিনেটর নির্ধারণ','Auto case IDs (TMD-year-number), patient & companion details, coordinator assignment'],['৮ ধাপের কেস ট্র্যাকিং','8-stage case tracking'],['নথির তালিকা তারিখ ও রোগী অনুযায়ী, কে আপলোড করেছেন তা রেকর্ড','Records organised by patient and date, uploader recorded'],['পরিবর্তন-অযোগ্য যোগাযোগ নোট (ফলাফল ও পরবর্তী পদক্ষেপসহ)','Append-only communication notes with outcome and next action'],['ফলো-আপ কাজ, আজকের/আসন্ন/বিলম্বিত, মাসিক ক্যালেন্ডার ও তালিকা','Follow-up tasks, today/upcoming/overdue, monthly calendar and list'],['হাসপাতাল, বিভাগ, ডাক্তার, অ্যাপয়েন্টমেন্ট, রিপোর্ট পাঠানো/উত্তর পাওয়া, প্রস্তাব গ্রহণ','Hospital, department, doctor, appointment, reports sent/response received, proposal acceptance'],['থাইল্যান্ড ব্যবস্থা ও দুই অফিসের হ্যান্ডওভার নোট','Thailand arrangements and shared handover notes'],['ড্যাশবোর্ড, সার্চ (নাম/আইডি/ফোন/হাসপাতাল), ধাপ/কোঅর্ডিনেটর/অফিস ফিল্টার','Dashboard, search (name/ID/phone/hospital), stage/coordinator/office filters'],['বাংলা/ইংরেজি ইন্টারফেস, মোবাইল ও ডেস্কটপ','Bengali/English interface, mobile and desktop'],['হিসাব: ভিসা, এয়ার টিকেট, হোটেল (রুম × রাত × রেট), ল্যান্ড প্যাকেজ, সার্ভিস চার্জ, ডিসকাউন্ট — রোগী আইডির সাথে যুক্ত','Accounts: visa, air ticket, hotel (rooms × nights × rate), land package, service charges, discounts — linked to the Patient ID'],['পেমেন্ট/রিফান্ড, বকেয়া ও ক্রেডিট, সাপ্লায়ার খরচ/পেমেন্ট, আনুমানিক লাভ','Payments/refunds, balance and credit, supplier costs/payments, estimated profit'],['BDT/THB/USD, প্রতি এন্ট্রিতে ম্যানুয়াল বিনিময় হার, পূর্ণসংখ্যা-ভিত্তিক দশমিক-নিরাপদ হিসাব','BDT/THB/USD with a manual exchange rate per entry and integer-based, decimal-safe arithmetic'],['কোটেশন, ইনভয়েস, রসিদ ও স্টেটমেন্ট (প্রিন্ট/PDF); ইনভয়েসের পর চার্জ লক, সংশোধন রিভার্সালের মাধ্যমে','Quotation, invoice, receipt and statement (print/PDF); charges lock after invoicing, corrections by reversal']];
+ const sim=[['লগইন — পাসওয়ার্ড বা সার্ভার যাচাই নেই','Login — no password or server verification'],['অনুমতি — শুধু ব্রাউজারে প্রয়োগ হয়, সহজেই এড়ানো যায়','Permissions — enforced only in the browser, easily bypassed'],['সংরক্ষণ — এই ব্রাউজারের লোকাল স্টোরেজে, অন্য স্টাফের সাথে শেয়ার হয় না','Saving — this browser\u2019s local storage only, not shared between staff'],['ফাইল আপলোড — শুধু সেশন মেমরিতে; রিফ্রেশে ফাইল হারায়','File uploads — session memory only; files are lost on refresh'],['অডিট লগ — ব্রাউজারে থাকে, পরিবর্তনযোগ্য','Audit log — stored in the browser, can be altered'],['স্টাফ আমন্ত্রণ — কোনো ইমেইল পাঠানো হয় না','Staff invitations — no email is sent'],['হিসাব — নম্বর ও লক শুধু এই ব্রাউজারে; একাধিক ডিভাইসে ইনভয়েস নম্বর মিলবে না; কর/ভ্যাট হিসাব নেই','Accounts — numbering and locks exist only in this browser; invoice numbers are not unique across devices; no tax/VAT calculation']];
+ const be=[['সার্ভার-সাইড অথেনটিকেশন (ইমেইল আমন্ত্রণ, পাসওয়ার্ড/ম্যাজিক লিংক, MFA)','Server-side authentication (email invites, password/magic link, MFA)'],['শেয়ার্ড ডাটাবেস ও রো-লেভেল সিকিউরিটি (ভূমিকা ও অফিস অনুযায়ী)','Shared database with row-level security by role and office'],['প্রাইভেট ফাইল স্টোরেজ, স্বল্পমেয়াদি সাইনড লিংক','Private file storage with short-lived signed links'],['সার্ভারে লেখা, পরিবর্তন-অযোগ্য অডিট লগ','Server-written, append-only audit log'],['WhatsApp Business / ইমেইল ইন্টিগ্রেশন (ঐচ্ছিক)','WhatsApp Business / email integration (optional)'],['ব্যাকআপ, এনক্রিপশন, ও থাইল্যান্ড PDPA ও বাংলাদেশের প্রযোজ্য ডেটা-সুরক্ষা আইন মেনে চলা','Backups, encryption, and compliance with Thailand\u2019s PDPA and applicable Bangladesh data-protection rules']];
+ const li=(a,c,i)=>a.map(x=>`<li><span class="${c}">${i}</span> ${tr(x)}</li>`).join('');
+ return `<h1 class="page">${L('সিস্টেম স্ট্যাটাস ও সেটআপ','System status & setup')}</h1><p class="sub-h">${L('এটি একটি কার্যকর প্রোটোটাইপ — প্রোডাকশন-প্রস্তুত নয়।','This is a working prototype — it is not production-ready.')}</p>
+ <div class="card"><h3>${L('এই ফাইলে কাজ করে','Implemented in this file')}</h3><ul class="clean" style="list-style:none;padding:0">${li(ok,'ok-ic','✓')}</ul></div>
+ <div class="card"><h3>${L('সিমুলেটেড (প্রোডাকশনে ব্যবহার করবেন না)','Simulated (do not use for real patients)')}</h3><ul class="clean" style="list-style:none;padding:0">${li(sim,'sim-ic','!')}</ul></div>
+ <div class="card"><h3>${L('ব্যাকএন্ড প্রয়োজন','Requires a backend')}</h3><ul class="clean" style="list-style:none;padding:0">${li(be,'be-ic','→')}</ul></div>
+ <div class="card"><h3>${L('সেটআপ নির্দেশনা','Setup instructions')}</h3><ol class="clean">
+ <li>${L('ফাইলটি Chrome, Edge বা Safari-তে খুলুন — কোনো ইনস্টল প্রয়োজন নেই।','Open the file in Chrome, Edge or Safari — nothing to install.')}</li>
+ <li>${L('অ্যাডমিন STF-001, ম্যানেজার STF-008, কোঅর্ডিনেটর STF-002–005, শুধু দেখা STF-006 দিয়ে প্রবেশ করুন। তারপর "স্টাফ ব্যবস্থাপনা" থেকে নিজের টিম যোগ করুন ও ডেমো স্টাফ নিষ্ক্রিয় করুন।','Sign in as STF-001 (admin), STF-008 (manager), STF-002–005 (coordinators) or STF-006 (view only). Then add your own team under Staff and deactivate the demo staff.')}</li>
+ <li>${L('ডেমো ডেটা এই ডিভাইসেই থাকে। নিচের বোতাম দিয়ে শুরুর অবস্থায় ফেরানো যায়।','Demo data stays on this device. Use the button below to restore the starting state.')}</li>
+ <li>${L('প্রোডাকশনের জন্য: একটি ব্যাকএন্ড (যেমন Supabase — Auth, Postgres RLS, প্রাইভেট Storage bucket) সেটআপ করে localStorage ফাংশনগুলো (load/save) API কলে বদলাতে হবে, এবং অনুমতি সার্ভারে প্রয়োগ করতে হবে।','For production: set up a backend (e.g. Supabase — Auth, Postgres with RLS, a private Storage bucket), replace the load/save functions with API calls, and enforce permissions on the server.')}</li></ol>
+ <div class="btns" style="margin-top:12px"><button class="btn" onclick="resetDemo()">${L('ডেমো ডেটা রিসেট করুন','Reset demo data')}</button></div></div>`}
+function resetDemo(){if(!confirm(L('সব ডেমো ডেটা মুছে শুরুর অবস্থায় ফেরানো হবে। চালিয়ে যাবেন?','All demo data will be cleared and restored to the starting state. Continue?')))return;try{localStorage.removeItem(STORE);sessionStorage.removeItem('tmd_me')}catch(e){}DB=seed();save();meId=null;Object.assign(ui,{view:'dash',caseId:null,f:{q:'',stage:'',coord:'',office:''}});render()}
+
+/* ---------- init ---------- */
+load();
+try{meId=sessionStorage.getItem('tmd_me')}catch(e){}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+render();
+</script>
+</body>
+</html>

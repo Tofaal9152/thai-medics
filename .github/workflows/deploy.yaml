@@ -1,0 +1,62 @@
+# name: Deploy to VPS
+
+# on:
+#   push:
+#     branches:
+#       - main
+#   # Manual escape hatch: Actions tab -> Deploy to VPS -> Run workflow.
+#   workflow_dispatch:
+
+# # Never run two deploys at once; a newer push waits for the one in flight.
+# concurrency:
+#   group: deploy-vps
+#   cancel-in-progress: false
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     # Push deploys only when the commit asks for it (the git-flow skill's
+#     # `claude:deploy` adds this tag). Manual runs always deploy.
+#     if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, 'nightfury:deploy')
+
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v5
+
+#       - name: Setup Bun
+#         uses: oven-sh/setup-bun@v2
+
+#       # Vite inlines VITE_* vars into the bundle at build time, so .env is needed
+#       # here and nowhere else — it is not shipped to the VPS. Anything in it ends
+#       # up publicly readable in the JS; ENV_FILE should hold only VITE_BACKEND_URL
+#       # and similar public config, never a secret.
+#       - name: Create .env file
+#         env:
+#           ENV_FILE: ${{ secrets.ENV_FILE }}
+#         run: printf '%s\n' "$ENV_FILE" > .env
+
+#       - name: Install dependencies
+#         run: bun install --frozen-lockfile
+
+#       # `tsc -b && vite build` — a type error fails the deploy here, not in prod.
+#       - name: Build
+#         run: bun run build
+
+#       # The build is plain static files. strip_components drops the leading
+#       # `dist/`, so index.html lands directly in VPS_TARGET_PATH. Old hashed
+#       # assets are left behind (harmless) rather than wiping the live directory.
+#       - name: Copy build to VPS
+#         uses: appleboy/scp-action@v0.1.7
+#         with:
+#           host: ${{ secrets.VPS_HOST }}
+#           username: ${{ secrets.VPS_USER }}
+#           key: ${{ secrets.VPS_SSH_KEY }}
+#           # passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
+#           source: dist
+#           strip_components: 1
+#           target: ${{ secrets.VPS_TARGET_PATH }}
+
+#       # No restart step: nginx serves VPS_TARGET_PATH directly and picks up the
+#       # new files immediately. It must fall back to index.html for unknown paths
+#       # (`try_files $uri $uri/ /index.html;`) or reloading /admin returns 404.
