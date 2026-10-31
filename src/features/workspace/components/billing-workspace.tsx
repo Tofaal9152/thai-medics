@@ -1,3 +1,4 @@
+import { featureFlags } from "../feature-flags"
 import { useState } from "react"
 import type { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
@@ -216,6 +217,7 @@ export default function BillingWorkspace({
   }
   function saveEntry(values: Values) {
     if (!patient || !formKind || !editable) return
+    if (!featureFlags.suppliers && formKind.startsWith("supplier-")) return
     const originalMinor = calculateCharge(formKind, values),
       rate =
         values.currency === patient.currency
@@ -247,7 +249,7 @@ export default function BillingWorkspace({
       by: session.name,
     }
     commit(
-      editing ? "Financial draft updated" : "Financial entry recorded (demo)",
+      editing ? "Financial draft updated" : "Financial entry recorded",
       (prev) => {
         let next = {
           ...prev,
@@ -395,7 +397,7 @@ export default function BillingWorkspace({
     },
     {
       id: "action",
-      header: "",
+      header: "Action",
       enableSorting: false,
       cell: ({ row: { original: e } }) =>
         editable && !e.reversalOf && !e.reversedBy ? (
@@ -507,7 +509,7 @@ export default function BillingWorkspace({
           </Button>
           {summary.balance > 0 && (patientView || editable) && (
             <Button variant="outline" onClick={() => setCheckout(true)}>
-              Demo payment link
+              payment link
             </Button>
           )}
         </div>
@@ -540,21 +542,33 @@ export default function BillingWorkspace({
         </div>
       </Panel>
       {!patientView && (
-        <Panel title="Suppliers & internal profit">
+        <Panel
+          title={
+            featureFlags.suppliers
+              ? "Suppliers & internal profit"
+              : "Account profitability"
+          }
+        >
           <div className="ws-account-summary">
-            <div>
-              <small>Supplier costs / paid</small>
-              <strong>{displayMoney(summary.cost, patient.currency)}</strong>
-              <small>
-                Paid: {displayMoney(summary.supplierPaid, patient.currency)}
-              </small>
-            </div>
-            <div>
-              <small>Supplier outstanding</small>
-              <strong>
-                {displayMoney(summary.supplierDue, patient.currency)}
-              </strong>
-            </div>
+            {featureFlags.suppliers && (
+              <>
+                <div>
+                  <small>Supplier costs / paid</small>
+                  <strong>
+                    {displayMoney(summary.cost, patient.currency)}
+                  </strong>
+                  <small>
+                    Paid: {displayMoney(summary.supplierPaid, patient.currency)}
+                  </small>
+                </div>
+                <div>
+                  <small>Supplier outstanding</small>
+                  <strong>
+                    {displayMoney(summary.supplierDue, patient.currency)}
+                  </strong>
+                </div>
+              </>
+            )}
             <div>
               <small>Invoiced / estimated profit</small>
               <strong>
@@ -632,7 +646,7 @@ export default function BillingWorkspace({
           searchText={(e) => `${e.description} ${e.id}`}
         />
       </Panel>
-      {!patientView && (
+      {!patientView && featureFlags.suppliers && (
         <Panel
           title="Supplier costs & payments"
           actions={
@@ -777,7 +791,7 @@ export default function BillingWorkspace({
               <Button variant="outline" onClick={() => setIssue(false)}>
                 Cancel
               </Button>
-              <Button onClick={issueInvoice}>Issue invoice (demo)</Button>
+              <Button onClick={issueInvoice}>Issue invoice</Button>
             </div>
           </div>
         </Modal>
@@ -797,7 +811,7 @@ export default function BillingWorkspace({
       )}
       {checkout && (
         <Modal
-          title="Demo payment interface"
+          title="payment interface"
           description="No money will be collected and no payment provider will be contacted."
           onClose={() => setCheckout(false)}
         >
@@ -822,7 +836,7 @@ export default function BillingWorkspace({
             }}
             onSave={(v) => {
               const amount = parseAmount(v.amount)
-              if (amount <= 0) throw new Error("Enter a positive demo amount.")
+              if (amount <= 0) throw new Error("Enter a positive amount.")
               const e: LedgerEntry = {
                 id: uid("demo-payment"),
                 caseId,
@@ -833,7 +847,7 @@ export default function BillingWorkspace({
                 originalMinor: amount,
                 amountMinor: amount,
                 date: today(),
-                fields: { method: v.method, reference: "DEMO-ONLINE" },
+                fields: { method: v.method, reference: "ONLINE" },
                 issued: "",
                 reversalOf: "",
                 reversedBy: "",
@@ -843,7 +857,7 @@ export default function BillingWorkspace({
                 by: patientView ? patient.name : session.name,
               }
               commit(
-                "Demo payment recorded; no real transaction occurred",
+                "payment recorded; no real transaction occurred",
                 (prev) => ({
                   ...prev,
                   ledger: [...prev.ledger, e],
@@ -941,7 +955,7 @@ export function FinancialDocument({
         </span>
         <strong>{displayMoney(doc.totalMinor, doc.currency)}</strong>
       </div>
-      <footer>DEMO · {data.settings.footer}</footer>
+      <footer>{data.settings.footer}</footer>
     </article>
   )
 }

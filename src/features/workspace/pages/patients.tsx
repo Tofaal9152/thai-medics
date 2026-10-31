@@ -95,7 +95,7 @@ export default function PatientsPage() {
       { accessorKey: "source", header: "Source" },
       {
         id: "open",
-        header: "",
+        header: "Action",
         cell: ({ row }) => (
           <Link
             to="/patients/$caseId"

@@ -26,6 +26,28 @@ export type FieldDef = {
   step?: string
   full?: boolean
 }
+
+function fieldPlaceholder(field: FieldDef) {
+  if (field.placeholder) return field.placeholder
+  // Native date/time controls use their browser-provided format prompts.
+  if (["date", "time", "datetime-local", "select"].includes(field.type || ""))
+    return undefined
+  if (field.type === "email") return "e.g. name@example.com"
+  if (field.type === "tel") return "e.g. +880 1700 000000"
+  if (field.type === "password") return "Enter your password"
+  if (field.key === "code") return "Enter the 6-digit code"
+  if (field.type === "number") {
+    if (/rate|percent|discount/i.test(field.key)) return "e.g. 5"
+    if (/fx|exchange/i.test(field.key)) return "e.g. 1.00"
+    return "e.g. 100"
+  }
+  const label = field.label
+    .replace(/\s*\([^)]*\)/g, "")
+    .replace(/\s*\*$/, "")
+    .trim()
+    .toLowerCase()
+  return `${field.type === "textarea" ? "Add" : "Enter"} ${label}…`
+}
 export function RecordForm({
   fields,
   initial = {},
@@ -114,7 +136,7 @@ export function RecordForm({
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
-                    placeholder={f.placeholder}
+                    placeholder={fieldPlaceholder(f)}
                   />
                 ) : (
                   <Input
@@ -124,7 +146,7 @@ export function RecordForm({
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
-                    placeholder={f.placeholder}
+                    placeholder={fieldPlaceholder(f)}
                     min={f.min}
                     step={f.step || (f.type === "number" ? "any" : undefined)}
                   />

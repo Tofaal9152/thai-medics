@@ -14,7 +14,7 @@ import CaseFiles from "../components/case-files"
 import { RecordForm } from "../components/form"
 import { choices } from "../form-options"
 import { Badge, Empty, Metric, PageHeader, Panel } from "../components/ui"
-function PortalFrame({
+export function PortalFrame({
   title,
   children,
 }: {
@@ -36,7 +36,7 @@ function PortalFrame({
         </Link>
         <div className="ws-actions">
           <Link to="/login" className="ws-inline-link">
-            Switch demo user
+            Switch user
           </Link>
           {session.authenticated && (
             <Button
@@ -82,15 +82,15 @@ export default function LoginPage({
     let candidate: DemoSession
     if (mode === "Staff" || mode === "Invitation") {
       const staff = data.collections.staff.find((s) => s.id === v.staffId)
-      if (!staff) throw new Error("Choose a demo staff member.")
+      if (!staff) throw new Error("Choose a staff member.")
       if (staff.values.status === "Inactive")
         throw new Error("This account is inactive.")
       if (mode === "Staff" && staff.values.status === "Invited")
-        throw new Error("Accept the demo invitation first.")
+        throw new Error("Accept the invitation first.")
       if (mode === "Invitation") {
         if (staff.values.status !== "Invited")
           throw new Error("Choose a pending invitation.")
-        commit("Demo invitation accepted", (prev) => ({
+        commit("invitation accepted", (prev) => ({
           ...prev,
           collections: {
             ...prev.collections,
@@ -134,7 +134,7 @@ export default function LoginPage({
       const agent = data.collections.agents.find(
         (a) => a.id === v.agentId && a.values.status === "Active"
       )
-      if (!agent) throw new Error("Choose an active demo agent.")
+      if (!agent) throw new Error("Choose an active agent.")
       if (agent.values.email.toLowerCase() !== v.email.toLowerCase())
         throw new Error("Use the selected fictional agent’s email.")
       candidate = {
@@ -158,7 +158,7 @@ export default function LoginPage({
   const patient = data.patients[0],
     agent = data.collections.agents[0]
   return (
-    <PortalFrame title="Demo account access">
+    <PortalFrame title="account access">
       <section className="ws-login-wrap">
         <div className="ws-login-story">
           <span>
@@ -177,12 +177,10 @@ export default function LoginPage({
             <li>Case progress, documents and appointments</li>
             <li>Patient accounts and referral statements</li>
           </ul>
-          <Badge tone="amber">Demo codes are shown on screen</Badge>
+          <Badge tone="amber">Verification codes are shown on screen</Badge>
         </div>
         <div className="ws-login-card">
-          <h2>
-            {pending ? "Verify demo access" : "Welcome to Thai Medical Desk"}
-          </h2>
+          <h2>{pending ? "Verify access" : "Welcome to Thai Medical Desk"}</h2>
           <p>
             {pending
               ? "Enter 123456. No SMS or email is sent."
@@ -211,7 +209,7 @@ export default function LoginPage({
                           label:
                             mode === "Invitation"
                               ? "Pending invitation"
-                              : "Demo staff member",
+                              : "staff member",
                           type: "select",
                           required: true,
                           options: staffOptions,
@@ -220,7 +218,7 @@ export default function LoginPage({
                           ? [
                               {
                                 key: "password",
-                                label: "Demo password (use any text)",
+                                label: "password (use any text)",
                                 type: "password" as const,
                                 required: true,
                               },
@@ -258,7 +256,7 @@ export default function LoginPage({
                       : [
                           {
                             key: "agentId",
-                            label: "Demo agent",
+                            label: "agent",
                             type: "select",
                             required: true,
                             options: data.collections.agents
@@ -287,32 +285,37 @@ export default function LoginPage({
                 onSave={request}
                 submitLabel={
                   mode === "Invitation"
-                    ? "Accept demo invitation"
-                    : "Continue to demo verification"
+                    ? "Accept invitation"
+                    : "Continue to verification"
                 }
               />
-              <p className="ws-form-hint">
-                Family access here is a demonstration only. Real access requires
-                the patient’s authorisation.
-              </p>
+              {mode === "Patient" && (
+                <div className="ws-login-access-note">
+                  <ShieldCheck size={17} aria-hidden="true" />
+                  <p>
+                    Family access is for demonstration only. Real access
+                    requires the patient’s authorisation.
+                  </p>
+                </div>
+              )}
             </>
           ) : (
             <>
-              <Badge tone="green">Demo verification code: 123456</Badge>
+              <Badge tone="green">verification code: 123456</Badge>
               <RecordForm
                 fields={[
                   {
                     key: "code",
                     label:
                       mode === "Staff"
-                        ? "Two-factor demo code"
-                        : "Phone / email demo code",
+                        ? "Two-factor code"
+                        : "Phone / email code",
                     required: true,
                   },
                 ]}
                 onSave={(v) => {
                   if (v.code !== "123456")
-                    throw new Error("Use the demo code 123456.")
+                    throw new Error("Use the code 123456.")
                   finish(pending)
                 }}
                 submitLabel="Verify and open workspace"
@@ -322,9 +325,20 @@ export default function LoginPage({
               </Button>
             </>
           )}
-          <Link to="/inquiry" className="ws-inline-link">
-            New patient? Make an inquiry →
-          </Link>
+          <div className="ws-login-links">
+            <Link to="/inquiry">
+              <span>New patient?</span>
+              <strong>
+                Make an inquiry <span aria-hidden="true">→</span>
+              </strong>
+            </Link>
+            <Link to="/agent-registration">
+              <span>Become an agent?</span>
+              <strong>
+                Register here <span aria-hidden="true">→</span>
+              </strong>
+            </Link>
+          </div>
         </div>
       </section>
     </PortalFrame>
@@ -340,7 +354,7 @@ export function PatientPortal() {
     return (
       <PortalFrame title="Patient & family portal">
         <Empty>
-          Your demo case is not available. Please choose a patient again.
+          Your case is not available. Please choose a patient again.
         </Empty>
       </PortalFrame>
     )
@@ -371,7 +385,7 @@ export function PatientPortal() {
             Math.round((p.billed - p.paid) * 100),
             p.currency
           )}
-          note="Demo patient account"
+          note="patient account"
         />
       </div>
       <nav className="ws-case-tabs" aria-label="Patient portal sections">
@@ -550,10 +564,13 @@ export function AgentPortal() {
   if (!session.authenticated || session.role !== "Agent")
     return <LoginPage initialMode="Agent" />
   const agent = data.collections.agents.find((a) => a.id === session.agentId)
-  if (!agent)
+  if (!agent || agent.values.status !== "Active")
     return (
       <PortalFrame title="Agent portal">
-        <Empty>This agent is unavailable.</Empty>
+        <Empty>
+          This agent account is pending approval or inactive. Please contact the
+          desk.
+        </Empty>
       </PortalFrame>
     )
   const cases = data.patients.filter(
@@ -789,7 +806,7 @@ export function InquiryPage() {
         ],
       },
     }))
-    setSubmitted(`Your demo inquiry has been recorded. Reference: ${p.id}`)
+    setSubmitted(`Your inquiry has been recorded. Reference: ${p.id}`)
   }
   return (
     <PortalFrame title="Patient inquiry">
@@ -808,8 +825,8 @@ export function InquiryPage() {
             <p>Bangla and English support</p>
           </div>
           <small>
-            Demo form: use fictional information only. This website does not
-            provide diagnoses or treatment recommendations.
+            form: use fictional information only. This website does not provide
+            diagnoses or treatment recommendations.
           </small>
         </div>
         <Panel
@@ -817,10 +834,10 @@ export function InquiryPage() {
         >
           {submitted ? (
             <div className="ws-detail-body">
-              <Badge tone="green">Saved in this demo browser</Badge>
+              <Badge tone="green">Saved in this browser</Badge>
               <p>{submitted}</p>
               <Button variant="outline" onClick={() => setSubmitted("")}>
-                Make another demo inquiry
+                Make another inquiry
               </Button>
               <Link to="/patient-portal" className="ws-inline-link">
                 Open patient portal →
@@ -847,7 +864,7 @@ export function InquiryPage() {
                 },
               ]}
               onSave={submit}
-              submitLabel="Submit demo inquiry"
+              submitLabel="Submit inquiry"
             />
           )}
         </Panel>

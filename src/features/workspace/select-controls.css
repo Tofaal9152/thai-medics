@@ -5,14 +5,14 @@
   height: auto;
   max-width: 100%;
   padding: 10px 40px 10px 14px;
-  border: 1px solid #ded3e6;
+  border: 1px solid #ddd7e2;
   border-radius: 8px;
-  background-color: #fff;
+  background-color: #f8f9f7;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23806d8b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
   background-size: 16px;
-  color: #614b70;
+  color: #5f5368;
   font-family: inherit;
   font-size: 14px !important;
   line-height: 1.5;
@@ -21,20 +21,20 @@
   transition: border-color 150ms, box-shadow 150ms;
 }
 :is(.medical-app, .medical-modal) select:hover:not(:disabled) {
-  border-color: #bc9eb7;
+  border-color: #b5a5b2;
 }
 :is(.medical-app, .medical-modal) select:focus-visible {
-  outline: 2px solid #a84170;
+  outline: 2px solid #915872;
   outline-offset: 2px;
 }
 :is(.medical-app, .medical-modal) select:disabled {
-  background-color: #f5f2f7;
-  color: #8b7c94;
+  background-color: #f0eef2;
+  color: #6f6a71;
   cursor: not-allowed;
 }
 :is(.medical-app, .medical-modal) select option {
-  background: #fff;
-  color: #614b70;
+  background: #f8f9f7;
+  color: #5f5368;
   font-size: 14px;
 }
 .medical-app .ws-select {
@@ -45,14 +45,14 @@
   width: 100%;
   padding: 10px 40px 10px 14px;
 }
-.medical-app :is(.filter-select, .office-select) {
+.medical-app:is(.filter-select, .office-select) {
   height: auto;
   min-height: 44px;
   padding: 0 0 0 12px;
   gap: 6px;
-  background: #fff;
+  background: #f8f9f7;
 }
-.medical-app :is(.filter-select, .office-select) > select {
+.medical-app:is(.filter-select, .office-select) > select {
   min-width: 150px;
   max-width: 240px;
   padding-left: 6px;
@@ -62,14 +62,14 @@
 .medical-app .period-select > select {
   max-width: 200px;
 }
-.medical-app :is(.ws-office, .ws-language, .language-select) select {
+.medical-app:is(.ws-office, .ws-language, .language-select) select {
   min-height: 38px;
   max-width: none;
   padding: 7px 32px 7px 10px;
   background-position: right 10px center;
   font-size: 13px !important;
-  border: 1px solid #e5dce9;
-  background-color: #fff;
+  border: 1px solid #e4dfe6;
+  background-color: #f8f9f7;
 }
 @media (max-width: 640px) {
   :is(.medical-app, .medical-modal) select {
@@ -78,12 +78,12 @@
   .medical-app .ws-select {
     min-width: 0;
   }
-  .medical-app :is(.filter-select, .office-select) > select {
+  .medical-app:is(.filter-select, .office-select) > select {
     min-width: 0;
     width: 100%;
     max-width: 100%;
   }
-  .medical-app :is(.ws-office, .ws-language, .language-select) select {
+  .medical-app:is(.ws-office, .ws-language, .language-select) select {
     font-size: 16px !important;
   }
 }

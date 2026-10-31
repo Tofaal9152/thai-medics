@@ -225,9 +225,7 @@ export function createDemoData(): DashboardData {
       created: dayOffset(-i - 1),
       appointment: i < 9 && stage > 1 && stage < 7 ? dayOffset(i % 4) : "",
       time: ["09:30", "10:00", "11:15", "14:00"][i % 4],
-      doctor: ["Dr. Ananda (Demo)", "Dr. Siri (Demo)", "Dr. Chai (Demo)"][
-        i % 3
-      ],
+      doctor: ["Dr. Ananda", "Dr. Siri", "Dr. Chai"][i % 3],
       arrival: stage === 5 ? dayOffset((i % 3) + 1) : "",
       currency,
       billed,

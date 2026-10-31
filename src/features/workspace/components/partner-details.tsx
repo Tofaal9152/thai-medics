@@ -99,7 +99,7 @@ export default function PartnerDetails({
           }
           onClick={() => {
             if (!can("hospital")) return
-            commit("Second opinion request recorded (demo)", (prev) => ({
+            commit("Second opinion request recorded", (prev) => ({
               ...prev,
               quoteRequests: [
                 ...prev.quoteRequests,
@@ -119,7 +119,7 @@ export default function PartnerDetails({
             }))
           }}
         >
-          Record second opinion request (demo)
+          Record second opinion request
         </Button>
       </section>
     )

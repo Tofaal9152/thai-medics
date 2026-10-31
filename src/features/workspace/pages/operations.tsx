@@ -1,3 +1,4 @@
+import { featureFlags } from "../feature-flags"
 import QuoteComparison from "../components/quote-comparison"
 import { useMemo, useState } from "react"
 import type { ColumnDef } from "@tanstack/react-table"
@@ -404,15 +405,22 @@ export function AccountsPage() {
             currency
           ),
       },
-      {
-        id: "supplier",
-        header: "Supplier due",
-        cell: ({ row }) =>
-          displayMoney(Math.round(row.original.supplierDue * 100), currency),
-      },
+      ...(featureFlags.suppliers
+        ? [
+            {
+              id: "supplier",
+              header: "Supplier due",
+              cell: ({ row }) =>
+                displayMoney(
+                  Math.round(row.original.supplierDue * 100),
+                  currency
+                ),
+            } satisfies ColumnDef<Patient>,
+          ]
+        : []),
       {
         id: "action",
-        header: "",
+        header: "Action",
         cell: ({ row }) => (
           <Button
             variant="outline"
@@ -469,8 +477,13 @@ export function AccountsPage() {
           value={displayMoney(s.paid, currency)}
         />
         <Metric
-          label="Supplier outstanding"
-          value={displayMoney(s.supplierDue, currency)}
+          label={
+            featureFlags.suppliers ? "Supplier outstanding" : "Patient balance"
+          }
+          value={displayMoney(
+            featureFlags.suppliers ? s.supplierDue : s.balance,
+            currency
+          )}
         />
         <Metric
           label="Invoiced profit"
@@ -522,7 +535,7 @@ export function AuditPage() {
     <div className="workspace-page">
       <PageHeader
         title="Audit history"
-        description="A chronological demo history of case, financial and access changes."
+        description="A chronological history of case, financial and access changes."
       />
       <Panel>
         <DataList
@@ -551,7 +564,7 @@ export function AuditPage() {
         </DataList>
       </Panel>
       <p className="ws-form-hint">
-        This demo history is browser-local. Production requires a server-written
+        This history is browser-local. Production requires a server-written
         append-only audit log.
       </p>
     </div>
@@ -753,7 +766,11 @@ export function ReportsPage() {
       </div>
       <Panel
         title={`Revenue & profit by ${group.toLowerCase()}`}
-        subtitle="Currencies remain separate. Figures use invoiced charges and recorded supplier costs."
+        subtitle={
+          featureFlags.suppliers
+            ? "Currencies remain separate. Figures use invoiced charges and recorded supplier costs."
+            : "Currencies remain separate. Revenue uses invoiced charges."
+        }
         actions={
           <select
             className="ws-select"
@@ -850,7 +867,7 @@ export function SettingsPage() {
     <div className="workspace-page">
       <PageHeader
         title="System information & settings"
-        description="Company details, frontend capabilities and the fictional demo workspace."
+        description="Company details, frontend capabilities and the fictional workspace."
       />
       <Panel
         title="Billing document settings"
@@ -894,21 +911,19 @@ export function SettingsPage() {
               Case management across nine stages, with records, handovers and
               follow-ups.
             </li>
-            <li>Hospital, doctor, agent, supplier and package records.</li>
+            <li>Hospital, doctor, agent and package records.</li>
+            {featureFlags.suppliers && <li>Supplier and vendor records.</li>}
             <li>
               Visa checklists, inquiry conversion, message scheduling and ground
               services.
             </li>
-            <li>
-              Quotations, locked invoices, payments, supplier costs and
-              reversals.
-            </li>
+            <li>Quotations, locked invoices, payments and reversals.</li>
             <li>
               Patient and agent portals, aftercare, reports and Excel exports.
             </li>
           </ul>
           <p className="ws-warning">
-            Demo only: sign-in/OTP, hospital requests, message delivery and
+            Simulated: sign-in/OTP, hospital requests, message delivery and
             payments are simulations. Data and uploaded fictional files stay in
             this browser. No backend or external services are connected.
           </p>
@@ -917,12 +932,10 @@ export function SettingsPage() {
             records, private file storage, an append-only audit history,
             approved financial rules and external integrations.
           </p>
-          <p>
-            Open any patient case to follow its full journey.
-          </p>
+          <p>Open any patient case to follow its full journey.</p>
           <div className="ws-actions">
             <Button variant="outline" onClick={() => setConfirm(true)}>
-              Reset all demo records
+              Reset all records
             </Button>
             <Link to="/inquiry" className="ws-inline-link">
               Open public inquiry form →
@@ -932,8 +945,8 @@ export function SettingsPage() {
       </Panel>
       {confirm && (
         <Modal
-          title="Restore the demo workspace?"
-          description="This replaces browser-local demo records with the original fictional data. Previously uploaded file bytes remain local, but their records are removed."
+          title="Restore the workspace?"
+          description="This replaces browser-local records with the original fictional data. Previously uploaded file bytes remain local, but their records are removed."
           onClose={() => setConfirm(false)}
         >
           <div className="ws-form-footer">
@@ -946,7 +959,7 @@ export function SettingsPage() {
                 setConfirm(false)
               }}
             >
-              Reset demo records
+              Reset records
             </Button>
           </div>
         </Modal>

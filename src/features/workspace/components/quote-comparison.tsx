@@ -28,7 +28,7 @@ export default function QuoteComparison({
     chosen = data.quoteRequests.find((q) => q.id === chooseId)
   function request() {
     if (!canManage || !patient || !hospitals.length) return
-    commit("Hospital quote requests recorded (demo)", (prev) => ({
+    commit("Hospital quote requests recorded", (prev) => ({
       ...prev,
       quoteRequests: [
         ...prev.quoteRequests,
@@ -61,7 +61,7 @@ export default function QuoteComparison({
               ...p,
               notes: [
                 ...p.notes,
-                `[DEMO] Report-sharing requests recorded for ${hospitals.length} hospitals.`,
+                `Report-sharing requests recorded for ${hospitals.length} hospitals.`,
               ],
             }
           : p
@@ -243,7 +243,7 @@ export default function QuoteComparison({
               onClick={request}
               disabled={!hospitals.length || !canManage}
             >
-              Record report requests (demo)
+              Record report requests
             </Button>
           </>
         )}

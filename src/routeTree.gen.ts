@@ -16,6 +16,7 @@ import { Route as AuthedAdminRouteRouteImport } from './routes/_authed/admin/rou
 import { Route as AuthedStudentRouteRouteImport } from './routes/_authed/student/route'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
 import { Route as PublicAgentPortalRouteImport } from './routes/_public/agent-portal'
+import { Route as PublicAgentRegistrationRouteImport } from './routes/_public/agent-registration'
 import { Route as PublicInquiryRouteImport } from './routes/_public/inquiry'
 import { Route as PublicLoginRouteImport } from './routes/_public/login'
 import { Route as PublicPatientPortalRouteImport } from './routes/_public/patient-portal'
@@ -60,6 +61,11 @@ const PublicIndexRoute = PublicIndexRouteImport.update({
 const PublicAgentPortalRoute = PublicAgentPortalRouteImport.update({
   id: '/agent-portal',
   path: '/agent-portal',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
+const PublicAgentRegistrationRoute = PublicAgentRegistrationRouteImport.update({
+  id: '/agent-registration',
+  path: '/agent-registration',
   getParentRoute: () => PublicRouteRoute,
 } as any)
 const PublicInquiryRoute = PublicInquiryRouteImport.update({
@@ -130,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthedAdminRouteRouteWithChildren
   '/student': typeof AuthedStudentRouteRouteWithChildren
   '/agent-portal': typeof PublicAgentPortalRoute
+  '/agent-registration': typeof PublicAgentRegistrationRoute
   '/inquiry': typeof PublicInquiryRoute
   '/login': typeof PublicLoginRoute
   '/patient-portal': typeof PublicPatientPortalRoute
@@ -147,6 +154,7 @@ export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
   '/agent-portal': typeof PublicAgentPortalRoute
+  '/agent-registration': typeof PublicAgentRegistrationRoute
   '/inquiry': typeof PublicInquiryRoute
   '/login': typeof PublicLoginRoute
   '/patient-portal': typeof PublicPatientPortalRoute
@@ -168,6 +176,7 @@ export interface FileRoutesById {
   '/_authed/admin': typeof AuthedAdminRouteRouteWithChildren
   '/_authed/student': typeof AuthedStudentRouteRouteWithChildren
   '/_public/agent-portal': typeof PublicAgentPortalRoute
+  '/_public/agent-registration': typeof PublicAgentRegistrationRoute
   '/_public/inquiry': typeof PublicInquiryRoute
   '/_public/login': typeof PublicLoginRoute
   '/_public/patient-portal': typeof PublicPatientPortalRoute
@@ -190,6 +199,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/student'
     | '/agent-portal'
+    | '/agent-registration'
     | '/inquiry'
     | '/login'
     | '/patient-portal'
@@ -207,6 +217,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/agent-portal'
+    | '/agent-registration'
     | '/inquiry'
     | '/login'
     | '/patient-portal'
@@ -227,6 +238,7 @@ export interface FileRouteTypes {
     | '/_authed/admin'
     | '/_authed/student'
     | '/_public/agent-portal'
+    | '/_public/agent-registration'
     | '/_public/inquiry'
     | '/_public/login'
     | '/_public/patient-portal'
@@ -297,6 +309,13 @@ declare module '@tanstack/react-router' {
       path: '/agent-portal'
       fullPath: '/agent-portal'
       preLoaderRoute: typeof PublicAgentPortalRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
+    '/_public/agent-registration': {
+      id: '/_public/agent-registration'
+      path: '/agent-registration'
+      fullPath: '/agent-registration'
+      preLoaderRoute: typeof PublicAgentRegistrationRouteImport
       parentRoute: typeof PublicRouteRoute
     }
     '/_public/inquiry': {
@@ -424,6 +443,7 @@ const AuthedRouteRouteWithChildren = AuthedRouteRoute._addFileChildren(
 
 interface PublicRouteRouteChildren {
   PublicAgentPortalRoute: typeof PublicAgentPortalRoute
+  PublicAgentRegistrationRoute: typeof PublicAgentRegistrationRoute
   PublicInquiryRoute: typeof PublicInquiryRoute
   PublicLoginRoute: typeof PublicLoginRoute
   PublicPatientPortalRoute: typeof PublicPatientPortalRoute
@@ -435,6 +455,7 @@ interface PublicRouteRouteChildren {
 
 const PublicRouteRouteChildren: PublicRouteRouteChildren = {
   PublicAgentPortalRoute: PublicAgentPortalRoute,
+  PublicAgentRegistrationRoute: PublicAgentRegistrationRoute,
   PublicInquiryRoute: PublicInquiryRoute,
   PublicLoginRoute: PublicLoginRoute,
   PublicPatientPortalRoute: PublicPatientPortalRoute,

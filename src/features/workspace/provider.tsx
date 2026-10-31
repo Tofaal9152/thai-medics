@@ -42,7 +42,7 @@ export default function WorkspaceProvider({
     } catch {
       toast.add({
         title: "Storage could not be saved",
-        description: "Your current demo changes will last until reload.",
+        description: "Your current changes will last until reload.",
         type: "warning",
       })
     }
@@ -153,7 +153,7 @@ export default function WorkspaceProvider({
   function reset() {
     setData(seedWorkspace())
     setOffice("All offices")
-    toast.add({ title: "All fictional demo records restored", type: "success" })
+    toast.add({ title: "All fictional records restored", type: "success" })
   }
   return (
     <WorkspaceContext.Provider

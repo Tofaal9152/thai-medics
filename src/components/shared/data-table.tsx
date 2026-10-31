@@ -50,6 +50,10 @@ export default function DataTable<T>({
                 <th
                   key={header.id}
                   scope="col"
+                  data-action-column={
+                    ["action", "actions", "open"].includes(header.column.id) ||
+                    undefined
+                  }
                   aria-sort={
                     header.column.getIsSorted() === "asc"
                       ? "ascending"
@@ -98,7 +102,13 @@ export default function DataTable<T>({
             table.getRowModel().rows.map((row) => (
               <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id}>
+                  <td
+                    key={cell.id}
+                    data-action-column={
+                      ["action", "actions", "open"].includes(cell.column.id) ||
+                      undefined
+                    }
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

@@ -57,7 +57,7 @@ export default function DashboardDialog({
       <div className="modal-content">
         <header className="modal-heading">
           <div>
-            <span className="eyebrow">THAI MEDICS · DEMO</span>
+            <span className="eyebrow">THAI MEDICS</span>
             <h2 id="dialog-heading">{title}</h2>
             {description && <p>{description}</p>}
           </div>
@@ -305,7 +305,7 @@ export function NewCaseForm({
       </form.Subscribe>
       <p className="form-note">
         {t(
-          "Fictional demo data only. This desk does not provide medical advice.",
+          "Fictional data only. This desk does not provide medical advice.",
           "শুধু কাল্পনিক ডেমো তথ্য। এই সিস্টেম চিকিৎসা পরামর্শ দেয় না।"
         )}
       </p>
@@ -637,10 +637,7 @@ export function CaseDetails({
             </h4>
             <div className="billing-detail-row">
               <span>
-                {t(
-                  "Total charges (demo estimate)",
-                  "মোট চার্জ (ডেমো প্রাক্কলন)"
-                )}
+                {t("Total charges (estimate)", "মোট চার্জ (ডেমো প্রাক্কলন)")}
               </span>
               <strong>{formatMoney(p.billed, p.currency)}</strong>
             </div>
@@ -664,7 +661,7 @@ export function CaseDetails({
       <footer className="modal-footer">
         <span className="form-note">
           {t(
-            "Demo changes are saved in this browser.",
+            "changes are saved in this browser.",
             "ডেমো পরিবর্তন এই ব্রাউজারে সংরক্ষিত হয়।"
           )}
         </span>

@@ -1,3 +1,12 @@
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { featureFlags } from "../feature-flags"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useLocation, useNavigate } from "@tanstack/react-router"
@@ -6,7 +15,6 @@ import {
   BookOpen,
   Building2,
   CalendarDays,
-  ChevronDown,
   Cross,
   FileCheck2,
   Globe2,
@@ -14,10 +22,11 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  Mail,
   MessageSquare,
   Package,
   Plane,
-  Search,
+  UserRound,
   Shield,
   Stethoscope,
   Truck,
@@ -75,6 +84,12 @@ const links: { key: string; label: string; icon: LucideIcon; group: string }[] =
       key: "messages",
       label: "Messaging & reminders",
       icon: MessageSquare,
+      group: "Patient journey",
+    },
+    {
+      key: "promotions",
+      label: "Newsletter & promotions",
+      icon: Mail,
       group: "Patient journey",
     },
     {
@@ -146,12 +161,10 @@ const links: { key: string; label: string; icon: LucideIcon; group: string }[] =
   ]
 export default function WorkspaceLayout({ children }: { children: ReactNode }) {
   const { t } = useTranslation()
-  const { data, session, setSession, office, setOffice, can } =
-    useWorkspace()
+  const { data, session, setSession, can } = useWorkspace()
   const location = useLocation()
   const navigate = useNavigate()
-  const [mobile, setMobile] = useState(false),
-    [search, setSearch] = useState("")
+  const [mobile, setMobile] = useState(false)
   useEffect(() => {
     const key = location.pathname.split("/").at(-1)
     const title =
@@ -167,6 +180,7 @@ export default function WorkspaceLayout({ children }: { children: ReactNode }) {
     "/login",
     "/patient-portal",
     "/agent-portal",
+    "/agent-registration",
     "/inquiry",
   ].some((path) => location.pathname.startsWith(path))
   if (portal) return <div className="medical-app ws-standalone">{children}</div>
@@ -177,6 +191,7 @@ export default function WorkspaceLayout({ children }: { children: ReactNode }) {
         ? "patients"
         : location.pathname.split("/").at(-1) || "overview"
   const allowed = (key: string) => {
+    if (key === "promotions") return can("messages")
     if (key === "accounts") return can("acctView")
     if (key === "reports") return can("reports")
     if (key === "audit") return can("audit")
@@ -191,7 +206,10 @@ export default function WorkspaceLayout({ children }: { children: ReactNode }) {
     session.role !== "Patient" &&
     session.role !== "Agent" &&
     allowed(current)
-  const visibleLinks = links.filter((item) => allowed(item.key))
+  const visibleLinks = links.filter(
+    (item) =>
+      allowed(item.key) && (item.key !== "suppliers" || featureFlags.suppliers)
+  )
   return (
     <div className="medical-app ws-app">
       {mobile && (
@@ -213,19 +231,13 @@ export default function WorkspaceLayout({ children }: { children: ReactNode }) {
             <small>MEDICAL DESK</small>
           </div>
         </Link>
-        <div className="ws-workspace">
-          <Building2 size={17} />
-          <div>
-            Medical tourism desk<small>Bangladesh & Thailand</small>
-          </div>
-          <button
-            className="icon-button mobile-close"
-            aria-label="Close menu"
-            onClick={() => setMobile(false)}
-          >
-            <X size={18} />
-          </button>
-        </div>
+        <button
+          className="icon-button mobile-close ws-menu-close"
+          aria-label="Close menu"
+          onClick={() => setMobile(false)}
+        >
+          <X size={18} />
+        </button>
         <nav aria-label="Main navigation">
           {visibleLinks.map(({ key, label, icon: Icon, group }, index) => {
             const heading =
@@ -260,12 +272,6 @@ export default function WorkspaceLayout({ children }: { children: ReactNode }) {
             )
           })}
         </nav>
-        <div className="ws-sidebar-portals">
-          <span className="nav-caption">EXTERNAL ACCESS</span>
-          <Link to="/patient-portal">Patient & family portal ↗</Link>
-          <Link to="/agent-portal">Agent portal ↗</Link>
-          <Link to="/inquiry">Public inquiry form ↗</Link>
-        </div>
         <div className="ws-user">
           <span className="user-avatar">
             {session.name
@@ -276,11 +282,11 @@ export default function WorkspaceLayout({ children }: { children: ReactNode }) {
           </span>
           <div>
             {session.name}
-            <small>{session.role} · Demo access</small>
+            <small>{session.role} · access</small>
           </div>
           <button
             className="icon-button"
-            aria-label="Sign out of demo"
+            aria-label="Sign out"
             onClick={() => {
               setSession((s) => ({ ...s, authenticated: false }))
               void navigate({ to: "/login" })
@@ -307,41 +313,59 @@ export default function WorkspaceLayout({ children }: { children: ReactNode }) {
             </strong>
           </div>
           <div className="ws-toptools">
-            <form
-              className="ws-header-search"
-              onSubmit={(e) => {
-                e.preventDefault()
-                void navigate({
-                  to: "/workspace/$module",
-                  params: { module: "patients" },
-                  search: { q: search },
-                })
-              }}
-            >
-              <Search size={15} />
-              <input
-                aria-label="Search patients globally"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Find a patient…"
-              />
-            </form>
-            <label className="ws-office">
-              <Building2 size={14} />
-              <select
-                aria-label="Handling office"
-                value={office}
-                onChange={(e) => setOffice(e.target.value as typeof office)}
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                className="ws-profile-trigger"
+                aria-label="Open profile menu"
               >
-                <option>All offices</option>
-                <option>Bangladesh</option>
-                <option>Thailand</option>
-              </select>
-            </label>
-            <Link to="/login" className="ws-role-pill">
-              {session.role}
-              <ChevronDown size={12} />
-            </Link>
+                <UserRound size={20} aria-hidden="true" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                sideOffset={10}
+                className="ws-profile-menu"
+              >
+                <div className="ws-profile-details">
+                  <span className="ws-profile-avatar" aria-hidden="true">
+                    {session.name
+                      .split(" ")
+                      .map((part) => part[0])
+                      .slice(0, 2)
+                      .join("")}
+                  </span>
+                  <div>
+                    <strong>{session.name}</strong>
+                    <span>{session.role}</span>
+                    {data.collections.staff.find(
+                      (staff) => staff.id === session.staffId
+                    )?.values.email && (
+                      <small>
+                        {
+                          data.collections.staff.find(
+                            (staff) => staff.id === session.staffId
+                          )?.values.email
+                        }
+                      </small>
+                    )}
+                  </div>
+                </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setSession((current) => ({
+                        ...current,
+                        authenticated: false,
+                      }))
+                      void navigate({ to: "/login" })
+                    }}
+                  >
+                    <LogOut size={16} aria-hidden="true" />
+                    Log out
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </header>
         {readable ? (
@@ -353,9 +377,9 @@ export default function WorkspaceLayout({ children }: { children: ReactNode }) {
                 ? "This workspace is not available for your current role."
                 : "You are signed out."}
             </h1>
-            <p>Choose a staff demo persona or open the appropriate portal.</p>
+            <p>Choose a staff persona or open the appropriate portal.</p>
             <Link to="/login" className="ws-inline-link">
-              Open demo sign-in →
+              Open sign-in →
             </Link>
           </div>
         )}

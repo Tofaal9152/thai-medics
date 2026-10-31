@@ -6,6 +6,7 @@ type ResolvedTheme = "dark" | "light"
 
 type ThemeProviderProps = {
   children: React.ReactNode
+  forcedTheme?: ResolvedTheme
   defaultTheme?: Theme
   storageKey?: string
   disableTransitionOnChange?: boolean
@@ -79,6 +80,7 @@ function isEditableTarget(target: EventTarget | null) {
 
 export function ThemeProvider({
   children,
+  forcedTheme,
   defaultTheme = "system",
   storageKey = "theme",
   disableTransitionOnChange = true,
@@ -95,10 +97,11 @@ export function ThemeProvider({
 
   const setTheme = React.useCallback(
     (nextTheme: Theme) => {
+      if (forcedTheme) return
       localStorage.setItem(storageKey, nextTheme)
       setThemeState(nextTheme)
     },
-    [storageKey]
+    [storageKey, forcedTheme]
   )
 
   const applyTheme = React.useCallback(
@@ -121,9 +124,9 @@ export function ThemeProvider({
   )
 
   React.useEffect(() => {
-    applyTheme(theme)
+    applyTheme(forcedTheme || theme)
 
-    if (theme !== "system") {
+    if (forcedTheme || theme !== "system") {
       return undefined
     }
 
@@ -137,9 +140,10 @@ export function ThemeProvider({
     return () => {
       mediaQuery.removeEventListener("change", handleChange)
     }
-  }, [theme, applyTheme])
+  }, [theme, forcedTheme, applyTheme])
 
   React.useEffect(() => {
+    if (forcedTheme) return
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.repeat) {
         return
@@ -177,7 +181,7 @@ export function ThemeProvider({
     return () => {
       window.removeEventListener("keydown", handleKeyDown)
     }
-  }, [storageKey])
+  }, [storageKey, forcedTheme])
 
   React.useEffect(() => {
     const handleStorageChange = (event: StorageEvent) => {
@@ -206,10 +210,10 @@ export function ThemeProvider({
 
   const value = React.useMemo(
     () => ({
-      theme,
+      theme: forcedTheme || theme,
       setTheme,
     }),
-    [theme, setTheme]
+    [theme, forcedTheme, setTheme]
   )
 
   return (

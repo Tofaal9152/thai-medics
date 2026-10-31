@@ -150,6 +150,6 @@ describe("dashboard demo", () => {
     expect(html).toContain("Complete Collect remaining imaging reports")
     expect(html).toContain("Export CSV")
     expect(html).toContain("Account currency")
-    expect(html).toContain("Fictional demo data")
+    expect(html).toContain("Fictional data")
   })
 })

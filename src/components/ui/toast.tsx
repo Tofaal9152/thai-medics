@@ -202,10 +202,30 @@ function Toaster({
   toastManager = toast,
   ...props
 }: ToastPrimitive.Provider.Props) {
+  const [portalContainer, setPortalContainer] = React.useState<HTMLElement | null>(null)
+
+  React.useEffect(() => {
+    // Native modal dialogs sit above every body-level z-index. Keep the single
+    // toast viewport inside the active dialog, including its focus boundary.
+    const syncContainer = () => {
+      const dialogs = document.querySelectorAll<HTMLDialogElement>("dialog[open]")
+      setPortalContainer(dialogs.item(dialogs.length - 1))
+    }
+    syncContainer()
+    const observer = new MutationObserver(syncContainer)
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["open"],
+    })
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <ToastProvider toastManager={toastManager} {...props}>
       {children}
-      <ToastPortal>
+      <ToastPortal container={portalContainer}>
         <ToastViewport>
           <ToastList />
         </ToastViewport>

@@ -1,3 +1,4 @@
+import { cleanSavedPresentation } from "./presentation-text"
 import { validateWorkspace } from "./schema"
 import {
   createDemoData,
@@ -42,7 +43,7 @@ export function seedWorkspace(
     record("hospital-1", {
       name: "Sample Bangkok Hospital",
       departments: "Cardiology, Orthopaedics",
-      accreditation: "Demo accreditation record",
+      accreditation: "accreditation record",
       location: "Bangkok, Thailand",
       contact: "International Patient Desk",
       email: "desk@hospital-a.example.test",
@@ -54,7 +55,7 @@ export function seedWorkspace(
     record("hospital-2", {
       name: "Sample Medical Centre",
       departments: "General medicine, Gynaecology",
-      accreditation: "Demo partner record",
+      accreditation: "partner record",
       location: "Bangkok, Thailand",
       contact: "International Care Team",
       email: "care@hospital-b.example.test",
@@ -66,7 +67,7 @@ export function seedWorkspace(
     record("hospital-3", {
       name: "Sample International Hospital",
       departments: "Neurology, Health check-up",
-      accreditation: "Demo accreditation record",
+      accreditation: "accreditation record",
       location: "Bangkok, Thailand",
       contact: "Hospital Liaison Desk",
       email: "liaison@hospital-c.example.test",
@@ -79,7 +80,7 @@ export function seedWorkspace(
   collections.doctors = ["Ananda", "Siri", "Chai", "Pim", "Narin", "Kanya"].map(
     (name, i) =>
       record(`doctor-${i + 1}`, {
-        name: `Dr. ${name} (Demo)`,
+        name: `Dr. ${name}`,
         hospital: collections.hospitals[i % 3].id,
         specialty: [
           "Cardiology",
@@ -97,7 +98,7 @@ export function seedWorkspace(
   )
   collections.agents = [
     record("agent-1", {
-      name: "Dhaka Care Partners (Demo)",
+      name: "Dhaka Care Partners",
       district: "Dhaka",
       phone: "+880 1700 000901",
       email: "dhaka@agent.example.test",
@@ -108,7 +109,7 @@ export function seedWorkspace(
       status: "Active",
     }),
     record("agent-2", {
-      name: "Sylhet Referral Desk (Demo)",
+      name: "Sylhet Referral Desk",
       district: "Sylhet",
       phone: "+880 1700 000902",
       email: "sylhet@agent.example.test",
@@ -122,12 +123,12 @@ export function seedWorkspace(
   ]
   collections.suppliers = [
     "Bangkok Stay Apartments",
-    "Demo Air Services",
+    "Air Services",
     "Care Transfer Team",
     "Bengali–Thai Interpreters",
   ].map((name, i) =>
     record(`supplier-${i + 1}`, {
-      name: `${name} (Demo)`,
+      name: `${name}`,
       category: ["Accommodation", "Airline", "Transport", "Interpreter"][i],
       location: "Bangkok",
       phone: "+66 00 000 001" + i,
@@ -157,7 +158,7 @@ export function seedWorkspace(
   )
   collections.leads = [
     record("lead-1", {
-      name: "[DEMO] Farida Hasan",
+      name: "Farida Hasan",
       phone: "+880 1700 000801",
       source: "Facebook",
       need: "Family requests a general consultation.",
@@ -168,7 +169,7 @@ export function seedWorkspace(
       caseId: "",
     }),
     record("lead-2", {
-      name: "[DEMO] Hasan Ali",
+      name: "Hasan Ali",
       phone: "+880 1700 000802",
       source: "Website",
       need: "Orthopaedic second opinion.",
@@ -179,7 +180,7 @@ export function seedWorkspace(
       caseId: "",
     }),
     record("lead-3", {
-      name: "[DEMO] Rima Akter",
+      name: "Rima Akter",
       phone: "+880 1700 000803",
       source: "Walk-in",
       need: "Health check-up.",
@@ -204,7 +205,7 @@ export function seedWorkspace(
   )
   collections.staff.push(
     record("staff-7", {
-      name: "Amina (Demo invite)",
+      name: "Amina (invite)",
       email: "amina@staff.example.test",
       phone: "",
       position: "Patient Coordinator",
@@ -221,17 +222,17 @@ export function seedWorkspace(
       email: `patient${i + 1}@example.test`,
       age: String(35 + (i % 30)),
       gender: i % 2 ? "Male" : "Female",
-      passport: `DEMO-P${String(i + 1).padStart(5, "0")}`,
-      companion: i % 2 ? "[DEMO] Family member" : "",
+      passport: `P${String(i + 1).padStart(5, "0")}`,
+      companion: i % 2 ? "Family member" : "",
       agentId:
         p.source === "Agent" ? `agent-${(Math.floor(i / 4) % 2) + 1}` : "",
       proposal: p.stage >= 3 ? "Accepted" : "Awaiting decision",
       submitted: p.stage > 1 ? dayOffset(-5) : "",
       responded: p.stage > 2 ? dayOffset(-3) : "",
       departure: p.arrival ? dayOffset(12) : "",
-      flight: p.arrival ? "XX 101 (Demo)" : "",
-      returnFlight: p.arrival ? "XX 102 (Demo)" : "",
-      accommodation: p.stage >= 4 ? "Bangkok Stay Apartments (Demo)" : "",
+      flight: p.arrival ? "XX 101" : "",
+      returnFlight: p.arrival ? "XX 102" : "",
+      accommodation: p.stage >= 4 ? "Bangkok Stay Apartments" : "",
       interpreter: p.stage >= 4 ? "Bengali–Thai" : "",
       airport: p.stage >= 5 ? "Arranged" : "Pending",
       transport: p.stage >= 5 ? "Arranged" : "Pending",
@@ -266,9 +267,9 @@ export function seedWorkspace(
     collections.visas.push(
       record("visa-attendant", {
         ...collections.visas[0].values,
-        name: "[DEMO] Accompanying family member",
+        name: "Accompanying family member",
         relation: "Attendant",
-        passport: "DEMO-ATTENDANT",
+        passport: "ATTENDANT",
         status: "Collecting documents",
         checked: "Passport copy",
       })
@@ -285,7 +286,7 @@ export function seedWorkspace(
         service: i % 2 ? "Hospital transfer" : "Airport pickup",
         supplier: "supplier-3",
         interpreter: "Ploy Anan",
-        pickup: "Demo arrival hall",
+        pickup: "arrival hall",
         destination: p.hospital,
         emergency: "+66 00 000 0099",
         onCall: "Somchai S.",
@@ -320,7 +321,7 @@ export function seedWorkspace(
       recipient: base.patients[0].phone,
       scheduled: "",
       audience: "Single patient",
-      status: "Demo sent",
+      status: "Sent",
     }),
     record("message-2", {
       name: "Document reminder",
@@ -349,10 +350,10 @@ export function seedWorkspace(
         kind,
         description:
           kind === "service"
-            ? "Demo coordination and travel charges"
+            ? "coordination and travel charges"
             : kind === "payment"
-              ? "Demo patient payment"
-              : "Demo supplier account",
+              ? "patient payment"
+              : "supplier account",
         currency: p.currency,
         rate: 1000000,
         originalMinor: Math.round(amount * 100),
@@ -391,6 +392,31 @@ export function seedWorkspace(
   return {
     ...base,
     version: 1,
+    ambulanceRequests: [0, 3, 5].map((patientIndex, i) => ({
+      id: `AA-DEMO-00${i + 1}`,
+      caseId: base.patients[patientIndex].id,
+      pickup: "referring hospital, Dhaka",
+      destination: "receiving hospital, Bangkok",
+      requestedAt: dayOffset(i + 1) + "T10:00",
+      timeZone: "Asia/Dhaka" as const,
+      familyContact: "family representative",
+      familyPhone: "+880 1700 000000",
+      hospitalContact: "hospital coordination desk",
+      coordinatorId: "staff-3",
+      notes:
+        "Fictional coordination request. Transfer arrangements must be confirmed separately.",
+      status: (["New request", "Coordinating", "Confirmed"] as const)[i],
+      fileIds: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      updates: [
+        {
+          text: "Fictional request recorded for demonstration",
+          by: "coordinator",
+          at: new Date().toISOString(),
+        },
+      ],
+    })),
     quoteRequests: collections.hospitals.map((h, i) => ({
       id: `quote-demo-${i}`,
       caseId: base.patients[3].id,
@@ -411,7 +437,7 @@ export function seedWorkspace(
             {
               id: `file-demo-${i}`,
               caseId: p.id,
-              name: "Sample_medical_report_DEMO.pdf",
+              name: "Sample_medical_report.pdf",
               category: "Medical report",
               date: dayOffset(-i - 1),
               by: p.coordinator,
@@ -430,7 +456,7 @@ export function seedWorkspace(
       phone: "+880 1700 000000",
       email: "desk@example.test",
       currency: "BDT",
-      footer: "DEMO DOCUMENT — fictional information only. Not a tax invoice.",
+      footer: "DOCUMENT — fictional information only. Not a tax invoice.",
     },
   }
 }
@@ -441,7 +467,7 @@ export function loadWorkspace(): WorkspaceData {
   try {
     const text = localStorage.getItem("thai-medics-full-demo-v1")
     if (text) {
-      const data = validateWorkspace(JSON.parse(text))
+      const data = validateWorkspace(cleanSavedPresentation(JSON.parse(text)))
       if (data) return data
     }
   } catch {

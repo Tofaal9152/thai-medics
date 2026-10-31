@@ -1,3 +1,4 @@
+import { registerAgent } from "../src/features/workspace/agent-registration"
 import { afterEach, describe, expect, test } from "bun:test"
 import { createElement } from "react"
 import { renderToString } from "react-dom/server"
@@ -77,8 +78,8 @@ describe("full frontend route rendering and demo access", () => {
       visas: "Medical visa desk",
       leads: "Lead &amp; inquiry hub",
       messages: "Messaging &amp; reminders",
+      promotions: "Newsletter &amp; promotions",
       packages: "Packages &amp; quote comparison",
-      suppliers: "Supplier &amp; vendor hub",
       ground: "Thailand ground services",
       aftercare: "Aftercare &amp; feedback",
       staff: "Staff &amp; permissions",
@@ -97,7 +98,108 @@ describe("full frontend route rendering and demo access", () => {
     )
     expect(await renderRoute("/inquiry")).toContain("Medical need")
     expect(await renderRoute("/login")).toContain(
-      "Continue to demo verification"
+      "Continue to verification"
+    )
+  })
+  test("supplier/vendor UI is on hold while patient billing and ground services remain available", async () => {
+    installSession()
+    const held = await renderRoute("/workspace/suppliers")
+    expect(held).toContain("This section is currently on hold.")
+    for (const route of [
+      "/",
+      "/workspace/accounts",
+      "/workspace/settings",
+      "/workspace/ground",
+    ]) {
+      const html = await renderRoute(route)
+      expect(html).not.toContain('href="/workspace/suppliers"')
+      expect(html).not.toContain("Supplier outstanding")
+      expect(html).not.toContain("Supplier due")
+      expect(html).not.toContain("Add supplier cost")
+      expect(html).not.toContain("Record supplier payment")
+      if (route.endsWith("accounts")) expect(html).toContain("Patient balance")
+    }
+  })
+  test("promotions page includes patient actions, bulk selection, templates and restricted access", async () => {
+    installSession()
+    const html = await renderRoute("/workspace/promotions")
+    expect(html).toContain("Shirin Akter")
+    expect(html).toContain("Select all filtered patients")
+    expect(html).toContain("Buy one, get one offer")
+    expect(html).toContain("Bulk send")
+    expect(html).toContain("Promotion history")
+    installSession({ role: "Accounts", staffId: "staff-6" })
+    const blocked = await renderRoute("/workspace/promotions")
+    expect(blocked).toContain("This workspace is not available")
+    expect(blocked).not.toContain("Compose a campaign")
+  })
+  test("public registration is available signed out, visible for staff review and cannot open the agent portal while pending", async () => {
+    installSession({ authenticated: false })
+    const publicPage = await renderRoute("/agent-registration")
+    expect(publicPage).toContain("Register as an agent")
+    expect(publicPage).toContain("Submit registration")
+    expect(publicPage).toContain("Full name / contact person")
+    expect(publicPage).not.toContain("You are signed out.")
+    const data = registerAgent(
+      seedWorkspace(),
+      {
+        name: "Pending Demo Agent",
+        agentType: "Individual agent",
+        district: "Dhaka",
+        phone: "+880 1700 009999",
+        email: "pending@example.test",
+      },
+      "pending-agent-test",
+      "2026-10-31T10:00:00Z"
+    )
+    installSession()
+    Object.defineProperty(globalThis, "localStorage", {
+      configurable: true,
+      value: {
+        getItem: (key: string) =>
+          key === "thai-medics-full-demo-v1" ? JSON.stringify(data) : null,
+      },
+    })
+    const adminPage = await renderRoute("/workspace/agents")
+    expect(adminPage).toContain("Pending Agent")
+    expect(adminPage).toContain("Pending approval")
+    expect(adminPage).toContain('href="/agent-registration"')
+    installSession({
+      role: "Agent",
+      staffId: "",
+      agentId: "pending-agent-test",
+    })
+    Object.defineProperty(globalThis, "localStorage", {
+      configurable: true,
+      value: {
+        getItem: (key: string) =>
+          key === "thai-medics-full-demo-v1" ? JSON.stringify(data) : null,
+      },
+    })
+    const portal = await renderRoute("/agent-portal")
+    expect(portal).toContain("pending approval or inactive")
+    expect(portal).not.toContain("Refer a new patient")
+    expect(portal).not.toContain("Your patient referrals")
+  })
+  test("visa desk separates visa records from air ambulance coordination and scopes linked requests", async () => {
+    installSession()
+    const visas = await renderRoute("/workspace/visas")
+    expect(visas).toContain("Visa records")
+    expect(visas).toContain("Emergency Air Ambulance")
+    expect(visas).toContain("Medical visa desk")
+    const ambulance = await renderRoute("/workspace/visas?tab=ambulance")
+    expect(ambulance).toContain("Add emergency request")
+    expect(ambulance).toContain("AA-DEMO-001")
+    expect(ambulance).toContain("AA-DEMO-002")
+    expect(ambulance).toContain("does not book or dispatch")
+    const scoped = await renderRoute(
+      "/workspace/visas?tab=ambulance&caseId=TMD-2026-0001"
+    )
+    expect(scoped).toContain("AA-DEMO-001")
+    expect(scoped).not.toContain("AA-DEMO-002")
+    installSession({ role: "Accounts", staffId: "staff-6" })
+    expect(await renderRoute("/workspace/visas?tab=ambulance")).toContain(
+      "This workspace is not available"
     )
   })
   test("patient portal shows one linked case and blocks the staff workspace", async () => {

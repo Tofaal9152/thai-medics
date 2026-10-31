@@ -1,3 +1,4 @@
+import { AmbulanceCaseSummary } from "../components/ambulance-workspace"
 import { useState } from "react"
 import { Link } from "@tanstack/react-router"
 import { ArrowLeft, ArrowRight, Check, Plus } from "lucide-react"
@@ -42,7 +43,7 @@ export default function CaseWorkspace({ caseId }: { caseId: string }) {
       options: choices("", "Female", "Male", "Other"),
     },
     { key: "city", label: "City / district" },
-    { key: "passport", label: "Passport number (demo)" },
+    { key: "passport", label: "Passport number" },
     { key: "companion", label: "Accompanying person" },
     { key: "companionPhone", label: "Companion phone", type: "tel" },
     {
@@ -385,7 +386,7 @@ export default function CaseWorkspace({ caseId }: { caseId: string }) {
               ["Email", meta.email],
               ["Age / gender", `${meta.age || "—"} / ${meta.gender || "—"}`],
               ["City / district", p.city],
-              ["Passport (demo)", meta.passport],
+              ["Passport", meta.passport],
               ["Inquiry source", p.source],
               [
                 "Agent",
@@ -520,45 +521,48 @@ export default function CaseWorkspace({ caseId }: { caseId: string }) {
         </>
       )}
       {tab === "visa" && (
-        <Panel
-          title="Patient & attendant visas"
-          actions={
-            can("visas") ? (
-              <Link
-                to="/workspace/$module"
-                params={{ module: "visas" }}
-                className="ws-inline-link"
-              >
-                Open visa desk →
-              </Link>
-            ) : undefined
-          }
-        >
-          <div className="ws-linked-records">
-            {caseVisas.map((v) => (
-              <article key={v.id}>
-                <h3>{v.values.name}</h3>
-                <Badge
-                  tone={v.values.status === "Approved" ? "green" : "amber"}
+        <>
+          <Panel
+            title="Patient & attendant visas"
+            actions={
+              can("visas") ? (
+                <Link
+                  to="/workspace/$module"
+                  params={{ module: "visas" }}
+                  className="ws-inline-link"
                 >
-                  {v.values.status}
-                </Badge>
-                <small>
-                  {v.values.relation} · {v.values.passport}
-                </small>
-                <p>
-                  Documents:{" "}
-                  {(v.values.checked || "").split("|").filter(Boolean).length} /
-                  5
-                </p>
-                <small>Passport expires {v.values.expiry}</small>
-              </article>
-            ))}
-            {!caseVisas.length && (
-              <Empty>No visa record linked to this case yet.</Empty>
-            )}
-          </div>
-        </Panel>
+                  Open visa desk →
+                </Link>
+              ) : undefined
+            }
+          >
+            <div className="ws-linked-records">
+              {caseVisas.map((v) => (
+                <article key={v.id}>
+                  <h3>{v.values.name}</h3>
+                  <Badge
+                    tone={v.values.status === "Approved" ? "green" : "amber"}
+                  >
+                    {v.values.status}
+                  </Badge>
+                  <small>
+                    {v.values.relation} · {v.values.passport}
+                  </small>
+                  <p>
+                    Documents:{" "}
+                    {(v.values.checked || "").split("|").filter(Boolean).length}{" "}
+                    / 5
+                  </p>
+                  <small>Passport expires {v.values.expiry}</small>
+                </article>
+              ))}
+              {!caseVisas.length && (
+                <Empty>No visa record linked to this case yet.</Empty>
+              )}
+            </div>
+          </Panel>
+          <AmbulanceCaseSummary caseId={caseId} />
+        </>
       )}
       {tab === "thailand" && (
         <>

@@ -3,7 +3,12 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router"
 import { useForm } from "@tanstack/react-form"
 
 import { Button } from "@/components/ui/button"
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/toast"
 import { useMutationHandler } from "@/hooks/use-mutation-handler"
@@ -57,9 +62,12 @@ function ResetPassword() {
         <div className="flex w-full max-w-sm flex-col gap-4 text-center">
           <h1 className="text-2xl font-bold">Link expired</h1>
           <p className="text-sm text-muted-foreground">
-            This password reset link is invalid or has expired. Request a new one.
+            This password reset link is invalid or has expired. Request a new
+            one.
           </p>
-          <Button render={<Link to="/auth/forgot-password">Request a new link</Link>} />
+          <Button
+            render={<Link to="/auth/forgot-password">Request a new link</Link>}
+          />
         </div>
       </div>
     )
@@ -80,11 +88,13 @@ function ResetPassword() {
           <form.Field
             name="new_password1"
             children={(field) => {
-              const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+              const isInvalid =
+                field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
                   <FieldLabel htmlFor={field.name}>New password</FieldLabel>
                   <Input
+                    placeholder="Enter a new password"
                     id={field.name}
                     name={field.name}
                     type="password"
@@ -106,11 +116,15 @@ function ResetPassword() {
           <form.Field
             name="new_password2"
             children={(field) => {
-              const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+              const isInvalid =
+                field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Confirm new password</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>
+                    Confirm new password
+                  </FieldLabel>
                   <Input
+                    placeholder="Confirm your new password"
                     id={field.name}
                     name={field.name}
                     type="password"
@@ -131,13 +145,17 @@ function ResetPassword() {
         </FieldGroup>
 
         {serverErrors.non_field_errors && (
-          <p className="text-sm text-destructive">{serverErrors.non_field_errors[0]}</p>
+          <p className="text-sm text-destructive">
+            {serverErrors.non_field_errors[0]}
+          </p>
         )}
 
         <form.Subscribe selector={(state) => state.isSubmitting}>
           {(isSubmitting) => (
             <Button type="submit" disabled={isSubmitting || mutation.isPending}>
-              {isSubmitting || mutation.isPending ? "Resetting…" : "Reset password"}
+              {isSubmitting || mutation.isPending
+                ? "Resetting…"
+                : "Reset password"}
             </Button>
           )}
         </form.Subscribe>

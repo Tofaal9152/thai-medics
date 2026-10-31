@@ -1,3 +1,4 @@
+import { featureFlags } from "@/features/workspace/feature-flags"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   ArrowDownLeft,
@@ -25,6 +26,13 @@ import {
   X,
 } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/toast"
 import DataTable from "@/components/shared/data-table"
@@ -189,7 +197,7 @@ export default function Dashboard() {
   function toggleTask(id: string) {
     if (!can("tasks")) {
       toast.add({
-        title: "Your demo role cannot perform this action.",
+        title: "Your role cannot perform this action.",
         type: "error",
       })
       return
@@ -222,7 +230,7 @@ export default function Dashboard() {
   function addCase(values: NewCaseValues) {
     if (!can("caseCreate")) {
       toast.add({
-        title: "Your demo role cannot perform this action.",
+        title: "Your role cannot perform this action.",
         type: "error",
       })
       return
@@ -239,7 +247,7 @@ export default function Dashboard() {
   function addTask(task: Omit<Task, "id" | "done">) {
     if (!can("tasks")) {
       toast.add({
-        title: "Your demo role cannot perform this action.",
+        title: "Your role cannot perform this action.",
         type: "error",
       })
       return
@@ -263,7 +271,7 @@ export default function Dashboard() {
   function advanceCase() {
     if (!can("stage")) {
       toast.add({
-        title: "Your demo role cannot perform this action.",
+        title: "Your role cannot perform this action.",
         type: "error",
       })
       return
@@ -290,7 +298,7 @@ export default function Dashboard() {
   function addNote(note: string) {
     if (!can("notes")) {
       toast.add({
-        title: "Your demo role cannot perform this action.",
+        title: "Your role cannot perform this action.",
         type: "error",
       })
       return
@@ -351,7 +359,7 @@ export default function Dashboard() {
     toast.add({
       title: t("Patient list exported", "রোগীর তালিকা এক্সপোর্ট হয়েছে"),
       description: t(
-        `${filteredPatients.length} demo cases · CSV file`,
+        `${filteredPatients.length} cases · CSV file`,
         `${filteredPatients.length} ডেমো কেস · CSV ফাইল`
       ),
       type: "success",
@@ -467,25 +475,34 @@ export default function Dashboard() {
             </p>
           </div>
           <div className="heading-actions">
-            <label className="office-select">
-              <Building2 size={15} />
-              <select
-                aria-label="Filter by office"
-                value={office}
-                onChange={(e) => {
-                  setOffice(e.target.value as Office)
+            <Select
+              value={office}
+              onValueChange={(value) => {
+                if (value) {
+                  setOffice(value as Office)
                   setPage(1)
-                }}
+                }
+              }}
+            >
+              <SelectTrigger
+                aria-label="Filter by office"
+                className="dashboard-office-trigger"
               >
-                <option value="All offices">
+                <Building2 size={15} />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent align="end" alignItemWithTrigger={false}>
+                <SelectItem value="All offices">
                   {t("All offices", "সব অফিস")}
-                </option>
-                <option value="Bangladesh">
+                </SelectItem>
+                <SelectItem value="Bangladesh">
                   {t("Bangladesh", "বাংলাদেশ")}
-                </option>
-                <option value="Thailand">{t("Thailand", "থাইল্যান্ড")}</option>
-              </select>
-            </label>
+                </SelectItem>
+                <SelectItem value="Thailand">
+                  {t("Thailand", "থাইল্যান্ড")}
+                </SelectItem>
+              </SelectContent>
+            </Select>
             <Button
               className="new-case-button"
               disabled={!can("caseCreate")}
@@ -1069,7 +1086,7 @@ export default function Dashboard() {
                     {formatMoney(account.paid, currency)}
                   </strong>
                   <small>
-                    {t("Recorded demo payments", "ডেমো পেমেন্টের রেকর্ড")}
+                    {t("Recorded payments", "ডেমো পেমেন্টের রেকর্ড")}
                   </small>
                 </div>
                 <div>
@@ -1083,10 +1100,12 @@ export default function Dashboard() {
                 </div>
               </div>
               <footer className="panel-footer">
-                <span>
-                  {t("Supplier outstanding", "সাপ্লায়ার বকেয়া")}
-                  <strong>{formatMoney(account.supplier, currency)}</strong>
-                </span>
+                {featureFlags.suppliers && (
+                  <span>
+                    {t("Supplier outstanding", "সাপ্লায়ার বকেয়া")}
+                    <strong>{formatMoney(account.supplier, currency)}</strong>
+                  </span>
+                )}
                 <button
                   className="text-button"
                   onClick={() => {
@@ -1121,7 +1140,7 @@ export default function Dashboard() {
           <p>
             <span className="footer-dot" />
             {t(
-              "Fictional demo data · Saved only in this browser",
+              "Fictional data · Saved only in this browser",
               "কাল্পনিক ডেমো তথ্য · শুধু এই ব্রাউজারে সংরক্ষিত"
             )}
           </p>
@@ -1326,7 +1345,7 @@ export default function Dashboard() {
         <DashboardDialog
           title={t("One team, two offices", "এক টিম, দুই অফিস")}
           description={t(
-            "Fictional team members for this demo workspace.",
+            "Fictional team members for this workspace.",
             "এই ডেমো ওয়ার্কস্পেসের কাল্পনিক টিম সদস্য।"
           )}
           onClose={closeDialog}
@@ -1351,7 +1370,7 @@ export default function Dashboard() {
         <DashboardDialog
           title={t("Around the desk", "ডেস্কের সাম্প্রতিক খবর")}
           description={t(
-            "Demo activity history. Changes are stored in this browser only.",
+            "activity history. Changes are stored in this browser only.",
             "ডেমো কাজের ইতিহাস। পরিবর্তন শুধু এই ব্রাউজারে সংরক্ষিত।"
           )}
           onClose={closeDialog}
@@ -1362,7 +1381,7 @@ export default function Dashboard() {
       {dialog === "info" && (
         <DashboardDialog
           title={t(
-            "A shared desk. A demo for now.",
+            "A shared desk for connected care.",
             "একটি ডেস্ক। আপাতত একটি ডেমো।"
           )}
           onClose={closeDialog}
@@ -1413,14 +1432,14 @@ export default function Dashboard() {
                 {t("Frontend demonstration only", "শুধু ফ্রন্টএন্ড ডেমো")}
                 <small>
                   {t(
-                    "No server, real authentication, hospital connection or payments. Please use fictional information only. Your demo changes stay in this browser until you reset them.",
+                    "No server, real authentication, hospital connection or payments. Please use fictional information only. Your changes stay in this browser until you reset them.",
                     "কোনো সার্ভার, আসল লগইন, হাসপাতাল সংযোগ বা পেমেন্ট নেই। শুধু কাল্পনিক তথ্য ব্যবহার করুন। রিসেট না করা পর্যন্ত পরিবর্তন এই ব্রাউজারে থাকবে।"
                   )}
                 </small>
               </p>
             </div>
             <Button variant="outline" onClick={() => setDialog("reset")}>
-              {t("Reset demo data", "ডেমো তথ্য রিসেট করুন")}
+              {t("Reset data", "ডেমো তথ্য রিসেট করুন")}
             </Button>
           </div>
         </DashboardDialog>
@@ -1429,7 +1448,7 @@ export default function Dashboard() {
         <DashboardDialog
           title={t("Start fresh?", "নতুন করে শুরু করবেন?")}
           description={t(
-            "This removes your demo changes and restores the original fictional cases and tasks.",
+            "This removes your changes and restores the original fictional cases and tasks.",
             "ডেমো পরিবর্তন মুছে শুরুর কাল্পনিক কেস ও কাজ ফিরিয়ে আনা হবে।"
           )}
           onClose={closeDialog}
@@ -1450,15 +1469,12 @@ export default function Dashboard() {
                 setTaskFilter("pending")
                 closeDialog()
                 toast.add({
-                  title: t(
-                    "Demo workspace reset",
-                    "ডেমো ওয়ার্কস্পেস রিসেট হয়েছে"
-                  ),
+                  title: t("workspace reset", "ডেমো ওয়ার্কস্পেস রিসেট হয়েছে"),
                   type: "success",
                 })
               }}
             >
-              {t("Reset demo", "ডেমো রিসেট")}
+              {t("Reset ", "ডেমো রিসেট")}
             </Button>
           </footer>
         </DashboardDialog>

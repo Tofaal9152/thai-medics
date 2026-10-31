@@ -2,7 +2,7 @@ import PartnerDetails from "./partner-details"
 import { useCallback, useMemo, useState } from "react"
 import type { ColumnDef } from "@tanstack/react-table"
 import { Link } from "@tanstack/react-router"
-import { ArrowUpRight, Check, Edit2, Send } from "lucide-react"
+import { Check, Edit2, Send } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { dayOffset, today } from "@/features/dashboard/data"
 import { useWorkspace } from "../context"
@@ -74,6 +74,32 @@ export default function DirectoryPage({ module }: { module: ModuleKey }) {
     return agentCommissions(data, agentId, statementMonth)
   }
   const save = async (values: Values) => {
+    if (
+      module === "agents" &&
+      editing !== "new" &&
+      records.find((r) => r.id === editing?.id)?.values.submittedVia ===
+        "Public registration" &&
+      records.find((r) => r.id === editing?.id)?.values.status !== "Active" &&
+      values.status === "Active" &&
+      !can("staff")
+    )
+      throw new Error(
+        "Only staff administrators can approve agent registrations."
+      )
+    if (
+      module === "agents" &&
+      records.some(
+        (r) =>
+          r.id !== (editing && editing !== "new" ? editing.id : "") &&
+          ((values.email &&
+            (r.values.email || "").toLowerCase() ===
+              values.email.toLowerCase()) ||
+            (values.phone &&
+              (r.values.phone || "").replace(/\D/g, "") ===
+                values.phone.replace(/\D/g, "")))
+      )
+    )
+      throw new Error("Another agent already uses this email or phone.")
     if (module === "leads" && values.status === "Lost" && !values.lostReason)
       throw new Error("Choose a lost-lead reason.")
     if (module === "leads" && values.source === "Agent" && !values.agentId)
@@ -135,6 +161,15 @@ export default function DirectoryPage({ module }: { module: ModuleKey }) {
     const id = editing && editing !== "new" ? editing.id : uid(module),
       previous = editing && editing !== "new" ? editing.values : {}
     const merged = { ...previous, ...values }
+    if (
+      module === "agents" &&
+      previous.submittedVia === "Public registration" &&
+      previous.status !== "Active" &&
+      values.status === "Active"
+    ) {
+      merged.reviewedBy = session.name
+      merged.reviewedAt = new Date().toISOString()
+    }
     if (module === "messages" && !merged.recipient)
       merged.recipient =
         data.patients.find((p) => p.id === merged.caseId)?.phone || ""
@@ -253,7 +288,7 @@ export default function DirectoryPage({ module }: { module: ModuleKey }) {
           ...prev.collections,
           messages: prev.collections.messages.map((r) =>
             r.id === record.id
-              ? { ...r, values: { ...r.values, status: "Demo sent" } }
+              ? { ...r, values: { ...r.values, status: "Sent" } }
               : r
           ),
         },
@@ -263,7 +298,7 @@ export default function DirectoryPage({ module }: { module: ModuleKey }) {
                 ...patient,
                 notes: [
                   ...patient.notes,
-                  `[DEMO ${record.values.channel}] ${record.values.body}`,
+                  `[${record.values.channel}] ${record.values.body}`,
                 ],
               }
             : patient
@@ -379,7 +414,7 @@ export default function DirectoryPage({ module }: { module: ModuleKey }) {
                 "Completed",
                 "Available",
                 "Confirmed",
-                "Demo sent",
+                "Sent",
                 "Qualified",
               ].includes(row.original.values.status)
                 ? "green"
@@ -396,16 +431,17 @@ export default function DirectoryPage({ module }: { module: ModuleKey }) {
       },
       {
         id: "actions",
-        header: "",
+        header: "Action",
         enableSorting: false,
         cell: ({ row }) => (
-          <button
-            className="ws-icon-link"
+          <Button
+            variant="outline"
+            size="sm"
             aria-label={`Open ${row.original.values.name}`}
             onClick={() => setSelected(row.original.id)}
           >
-            <ArrowUpRight size={17} />
-          </button>
+            View
+          </Button>
         ),
       },
     ],
@@ -441,15 +477,32 @@ export default function DirectoryPage({ module }: { module: ModuleKey }) {
           label={
             module === "visas"
               ? "Expiring within 90 days"
-              : "Linked to patient cases"
+              : module === "agents"
+                ? "Pending approval"
+                : "Linked to patient cases"
           }
           value={
             module === "visas"
               ? records.filter((r) => r.values.expiry <= dayOffset(90)).length
-              : records.filter((r) => r.values.caseId).length
+              : module === "agents"
+                ? records.filter((r) => r.values.status === "Pending approval")
+                    .length
+                : records.filter((r) => r.values.caseId).length
           }
         />
       </div>
+      {module === "agents" && (
+        <Panel
+          title="Public agent registration"
+          subtitle="New applications appear here as Pending approval. Admin reviews the details and commission terms before activating access."
+        >
+          <div className="ws-detail-body">
+            <Link to="/agent-registration" className="ws-inline-link">
+              Open public registration form →
+            </Link>
+          </div>
+        </Panel>
+      )}
       {module === "messages" && (
         <Panel
           title="Ready-to-use templates"
@@ -801,11 +854,11 @@ export default function DirectoryPage({ module }: { module: ModuleKey }) {
                           [statementPaidKey(statementCurrency, statementMonth)]:
                             String(amount),
                         },
-                        `Recorded ${statementCurrency} commission payout (demo)`
+                        `Recorded ${statementCurrency} commission payout`
                       )
                     }}
                   >
-                    Record payout (demo)
+                    Record payout
                   </Button>
                   <Button
                     variant="outline"
@@ -870,20 +923,31 @@ export default function DirectoryPage({ module }: { module: ModuleKey }) {
                   Convert / link to patient case
                 </Button>
               )}
-            {module === "messages" && item.values.status !== "Demo sent" && (
+            {module === "messages" && item.values.status !== "Sent" && (
               <Button onClick={() => simulateSend(item)}>
                 <Send size={15} />
                 Simulate delivery
               </Button>
             )}
+            {module === "agents" &&
+              item.values.status === "Pending approval" &&
+              can("staff") && (
+                <Button
+                  onClick={() => {
+                    setEditing({
+                      ...item,
+                      values: { ...item.values, status: "Active", rate: "" },
+                    })
+                    setSelected(null)
+                  }}
+                >
+                  Review & approve registration
+                </Button>
+              )}
             {module === "staff" && item.values.status === "Invited" && (
               <Button
                 onClick={() =>
-                  patch(
-                    item.id,
-                    { status: "Active" },
-                    "Demo invitation approved"
-                  )
+                  patch(item.id, { status: "Active" }, "invitation approved")
                 }
               >
                 Approve invitation
@@ -891,9 +955,7 @@ export default function DirectoryPage({ module }: { module: ModuleKey }) {
             )}
             <PartnerDetails key={item.id} module={module} item={item} />
             <div className="ws-form-footer">
-              {!(
-                module === "messages" && item.values.status === "Demo sent"
-              ) && (
+              {!(module === "messages" && item.values.status === "Sent") && (
                 <Button
                   variant="outline"
                   onClick={() => {

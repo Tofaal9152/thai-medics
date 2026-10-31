@@ -1,3 +1,4 @@
+import type { AmbulanceRequest } from "./ambulance"
 import type { DashboardData, Patient } from "@/features/dashboard/data"
 export type Values = Record<string, string>
 export type ModuleKey =
@@ -119,6 +120,7 @@ export type QuoteRequest = {
 }
 export type WorkspaceData = DashboardData & {
   version: 1
+  ambulanceRequests: AmbulanceRequest[]
   quoteRequests: QuoteRequest[]
   collections: Collections
   caseMeta: Record<string, CaseMeta>

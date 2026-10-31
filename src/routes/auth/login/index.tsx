@@ -4,7 +4,12 @@ import { z } from "zod"
 import { toast } from "@/components/ui/toast"
 
 import { Button } from "@/components/ui/button"
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { useMutationHandler } from "@/hooks/use-mutation-handler"
 import { loginFn } from "@/features/auth/api"
@@ -19,7 +24,8 @@ export const Route = createFileRoute("/auth/login/")({
 })
 
 const errorMessages: Record<string, string> = {
-  INVALID_REGISTRATION_NUMBER_OR_EMAIL: "No account found with that email or registration number.",
+  INVALID_REGISTRATION_NUMBER_OR_EMAIL:
+    "No account found with that email or registration number.",
   INVALID_CREDENTIALS: "Incorrect password.",
 }
 
@@ -28,7 +34,8 @@ function Login() {
     debugLabel: "Login",
     showSuccessToast: false,
     showErrorToast: false,
-    mutationFn: (data: { email_reg: string; password: string }) => loginFn({ data }),
+    mutationFn: (data: { email_reg: string; password: string }) =>
+      loginFn({ data }),
     onSuccess: (result) => {
       if (!result.success) {
         toast.add({
@@ -40,7 +47,8 @@ function Login() {
 
       if (result.status === "NOT_VERIFIED") {
         toast.add({
-          title: "Your account isn't verified yet — check your phone for the OTP.",
+          title:
+            "Your account isn't verified yet — check your phone for the OTP.",
           type: "warning",
         })
         return
@@ -85,11 +93,15 @@ function Login() {
           <form.Field
             name="email_reg"
             children={(field) => {
-              const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+              const isInvalid =
+                field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Email or registration number</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>
+                    Email or registration number
+                  </FieldLabel>
                   <Input
+                    placeholder="Enter your email or registration number"
                     id={field.name}
                     name={field.name}
                     value={field.state.value}
@@ -107,11 +119,13 @@ function Login() {
           <form.Field
             name="password"
             children={(field) => {
-              const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+              const isInvalid =
+                field.state.meta.isTouched && !field.state.meta.isValid
               return (
                 <Field data-invalid={isInvalid}>
                   <FieldLabel htmlFor={field.name}>Password</FieldLabel>
                   <Input
+                    placeholder="Enter your password"
                     id={field.name}
                     name={field.name}
                     type="password"
@@ -128,7 +142,10 @@ function Login() {
           />
         </FieldGroup>
 
-        <Link to="/auth/forgot-password" className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground">
+        <Link
+          to="/auth/forgot-password"
+          className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground"
+        >
           Forgot password?
         </Link>
 

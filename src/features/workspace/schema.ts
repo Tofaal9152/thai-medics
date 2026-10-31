@@ -1,3 +1,4 @@
+import { ambulanceRequestSchema } from "./ambulance"
 import { z } from "zod"
 import { dashboardSchema } from "@/features/dashboard/data"
 import { blankMeta } from "./model"
@@ -61,6 +62,7 @@ const meta = z.custom<CaseMeta>((value) => {
 export const workspaceSchema = dashboardSchema
   .extend({
     version: z.literal(1),
+    ambulanceRequests: z.array(ambulanceRequestSchema).default([]),
     collections: z.object({
       hospitals: z.array(record),
       doctors: z.array(record),
@@ -122,7 +124,14 @@ export const workspaceSchema = dashboardSchema
       ids.size === data.patients.length &&
       data.ledger.every((e) => ids.has(e.caseId)) &&
       data.files.every((f) => ids.has(f.caseId)) &&
-      data.tasks.every((t) => ids.has(t.caseId))
+      data.tasks.every((t) => ids.has(t.caseId)) &&
+      data.ambulanceRequests.every(
+        (r) =>
+          ids.has(r.caseId) &&
+          r.fileIds.every((id) =>
+            data.files.some((f) => f.id === id && f.caseId === r.caseId)
+          )
+      )
     )
   }, "Patient links must refer to unique existing cases.")
 export function validateWorkspace(value: unknown): WorkspaceData | null {

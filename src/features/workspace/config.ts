@@ -1,3 +1,4 @@
+import { featureFlags } from "./feature-flags"
 import type { FieldDef } from "./components/form"
 import { choices } from "./form-options"
 import type { ModuleKey, WorkspaceData } from "./model"
@@ -140,6 +141,16 @@ export function fieldsFor(key: ModuleKey, data: WorkspaceData): FieldDef[] {
     case "agents":
       return [
         ...common,
+        f(
+          "agentType",
+          "Agent type",
+          "select",
+          false,
+          choices("Individual agent", "Partner clinic")
+        ),
+        f("organization", "Organisation / clinic"),
+        f("address", "Address", "textarea"),
+        f("notes", "Registration notes", "textarea"),
         f("district", "District", "text", true),
         f("phone", "Phone", "tel", true),
         f("email", "Email", "email"),
@@ -171,7 +182,7 @@ export function fieldsFor(key: ModuleKey, data: WorkspaceData): FieldDef[] {
           })),
         ]),
         f("terms", "Agreed terms", "textarea"),
-        status("Active", "Inactive"),
+        status("Pending approval", "Active", "Inactive"),
       ]
     case "suppliers":
       return [
@@ -266,7 +277,7 @@ export function fieldsFor(key: ModuleKey, data: WorkspaceData): FieldDef[] {
           true,
           choices("Patient", "Attendant")
         ),
-        f("passport", "Passport number (demo)", "text", true),
+        f("passport", "Passport number", "text", true),
         f("expiry", "Passport expiry", "date", true),
         f("submission", "Embassy submission", "date"),
         f("appointment", "Appointment date", "date"),
@@ -298,7 +309,9 @@ export function fieldsFor(key: ModuleKey, data: WorkspaceData): FieldDef[] {
             "Other"
           )
         ),
-        f("supplier", "Supplier", "select", true, reference("suppliers")),
+        ...(featureFlags.suppliers
+          ? [f("supplier", "Supplier", "select", true, reference("suppliers"))]
+          : []),
         f("interpreter", "Interpreter / staff"),
         f("pickup", "Pickup location", "text", true),
         f("destination", "Destination", "text", true),
@@ -345,7 +358,7 @@ export function fieldsFor(key: ModuleKey, data: WorkspaceData): FieldDef[] {
         patient,
         f("channel", "Channel", "select", true, choices("WhatsApp", "Email")),
         f("language", "Language", "select", true, choices("English", "Bangla")),
-        f("recipient", "Recipient (demo)"),
+        f("recipient", "Recipient"),
         f("scheduled", "Send later", "datetime-local"),
         { ...f("body", "Message", "textarea", true), full: true },
         status("Draft", "Scheduled"),

@@ -1,5 +1,6 @@
+import { Button } from "@/components/ui/button"
 import type { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpRight, Building2 } from "lucide-react"
+import { Building2 } from "lucide-react"
 import { initials, stages } from "../data"
 import type { Language, Patient } from "../data"
 
@@ -87,15 +88,16 @@ export function patientColumns(
     {
       id: "action",
       enableSorting: false,
-      header: "",
+      header: t("Action", "অ্যাকশন"),
       cell: ({ row }) => (
-        <button
-          className="row-open"
+        <Button
+          variant="outline"
+          size="sm"
           aria-label={`Open ${row.original.name}'s case`}
           onClick={() => open(row.original)}
         >
-          <ArrowUpRight size={17} />
-        </button>
+          {t("View", "দেখুন")}
+        </Button>
       ),
     },
   ]
